@@ -1278,6 +1278,9 @@ var pinneds = {
         var payload = pinneds.payload || {};
         if (TS.BOOT['pay-validate-user-password']) {
             payload.data.password = $('#J-password-confirm').val();
+            if (data.day < 1 || data.day > 30) {
+                lyNotice('请输入1-30天');return;
+            }
         }
         axios.post(payload.url, payload.data)
             .then(function (response) {

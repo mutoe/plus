@@ -20,20 +20,6 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 class PassportController extends BaseController
 {
     /**
-     * Create the controller instance.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function __construct()
-    {
-        // Run parent construct method.
-        parent::__construct();
-
-        // Register "guest" middleware
-        $this->middleware('guest')->except('auth/login', 'register', 'passport/perfect', 'captcha', 'forget-password', 'auth/dynamic-login');
-    }
-
-    /**
      * Log the user out of the application.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -60,6 +46,10 @@ class PassportController extends BaseController
      */
     public function index()
     {
+        if ($this->PlusData['TS'] != null) {
+            return redirect(route('pc:feeds'));
+        }
+
     	return view('pcview::passport.login', [], $this->PlusData);
     }
 
@@ -70,6 +60,10 @@ class PassportController extends BaseController
      */
     public function dynamic()
     {
+        if ($this->PlusData['TS'] != null) {
+            return redirect(route('pc:feeds'));
+        }
+        
         return view('pcview::passport.dynamiclogin', [], $this->PlusData);
     }
 
@@ -119,6 +113,10 @@ class PassportController extends BaseController
      */
     public function register(Request $request)
     {
+        if ($this->PlusData['TS'] != null) {
+            return redirect(route('pc:feeds'));
+        }
+
         $type = $request->input('type', 'phone');
 
         return view('pcview::passport.register', ['type' => $type], $this->PlusData);
@@ -132,6 +130,10 @@ class PassportController extends BaseController
      */
     public function findPassword(Request $request)
     {
+        if ($this->PlusData['TS'] != null) {
+            return redirect(route('pc:feeds'));
+        }
+
         $type = $request->input('type', 'phone');
 
         return view('pcview::passport.findpwd', ['type' => $type], $this->PlusData);
@@ -144,6 +146,10 @@ class PassportController extends BaseController
      */
     public function perfect()
     {
+        if ($this->PlusData['TS'] != null) {
+            return redirect(route('pc:feeds'));
+        }
+
         $data['tags'] = api('GET', '/api/v2/tags');
         $data['user_tag'] = api('GET', '/api/v2/user/tags');
         return view('pcview::passport.perfect', $data, $this->PlusData);
