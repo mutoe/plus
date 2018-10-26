@@ -165,6 +165,10 @@ function getImageUrl($image = array(), $width, $height, $cut = true, $blur = 0)
     $file = $image['file'] ?? $image['id'];
     if ($cut) {
         $size = explode('x', $image['size']);
+        // 宽或高大于4096直接返回
+        if ($size[0] > 4096 || $size[1] > 4096) {
+            return asset('/api/v2/files/'.$file) . '?&token=' . Session::get('token');
+        }
         if ($size[0] > $size[1]) {
             $width = number_format($height / $size[1] * $size[0], 2, '.', '');
         } else {
