@@ -265,10 +265,8 @@
 	            var blur = $(this).data('blur') == ''; 
 	            var img = {
 	                id: 'img' + i,
-	                // img: TS.SITE_URL + '/api/v2/files/' + $(this).data('id') + '?token=' + TS.TOKEN,
-	                // tinyimg: TS.SITE_URL + '/api/v2/files/' + $(this).data('id')+ '?w=58&h=58&token=' + TS.TOKEN,
-	                img: 'http://test-plus.zhibocloud.cn/api/v2/files/' + $(this).data('id') + '?token=' + TS.TOKEN,
-	                tinyimg: 'http://test-plus.zhibocloud.cn/api/v2/files/' + $(this).data('id')+ '?w=58&h=58&token=' + TS.TOKEN,
+	                img: TS.SITE_URL + '/api/v2/files/' + $(this).data('id') + '?token=' + TS.TOKEN,
+	                tinyimg: TS.SITE_URL + '/api/v2/files/' + $(this).data('id')+ '?w=58&h=58&token=' + TS.TOKEN,
 	                width: size[0],
 	                height: size[1]
 	            };
