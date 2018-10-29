@@ -40,13 +40,14 @@ class PassportController extends BaseController
      * @author Foreach
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
         if ($this->PlusData['TS'] != null) {
             return redirect(route('pc:feeds'));
         }
+        $data['redirect'] = $request->query('redirect', '');
 
-    	return view('pcview::passport.login', [], $this->PlusData);
+    	return view('pcview::passport.login', $data, $this->PlusData);
     }
 
     /**

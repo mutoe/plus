@@ -15,6 +15,7 @@
     <div class="login_right">
         <form role="form" method="POST" action="{{ url('/auth/login') }}">
             {{ csrf_field() }}
+            <input type="hidden" name="redirect" value="{{ $redirect }}" required/>
             <div class="login_input">
                 <input type="text" placeholder="输入手机号/邮箱/昵称" name="login" value="{{ old('email', old('phone', old('name', old('id', '')))) }}" required autofocus />
             </div>
