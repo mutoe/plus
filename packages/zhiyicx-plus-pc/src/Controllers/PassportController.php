@@ -49,7 +49,7 @@ class PassportController extends BaseController
         if ($this->PlusData['TS'] != null) {
             return redirect(route('pc:feeds'));
         }
-
+        
     	return view('pcview::passport.login', [], $this->PlusData);
     }
 
@@ -62,8 +62,8 @@ class PassportController extends BaseController
     {
         if ($this->PlusData['TS'] != null) {
             return redirect(route('pc:feeds'));
-        }
-        
+        }   
+
         return view('pcview::passport.dynamiclogin', [], $this->PlusData);
     }
 
