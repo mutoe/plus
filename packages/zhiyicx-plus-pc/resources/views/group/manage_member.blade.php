@@ -42,10 +42,12 @@
                 <div class="f-mt20 f-fs4">圈主</div>
                 <dl class="m-row">
                     <dt>
+                        <a href="{{ route('pc:mine',['user_id' => $group['founder']['user']['id']]) }}" target="_blank">
                         <img src="{{ getAvatar($group['founder']['user'], 50) }}" width="50" class="avatar">
                         @if ($group['founder']['user']['verified'])
                             <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
+                        </a>
                     </dt>
                     <dd>{{$group['founder']['user']['name']}}</dd>
                 </dl>
@@ -56,10 +58,12 @@
                 @foreach ($manager as $manage)
                     <dl class="m-row">
                         <dt>
+                            <a href="{{ route('pc:mine',['user_id' => $manage['user']['id']]) }}" target="_blank">
                             <img src="{{ getAvatar($manage['user'], 50) }}" width="50" class="avatar">
                             @if ($manage['user']['verified'])
                                 <img class="role-icon" src="{{ $manage['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
+                            </a>
                         </dt>
                         <dd><div>{{$manage['user']['name']}}</div>
                             <div class="u-opt">
