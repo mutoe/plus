@@ -1,5 +1,9 @@
 @section('title')话题 - {{ $topic['name'] }}@endsection
 
+@php
+    use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
+@endphp
+
 @extends('pcview::layouts.default')
 
 @section('styles')
@@ -82,7 +86,10 @@
                 @foreach($participants as $user)
                 <li>
                     <a href='{{ url("/users/{$user['id']}") }}'>
-                        <div class="avatar"></div><span class="name">{{ $user['name'] }}</span>
+                        <img class="avatar" src="{{ getAvatar($user, 50) }}"/>
+                    </a>
+                    <a href='{{ url("/users/{$user['id']}") }}'>
+                        <span class="name txt-hide">{{ $user['name'] }}</span>
                     </a>
                 </li>
                 @endforeach
