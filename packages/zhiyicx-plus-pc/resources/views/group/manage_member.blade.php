@@ -49,7 +49,7 @@
                         @endif
                         </a>
                     </dt>
-                    <dd>{{$group['founder']['user']['name']}}</dd>
+                    <dd><a href="{{ route('pc:mine',['user_id' => $group['founder']['user']['id']]) }}" target="_blank">{{$group['founder']['user']['name']}}</a></dd>
                 </dl>
             </div>
             <div>
@@ -65,7 +65,7 @@
                             @endif
                             </a>
                         </dt>
-                        <dd><div>{{$manage['user']['name']}}</div>
+                        <dd><div class="username"><a href="{{ route('pc:mine',['user_id' => $manage['user']['id']]) }}" target="_blank">{{$manage['user']['name']}}</a></div>
                             <div class="u-opt">
                                 <span>管理</span>
                                 @if (($group['joined']['role'] == 'founder') && ($group['joined']['user_id'] != $manage['user']['id']))
@@ -89,12 +89,14 @@
                 @foreach ($members as $member)
                     <dl class="m-row">
                         <dt>
+                            <a href="{{ route('pc:mine',['user_id' => $member['user']['id']]) }}" target="_blank">
                             <img src="{{ getAvatar($member['user'], 50) }}" width="50" class="avatar">
                             @if ($member['user']['verified'])
                                 <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
+                            </a>
                         </dt>
-                        <dd><div>{{$member['user']['name']}}</div>
+                        <dd><div class="username">{{$member['user']['name']}}</div>
                             <div class="u-opt">
                                 <span>管理</span>
                                 <svg class="icon f-fs2"><use xlink:href="#icon-setting"></use></svg>
