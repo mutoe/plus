@@ -184,9 +184,10 @@ var question = {
                 noticebox('申请成功', 1);
             })
             .catch(function (error) {
-                layer.closeAll();
                 question.lockStatus = 0;
-                showError(error.response.data);
+                password
+                  ? lyShowError(error.response.data)
+                  : showError(error.response.data);
             });
     },
     postAmount: function() {
