@@ -65,7 +65,7 @@
                             @endif
                             </a>
                         </dt>
-                        <dd><div class="username"><a href="{{ route('pc:mine',['user_id' => $manage['user']['id']]) }}" target="_blank">{{$manage['user']['name']}}</a></div>
+                        <dd><div class="txt-hide"><a href="{{ route('pc:mine',['user_id' => $manage['user']['id']]) }}" target="_blank">{{$manage['user']['name']}}</a></div>
                             <div class="u-opt">
                                 <span>管理</span>
                                 @if (($group['joined']['role'] == 'founder') && ($group['joined']['user_id'] != $manage['user']['id']))
@@ -96,7 +96,7 @@
                             @endif
                             </a>
                         </dt>
-                        <dd><div class="username">{{$member['user']['name']}}</div>
+                        <dd><div class="txt-hide">{{$member['user']['name']}}</div>
                             <div class="u-opt">
                                 <span>管理</span>
                                 <svg class="icon f-fs2"><use xlink:href="#icon-setting"></use></svg>

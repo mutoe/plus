@@ -198,7 +198,7 @@
                     </a>
                 </dt>
                 @if ($TS['id'] != $group['founder']['user']['id'])
-                <dd>圈主：{{$group['founder']['user']['name']}}</dd>
+                <dd class="txt-hide">圈主：{{$group['founder']['user']['name']}}</dd>
                 <dd>
                     <span class="contact" onclick="easemob.createCon({{ $group['founder']['user']['id'] }})">联系圈主</span>
                 </dd>

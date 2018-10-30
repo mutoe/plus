@@ -133,7 +133,7 @@
 .p-readgroup .qz-box{padding-bottom:20px;border-bottom:1px solid #eaeaea;height:70px;}
 .p-readgroup .qz-box dt{width:52px;height:52px;float:left;position:relative;}
 .p-readgroup .qz-box dt img.role-icon{position:absolute;left:32px;top:35px;width:18px;height:18px;border-radius:50%;}
-.p-readgroup .qz-box dd{margin-left:65px;margin-top:10px;}
+.p-readgroup .qz-box dd{margin-left:65px;margin-top:10px;width:120px;}
 .p-readgroup .qz-box dd.self{padding-top:16px;}
 .p-readgroup .qz-box dd .contact{padding:4px 10px;border-radius:2px;font-size:12px;background-color:#59b6d7;color:#fff;}
 .p-readgroup .cy-box{display:flex;flex-wrap:wrap;margin-left:-28px;}
@@ -160,8 +160,7 @@
 .p-member .m-row{display:inline-flex;align-items:center;width:24.5%;}
 .p-member .m-row dt{position:relative;}
 .p-member .m-row dt img.role-icon{position:absolute;left:32px;top:35px;width:18px;height:18px;border-radius:50%;}
-.p-member .m-row dd{margin-left:15px;}
-.p-member .m-row dd .username{width: 100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.p-member .m-row dd{margin-left:15px;width: 100px}
 .p-member .m-row .u-opt{margin-top:10px;font-size:14px;position:relative;cursor:pointer;}
 .p-member .m-row .u-opt svg{margin-bottom:2px;margin-left:5px;}
 .p-member .m-row .u-menu{width:110px;line-height:30px;box-shadow:0px 2px 3px #aaa;z-index:5;font-size:14px;position:absolute;text-align:center;background-color:white;}
