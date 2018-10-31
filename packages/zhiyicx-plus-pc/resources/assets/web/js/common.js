@@ -849,12 +849,6 @@ var comment = {
 
         formData.body = formData.body.replace(/(@[^\r\n\t\v\f@ ]+)(\s?)/g, '\u00ad$1\u00ad$2');
 
-        // 保留原始回复内容, at 用户替换为链接
-        var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
-            var url = TS.SITE_URL + '/users/' + username;
-            return '<a href="' + url + '">@' + username + '</a>'
-        });
-
         // 去除回复@
         if (_this.support.to_uid > 0 && formData.body.indexOf('回复') != -1) {
             if (formData.body == '回复 '+this.support.to_uname+'：') {
@@ -875,13 +869,20 @@ var comment = {
             _this.support.editor.html('');
             _this.support.to_uid = 0;
             var res = response.data;
+
+            // 保留原始回复内容, at 用户替换为链接
+            var body = res.comment.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
+                var url = TS.SITE_URL + '/users/' + username;
+                return '<a href="' + url + '">@' + username + '</a>'
+            });
+
             var info = {
                 id: res.comment.id,
                 commentable_id: _this.support.row_id,
             };
             if (_this.support.position) {
                 var html = '<p class="comment_con" id="comment'+res.comment.id+'">';
-                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + original_body + '';
+                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + body + '';
                     if (_this.support.top)
                     html +=     '<a class="comment_del mouse" onclick="comment.pinneds(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">申请置顶</a>'
                     html +=     '<a class="comment_del mouse" onclick="comment.delete(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">删除</a>'
