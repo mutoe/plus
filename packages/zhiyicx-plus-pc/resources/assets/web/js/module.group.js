@@ -42,13 +42,13 @@ var grouped = {
         }
         if (html && html != '') {
             ly.confirm(html,'','',function(){
-                if (TS.BOOT['pay-validate-user-password'] && this.mode == 'paid') {
+                if (TS.BOOT['pay-validate-user-password'] && _self.mode == 'paid') {
                     var html = '<div class="reward_box">'
                         +   '<p class="confirm_title">输入密码</p>'
                         +   '<div class="reward_amount">金额：' + grouped.money + TS.CURRENCY_UNIT + '</div>'
                         +   '<div class="reward_input_wrap">'
                         +       '<input id="J-password-confirm" placeholder="请输入登录密码" pattern="^.{6,16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
-                        +       '<button onclick="grouped.postJoined()">确认</button>'
+                        +       '<button type="button" onclick="grouped.postJoined(true)">确认</button>'
                         +   '</div>'
                         +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
                         + '</div>';
@@ -79,26 +79,27 @@ var grouped = {
                 });
         }
     },
-    postJoined(){
+    postJoined(inLayer){
         if (TS.BOOT['pay-validate-user-password']) {
             var password = $('#J-password-confirm').val();
         }
         axios.put(grouped.url, {password: password})
             .then(function (response) {
                 noticebox(response.data.message, 1);
+                ly.close();
             })
             .catch(function (error) {
-                showError(error.response.data);
+                inLayer
+                    ? lyShowError(error.response.data)
+                    : showError(error.response.data)
             });
-        ly.close();
     },
     unjoined:function(){
         var _self = this;
         var _this = this._this;
         var url = '/api/v2/plus-group/groups/'+this.gid+'/exit';
-        if (_this.lockStatus == 1) {
-            return;
-        }
+        if (_this.lockStatus == 1) return;
+
         _this.lockStatus = 1;
         axios.delete(url)
           .then(function (response) {

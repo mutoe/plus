@@ -19,6 +19,7 @@
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Utils\Markdown;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
@@ -68,7 +69,9 @@ class NewQuestionController extends Controller
 
         // Get question base data.
         $subject = $request->input('subject');
-        $body = $request->input('body');
+        $body = app(Markdown::class)->safetyMarkdown(
+            $request->input('body', '')
+        );
         $text_body = $request->input('text_body');
         $anonymity = $request->input('anonymity') ? 1 : 0;
         $amount = intval($request->input('amount')) ?: 0;
@@ -207,9 +210,12 @@ class NewQuestionController extends Controller
         $user = $request->user();
 
         $anonymity = $request->input('anonymity', $question->anonymity) ? 1 : 0;
-        foreach (array_filter($request->only(['subject', 'body', 'text_body'])) as $key => $value) {
+        foreach (array_filter($request->only(['subject', 'text_body'])) as $key => $value) {
             $question->$key = $value;
         }
+        $question->body = app(Markdown::class)->safetyMarkdown(
+            $request->input('body', $question->body)
+        );
         $images = $this->findMarkdownImageNotWithModels($question->body ?: '');
         $topicsIDs = array_pluck((array) $request->input('topics', []), 'id');
         $question->anonymity = $anonymity;

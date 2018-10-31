@@ -21,6 +21,7 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Utils\Markdown;
 use Zhiyi\PlusGroup\Models\Post;
 use Zhiyi\PlusGroup\Models\Group;
 use Zhiyi\PlusGroup\Models\Pinned;
@@ -241,11 +242,13 @@ class PostController
      */
     protected function fillRequestData(CreateGroupPostRequest $request, Group $group)
     {
-        $data = $request->only('title', 'body', 'summary');
-
-        $data = array_merge($data, ['user_id' => $request->user()->id, 'group_id' => $group->id]);
-
-        return $data;
+        return array_merge($request->only('title', 'summary'), [
+            'user_id' => $request->user()->id,
+            'group_id' => $group->id,
+            'body' => app(Markdown::class)->safetyMarkdown(
+                $request->input('body', '')
+            )
+        ]);
     }
 
     /**

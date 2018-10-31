@@ -11,7 +11,7 @@
         </div>
         <div class="comment_body" id="comment_box{{ $id }}">
             <div class="comment_textarea">
-                <div class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');" contenteditable></div>
+                <textarea class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');"></textarea>
                 <div class="comment_post">
                     <span class="dy_cs">可输入<span class="nums" style="color: rgb(89, 182, 215);">255</span>字</span>
                     <span class="font14 mention-btn">
