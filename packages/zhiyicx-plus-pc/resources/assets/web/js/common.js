@@ -825,6 +825,8 @@ var comment = {
         this.support.editor = $('#J-editor-' + type + this.support.row_id);
         this.support.editor.text('回复 ' + this.support.to_uname+'：');
         this.support.editor.focus();
+        this.support.editor[0].selectionStart = -1
+        this.support.editor[0].selectionEnd = -1
     },
     publish: function(obj) {
         checkLogin();
