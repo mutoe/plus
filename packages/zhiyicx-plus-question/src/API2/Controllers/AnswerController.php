@@ -19,6 +19,7 @@
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Utils\Markdown;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
@@ -174,7 +175,9 @@ class AnswerController extends Controller
             return $response->json(['message' => '你已回答过该问题'], 422);
         }
         $anonymity = $request->input('anonymity') ? 1 : 0;
-        $body = $request->input('body');
+        $body = app(Markdown::class)->safetyMarkdown(
+            $request->input('body', '')
+        );
         $text_body = $request->input('text_body');
 
         $images = $this->findMarkdownImageNotWithModels($body);
@@ -295,7 +298,9 @@ class AnswerController extends Controller
         }
 
         $anonymity = $request->input('anonymity', $answer->anonymity) ? 1 : 0;
-        $body = $request->input('body', $answer->body) ?: '';
+        $body = app(Markdown::class)->safetyMarkdown(
+            $request->input('body', $answer->body) ?: ''
+        );
         $text_body = $request->input('text_body', $answer->text_body) ?: '';
 
         $images = $this->findMarkdownImageNotWithModels($body);
