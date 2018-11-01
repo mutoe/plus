@@ -124,7 +124,7 @@
                             <div class="look-answer">
 
                                 <span class="look-user">{{ $answer['onlookers_count'] }}人正在围观</span>
-                                @if($question['user_id'] != $TS['id'] && $answer['user_id'] != $TS['id'])
+                                @if($question['user_id'] != $TS['id'] && $answer['user_id'] != $TS['id'] && $answer['cloud'])
                                     @if(isset($TS) && ($answer['could'] ?? false))
                                         <button class="button look-cloud" type="button">已围观</button>
                                     @else
