@@ -66,7 +66,8 @@ class BaseController extends Controller
                 $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->get();
 
                 // 获取所有广告位
-                $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace', []), NULL, 'space');
+                // dd(api('GET', '/api/v2/advertisingspace') ?: []);
+                $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace') ?: [], NULL, 'space');
 
                 // 环信
                 $easemob = $repository->get('easemob');
