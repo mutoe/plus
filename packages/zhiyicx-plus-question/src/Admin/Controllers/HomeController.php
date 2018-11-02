@@ -47,6 +47,7 @@ class HomeController extends Controller
             'apply_amount' => config('question.apply_amount'),
             'onlookers_amount' => config('question.onlookers_amount'),
             'anonymity_rule' => config('question.anonymity_rule'),
+            'reward_rule' => setting('Q&A', 'reward-rule'),
         ]);
     }
 
