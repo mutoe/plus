@@ -245,8 +245,8 @@ function formatMarkdown($body)
     $config = HTMLPurifier_Config::createDefault();
     $config->set('HTML.Allowed', 'br,a[href],strike');
     $purifier = new HTMLPurifier($config);
-    $body = $purifier->purify($body);
     $content = \Parsedown::instance()->text($body);
+    $body = $purifier->purify($body);
 
     return $content;
 }
