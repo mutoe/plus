@@ -13,17 +13,19 @@ let mix = require("laravel-mix");
 
 mix.disableNotifications();
 mix.sourceMaps(!mix.inProduction());
+mix.setResourceRoot('/assets/question-answer/');
 
 // More documents see: https://laravel.com/docs/master/mix
 if (mix.inProduction()) {
   mix.setPublicPath('assets');
-  mix.setResourceRoot('/assets/question-answer');
   mix.js('resources/assets/admin/index.js', 'assets/admin.js');
   
 // Dev build.
 } else {
-  mix.setPublicPath('../../public/assets/question-answer');
-  mix.setResourceRoot('/');
+  mix.setPublicPath('../../public/assets/question-answer/');
+  if (mix.config.hmr === true) {
+    mix.setResourceRoot('/');
+  }
   mix.js('resources/assets/admin/index.js', '../../public/assets/question-answer/admin.js');
 }
 
