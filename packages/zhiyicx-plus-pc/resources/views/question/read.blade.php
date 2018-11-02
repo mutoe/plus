@@ -38,15 +38,8 @@
                 </div>
                 <h1 class="questionheader-title txt-hide">{{ $question['subject'] }}</h1>
                 <div class="questionheader-detail">
-                    {{-- js增删  .questionrichtextcollapsed 改变content字数 --}}
-                    <div class="questionrichtext questionrichtext--expandable questionrichtext--collapsed markdown-body">
-                        @if(strpos(formatList($question['body']), '[图片]') === false && strlen(formatList($question['body'])) <= 300)
-                            <div class="show-body"> {!! formatMarkdown($question['body']) !!} </div>
-                        @else
-                            <span class="show-body hide">{!! formatMarkdown($question['body']) !!}</span>
-                            <span class="richtext" itemprop="text">{!! str_limit(preg_replace('/\<[\/a-z]+\>/', '', formatList($question['body'])), 300, '...') !!}</span>
-                            <button class="button button-plain button-more questionrichtext-more" data-show="0">显示全部</button>
-                        @endif
+                    <div class="questionrichtext markdown-body">
+                        {!! formatMarkdown($question['body']) !!}
                     </div>
                 </div>
             </div>

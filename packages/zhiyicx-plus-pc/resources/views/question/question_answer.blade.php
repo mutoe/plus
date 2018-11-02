@@ -120,11 +120,12 @@
                             </ul>
                         </div>
 
-                        @if(isset($answer['invited']) && $answer['invited'] == 1)
+                        @if(isset($answer['invited']) && $answer['invited'] == 1 && $question['look'] ?? false)
                             <div class="look-answer">
 
                                 <span class="look-user">{{ $answer['onlookers_count'] }}人正在围观</span>
                                 @if($question['user_id'] != $TS['id'] && $answer['user_id'] != $TS['id'])
+
                                     @if(isset($TS) && ($answer['could'] ?? false))
                                         <button class="button look-cloud" type="button">已围观</button>
                                     @else
