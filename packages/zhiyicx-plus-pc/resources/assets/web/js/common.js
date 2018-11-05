@@ -1789,7 +1789,7 @@ var repostable = {
      * 提交转发
      */
     post: function(type, id) {
-        var content = $('.ev-ipt-repostable-content').text();
+        var content = $('.ev-ipt-repostable-content').text().trim();
         if (!content) return noticebox('请输入转发内容', 0);
         if (content.length > 255) return noticebox('超出 255 字限制', 0);
 
