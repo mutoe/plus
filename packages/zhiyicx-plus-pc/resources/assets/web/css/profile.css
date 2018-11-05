@@ -41,8 +41,8 @@
 .m-uchead .m-option .options_div{top:50px;right:-53px;}
 /*  列表  */
 .profile_content {background:#fff;padding:30px 40px;}
-.profile_menu > a {color:#999;margin-right:20px;}
-.profile_menu > a.active {color:#333;}
+.profile_menu > a, .profile_menu .qa_opt {color:#999;margin-right:20px;}
+.profile_menu > a.active, .profile_menu .qa_opt.active {color:#333;}
 /*问答列表*/
 .qa-item {padding-bottom:20px;border-bottom:1px solid #f1f1f1;}
 .qa-item .qa-body>span {line-height:25px;word-wrap:break-word;}

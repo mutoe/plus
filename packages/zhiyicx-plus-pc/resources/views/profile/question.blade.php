@@ -16,9 +16,9 @@
 <div class="profile_body p-qa p-topic">
     <div class="left_container">
         <div class="profile_content">
-            <div class="m-snav" id="J-menu">
+            <div class="m-snav profile_menu" id="J-menu">
                 <div data-value="1" class="zy_select t_c gap12 mr20" id="J-question">
-                    <span class="qa_opt">全部问题</span>
+                    <span class="qa_opt active">全部问题</span>
                     <ul>
                         <li data-value="all" class="active">全部提问</li>
                         <li data-value="invitation">邀请提问</li>
@@ -80,6 +80,9 @@
                 url: '/users/{{$user['id']}}/q-a',
                 params: {type: type, isAjax: true, cate: 1, user_id: '{{$user['id']}}' }
             });
+
+            $('.qa_opt').removeClass('active');
+            $('#J-question .qa_opt').addClass('active');
         });
         $('#J-answer li').on('click', function(){
             var type = $(this).data('value');
@@ -90,6 +93,8 @@
                 url: '/users/{{$user['id']}}/q-a',
                 params: {type: type, isAjax: true, cate: 2, user_id: '{{$user['id']}}' }
             });
+            $('.qa_opt').removeClass('active');
+            $('#J-answer .qa_opt').addClass('active');
         });
 
         $('#J-menu a').on('click', function(){
