@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <h1 class="questionheader-title txt-hide">{{ $question['subject'] }}</h1>
-                <div class="questionheader-detail">
+                <div class="questionheader-detail questionrich-wrap @if(strlen(formatList($question['body'])) > 300) collapsed @endif">
                     <div class="questionrichtext markdown-body">
                         {!! formatMarkdown($question['body']) !!}
                     </div>
@@ -265,20 +265,8 @@
             });
         }, 300);
         // 展示问题详情
-        $('.questionrichtext-more').on('click', function () {
-            var _this = $(this);
-            var show = _this.data('show');
-            if (show == '0') {
-                _this.siblings('.richtext').hide();
-                _this.siblings('.show-body').show();
-                _this.text('收起');
-                _this.data('show', '1');
-            } else {
-                _this.siblings('.show-body').hide();
-                _this.siblings('.richtext').show();
-                _this.text('显示全部');
-                _this.data('show', '0');
-            }
+        $('.questionrich-wrap').after().on('click', function () {
+            $('.questionrich-wrap').removeClass('collapsed')
         });
         // 关注/取消关注问题
         $('.question-button-group').on('click', '.watched', function () {
