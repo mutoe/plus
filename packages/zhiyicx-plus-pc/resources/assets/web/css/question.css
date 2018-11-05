@@ -208,13 +208,9 @@
 .questionheader-title {font-size:22px;font-weight:500;line-height:32px;}
 .questionheader-detail {margin-bottom: 30px;}
 .questionheader-detail p{margin: 0;}
-.questionrichtext {font-size:14px;line-height:25px;color:#666;}
-.questionrichtext--expandable.questionrichtext--collapsed {overflow:hidden;transition:color .14s ease-out;cursor:pointer;}
-.questionrichtext--expandable.questionrichtext--collapsed .richtext {pointer-events:none;}
-.questionrichtext--expandable.questionrichtext--collapsed:hover {color:#777;}
-.questionrichtext--expandable.questionrichtext--collapsed:hover a:not(.video-box):not(.link-box):not(.videocard-link),.questionrichtext--expandable.questionrichtext--collapsed:hover u {border-bottom:1px solid rgba(112,112,112,0.72);}
-.questionrichtext--expandable.questionrichtext--collapsed:hover a:not(.video-box):not(.link-box):not(.videocard-link) u,.questionrichtext--expandable.questionrichtext--collapsed:hover u u {border-color:transparent;}
-.questionrichtext-more:hover {color:#7a8599;}
+.questionrich-wrap {overflow: hidden;position: relative;transition: .5s all;}
+.questionrich-wrap.collapsed {height: 300px;}
+.questionrich-wrap.collapsed::after {content: '显示更多';position: absolute;display: flex;top: 0;left: 0;bottom: 0;right: 0;background: linear-gradient(to bottom, rgba(255,255,255, 0) 50%, rgba(255,255,255,1) 90%);cursor: pointer;justify-content: center;align-items: flex-end;color: #59b7d7;}
 .numberboard {display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;text-align:center;align-items:center;-ms-flex-align:center;}
 .numberboard-item {-webkit-box-flex:1;-ms-flex:1;flex:1;}
 .numberboard-name {margin-top:15px;font-size:14px;line-height:20px;color:#ccc;}
