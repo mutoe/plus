@@ -19,7 +19,7 @@
 <div class="profile_body">
     <div class="left_container">
         {{-- 收藏列表 --}}
-        <div class="profile_content">
+        <div class="feed_content">
             <div class="profile_menu J-menu">
                 <ul class="g-tab">
                     <li>
