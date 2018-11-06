@@ -169,7 +169,7 @@ a {font-size:100%;vertical-align:baseline;background:transparent;text-decoration
 .hot-issues .title,.answer-rank .title {font-size:18px;padding:20px 0 15px;text-align:center;color:#333;border-bottom:1px solid #ededed;margin-top: 30px;}
 .hot-issues-list {font-size: 14px;padding-bottom: 1px;}
 .hot-issues-list > .hot-title {counter-increment: HotIndex;display: flex;flex-direction: row;}
-.hot-issues-list > .hot-title::before {content: counter(HotIndex);display: block;width: 18px;height: 18px;background-color: #ccc;text-align: center;border-radius: 4px;flex: none;align-items: center;justify-content: center;}
+.hot-issues-list > .hot-title::before {content: counter(HotIndex);display: flex;width: 20px;height: 20px;background-color: #ccc;text-align: center;border-radius: 4px;flex: none;align-items: center;justify-content: center;color: #fff;}
 .hot-issues-list > .hot-title.top3::before {background-color: #59b6d7;color: #fff;}
 .hot-issues-list > .hot-title > a {display: block;word-break: break-word;flex: auto;margin-left: 8px;}
 .answer-rank-list {font-size:14px;overflow:hidden;}
