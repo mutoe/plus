@@ -123,8 +123,7 @@
 .p-readgroup .m-ct .ct-intro-more{display:inline-block;color:#5caac6;margin-left:4px;cursor:pointer;font-size:14px}
 .p-readgroup .m-ct .ct-stat{height:42px;line-height:42px;}
 .p-readgroup .m-ct .ct-stat .u-poi{width:266px;float:left;font-size:14px;}
-.p-readgroup .m-ct .ct-stat .u-report{margin-left:20px;color:#777;display:none;}
-.p-readgroup .m-ct .ct-stat:hover .u-report{display: inline-block;}
+.p-readgroup .m-ct .ct-stat .u-report{margin-left:20px;color:#777;display:inline-block;}
 .p-readgroup .m-ct .ct-stat span{font-size:14px;margin-right:10px;float: left;}
 .p-readgroup .m-ct .joinbtn{float:right;width:88px;margin-top:3px;line-height:32px;color:#59b6d7;border:1px solid #59b6d7;background-color: white;border-radius:18px;cursor:pointer;}
 .p-readgroup .m-ct .joined{border-color:#ccc;color:#aaa;}
