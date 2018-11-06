@@ -72,7 +72,7 @@
                                 <a class="act" href="javascript:;">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg> 已采纳
                                 </a>
-                            @else
+                            @elseif(!$answer['question']['has_adoption'] ?? false)
                                 <a href="javascript:;" onclick="QA.adoptions('{{$answer['question_id']}}', '{{$answer['id']}}', '/questions/{{ $answer['id'] }}')">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg> 采纳
                                 </a>
