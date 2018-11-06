@@ -412,9 +412,9 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .reward_box .reward_input_wrap button {background-color: #59b6d7;color: #fff;width: 4em;height: 100%;border-radius: 0 4px 4px 0;border: 1px solid #59b6d7;}
 /* .reward_box .reward_input_wrap input[type="password"]:valid + button {background-color: #59b6d7;} */
 .reward_box .reward_forgot {color: #59b6d7;text-align: right;font-size: 12px;margin-top: 10px;}
-.reward_popups {padding:20px 40px;width:340px;overflow:hidden;min-height:500px;}
-.reward_popups_con {height:100%;overflow-y:auto;overflow-x:hidden;}
-.reward_popups .reward_title {font-size:18px;margin-top:10px;margin-bottom:10px;}
+.reward_popups {width:340px;overflow:hidden;min-height:500px;}
+.reward_popups_con {width:360px;height:420px;overflow-y:auto;overflow-x:hidden;padding:0px 40px;}
+.reward_popups .reward_title {font-size:18px;margin-top:10px;margin-bottom:10px;padding:20px 40px 0px 40px;}
 .reward_popups .reward_list {line-height:60px;font-size: 14px;}
 .reward_popups .reward_list .uname {color:#444;margin:0 10px;}
 .reward_list .u-avatar {position:relative;display:inline-block;}

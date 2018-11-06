@@ -149,6 +149,7 @@ export default {
       this.apply_amount = data.apply_amount;
       this.onlookers_amount = data.onlookers_amount;
       this.anonymity_rule = data.anonymity_rule;
+      this.rewardRule = data.reward_rule;
     }).catch(({ response: { data = {} } = {} } = {}) => {
       this.publishMessage(data, 'danger');
     });

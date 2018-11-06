@@ -736,7 +736,7 @@ var rewarded = {
     },
     list: function(id, type) {
         var reward_url = TS.SITE_URL + '/reward/view?type='+type+'&post_id='+id;
-        ly.load(reward_url, '', '340px');
+        ly.load(reward_url, '', '340px', '500px');
     },
 }
 

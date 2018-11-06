@@ -158,8 +158,8 @@
                     @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$post['group']['id'].'/posts/'.$post['id']]), 'share_title' => addslashes($post['body']), 'share_pic' => $share_pic])
                 </div>
                 @php $rewards = ['count' => $post['reward_number'], 'amount' => $post['reward_amount']]; @endphp
-                {{-- 打賞 --}}
-                @if($config['bootstrappers']['group:reward']['status'])
+                {{-- 打赏 --}}
+                @if($config['bootstrappers']['group:reward']['status'] && $post['user_id'] !== $TS['id'])
                     @include('pcview::widgets.rewards' , ['rewards_data' => $post['rewards'], 'rewards_type' => 'group-posts', 'rewards_id' => $post['id'], 'rewards_info' => $rewards])
                 @endif
             </div>

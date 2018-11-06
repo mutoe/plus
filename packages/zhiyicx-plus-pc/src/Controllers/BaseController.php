@@ -60,13 +60,14 @@ class BaseController extends Controller
                 $config['app'] = $repository->get('app');
 
                 // 顶部导航
-                $config['nav'] = Navigation::byPid(0)->byPos(0)->orderBy('order_sort')->get();
+                $config['nav'] = Navigation::byPid(0)->byPos(0)->byStatus(1)->orderBy('order_sort')->get();
 
                 // 底部导航
-                $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->get();
+                $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->byStatus(1)->get();
 
                 // 获取所有广告位
-                $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace', []), NULL, 'space');
+                // dd(api('GET', '/api/v2/advertisingspace') ?: []);
+                $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace') ?: [], NULL, 'space');
 
                 // 环信
                 $easemob = $repository->get('easemob');
