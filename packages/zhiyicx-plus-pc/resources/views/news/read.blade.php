@@ -114,7 +114,9 @@
                     </div>
 
                     {{-- 打赏 --}}
+                    @if($news['user']['id'] !== $TS['id'])
                     @include('pcview::widgets.rewards' , ['rewards_data' => $news['rewards'], 'rewards_type' => 'news', 'rewards_id' => $news['id'], 'rewards_info' => $news['reward']])
+                    @endif
                 </div>
 
                 {{-- 相关推荐 --}}

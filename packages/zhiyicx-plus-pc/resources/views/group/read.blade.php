@@ -155,7 +155,7 @@
                     @if (!str_contains($group['permissions'], $group['joined']['role']))
                         href="javascript:;" onclick="noticebox('当前圈子没有权限发帖', 0)"
                     @elseif($group['joined']['disabled'])
-                        href="javascript:;" onclick="noticebox('用户已被禁用，不能进行发帖', 0)"
+                        href="javascript:;" onclick="noticebox('你已被拉入了黑名单', 0)"
                     @else
                         href="{{ route('pc:postcreate', ['group_id'=>$group['id']]) }}"
                     @endif
@@ -199,7 +199,7 @@
                     </a>
                 </dt>
                 @if ($TS['id'] != $group['founder']['user']['id'])
-                <dd>圈主：{{$group['founder']['user']['name']}}</dd>
+                <dd class="txt-hide">圈主：{{$group['founder']['user']['name']}}</dd>
                 <dd>
                     <span class="contact" onclick="easemob.createCon({{ $group['founder']['user']['id'] }})">联系圈主</span>
                 </dd>

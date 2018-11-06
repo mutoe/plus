@@ -31,6 +31,11 @@ class Navigation extends Model
         return $query->where('parent_id', $pid);
     }
 
+    public function scopeByStatus(Builder $query, int $status): Builder
+    {
+        return $query->where('status', $status);
+    }
+
     public function parent()
     {
         return $this->hasOne(__CLASS__, 'id', 'parent_id');
