@@ -1312,7 +1312,7 @@ var reported = {
         var html = '<div class="pinned_box mr20 ml20 mt20"><p class="confirm_title">举报</p>'+
         '<div class="pinned_input"><textarea class="report-ct" id="report-ct" rows="4" cols="30" placeholder="请输入举报理由，不超过190字"></textarea></div></div>';
         ly.confirm(html, '', '', function(){
-            var reason = $('#report-ct').val();
+            var reason = $('#report-ct').val().trim();
             if (!reason) {
                 lyNotice('请输入举报理由');
                 return false;
