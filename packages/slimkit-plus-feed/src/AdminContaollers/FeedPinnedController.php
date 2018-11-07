@@ -135,7 +135,6 @@ class FeedPinnedController extends Controller
             $pinned->amount = 0;
             $pinned->day = $datetime->diffInDays(Carbon::now());
             $pinned->expires_at = $datetime->toDateTimeString();
-
             $pinned->save();
 
             $pinned->user->sendNotifyMessage('feed:pinned:accept', sprintf('你的动态《%s》已被管理员设置为置顶', str_limit($pinned->feed->feed_content, 100)), [
