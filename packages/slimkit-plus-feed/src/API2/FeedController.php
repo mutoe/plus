@@ -55,14 +55,14 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function index(Request $request, ResponseContract $response)
+    public function index(Request $request)
     {
         $type = $request->query('type', 'new');
         if (! in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
             $type = 'new';
         }
 
-        return $response->json([
+        return response()->json([
             'pinned' => app()->call([$this, 'getPinnedFeeds']),
             'feeds' => app()->call([$this, $type]),
         ])
