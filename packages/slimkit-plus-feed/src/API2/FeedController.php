@@ -55,7 +55,7 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function index(Request $request, ApplicationContract $app, ResponseContract $response)
+    public function index(Request $request, ResponseContract $response)
     {
         $type = $request->query('type', 'new');
         if (! in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
@@ -63,8 +63,8 @@ class FeedController extends Controller
         }
 
         return $response->json([
-            'pinned' => $app->call([$this, 'getPinnedFeeds']),
-            'feeds' => $app->call([$this, $type]),
+            'pinned' => app()->call([$this, 'getPinnedFeeds']),
+            'feeds' => app()->call([$this, $type]),
         ])
         ->setStatusCode(200);
     }
