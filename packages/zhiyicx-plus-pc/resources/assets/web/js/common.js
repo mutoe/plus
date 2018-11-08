@@ -1443,10 +1443,14 @@ var moneyLimit = function(value, obj, type) {
         case 'range':
             var min = parseInt($(obj).attr('min')),
                 max = parseInt($(obj).attr('max'));
-            if (value >= min && max >= value) {
-                return value;
+            if (value == '') {
+                return value
+            } else if (value >= max) {
+                return max
+            } else if (value <= min) {
+                return min
             } else {
-                value = max;
+                return value
             }
             break;
         case 'pinned':
