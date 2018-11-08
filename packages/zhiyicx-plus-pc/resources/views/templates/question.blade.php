@@ -12,6 +12,7 @@
             @if($post['excellent'] == 1 && !isset($post['excellent_show']))
                 <span class="u-exc">精</span>
             @endif
+            <span class="u-tm">{{ getTime($post['created_at']) }}</span>
         </h3>
         @if (isset($post['answer']) && $post['answer'])
         <div class="m-subtt">
@@ -35,7 +36,6 @@
                     @endif
                 </div>
             @endif
-            <span class="u-tm">{{ getTime($post['created_at']) }}</span>
         </div>
         <div class="m-ct f-cb">
             @php preg_match('/\@\!\[(.*?)\]\((\d+)\)/i', $post['answer']['body'], $imgs); @endphp
