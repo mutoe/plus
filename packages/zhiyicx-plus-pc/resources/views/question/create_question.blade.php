@@ -124,7 +124,7 @@
         var args = {};
         var step1 = $('.step1');
         var step2 = $('.step2');
-        var question_id = {{ $question['id'] ?? 0}};
+        var question_id = Number('{{ $question['id'] ?? 0}}');
         var selBox = $('#J-select-topics');
         var lockStatus = false;
         subject.keyup(function (event) {
@@ -143,6 +143,16 @@
                 question_search();
             }
         });
+
+        var reward_rule = '加载中...'
+        axios.get(TS.API + '/question-configs')
+            .then(function(res) {
+                reward_rule = res.data.anonymity_rule
+            })
+            .catch(function() {
+                reward_rule = '悬赏规则加载失败'
+            })
+
         function question_search(event) {
             var val = $.trim(subject.val());
             var question_searching = $('.question-searching');
@@ -220,7 +230,7 @@
 
         // 悬赏规则
         $('.reward-rule').on('click', function () {
-            var html = formatConfirm('悬赏规则', '化对花说：“显摆啥，不就是戴了顶草帽吗？化对花说：“显摆啥，不就是戴了顶草帽吗？化对花说：“显摆啥，不就是戴了顶草帽吗？化对花说：“显摆啥，不就是戴了顶草帽吗？化对花说：“显摆啥，不就是戴了顶草帽吗？')
+            var html = formatConfirm('悬赏规则', reward_rule)
             ly.alert(html);
         });
 
