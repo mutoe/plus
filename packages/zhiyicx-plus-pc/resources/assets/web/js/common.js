@@ -1278,6 +1278,8 @@ var pinneds = {
                 }
             }
 
+            if (TS.USER.currency.sum < data.amount) return lyNotice('余额不足')
+
             if (TS.BOOT['pay-validate-user-password'] && type == 'pinned') showPassword(data.amount, "pinneds.postPinneds()")
             else pinneds.postPinneds();
         });
