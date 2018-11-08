@@ -41,7 +41,9 @@
                         @endphp
 
                         @if ($joined)
-                            <button class="J-join joined" >待审核</button>
+                            <button class="J-join joined" >申请加入待审核</button>
+                        @elseif($item['audit'] == 0)
+                            <button class="joined" onclick="layer.alert(‘圈子还在审核中’)">创建待审核</button>
                         @else
                             <button
                                 class="J-join"
