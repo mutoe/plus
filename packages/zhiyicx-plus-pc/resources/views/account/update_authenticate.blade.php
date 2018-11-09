@@ -98,7 +98,7 @@
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><font color="red">*</font>认证描述</label>
-                        <div class="text_box desc" contenteditable="true">{{$info['data']['desc'] ?? ''}}</div>
+                        <div class="text_box desc" contenteditable="true" maxlength="200">{{$info['data']['desc'] ?? ''}}</div>
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><font color="red">*</font>认证资料</label>
@@ -131,6 +131,16 @@
 <script src="{{ asset('assets/pc/js/module.account.js')}}"></script>
 <script src="{{ asset('assets/pc/js/md5.min.js')}}"></script>
 <script>
+
+// 自定义输入框最大字数
+$("div[contenteditable='true'][maxlength]").on('keydown paste', function (event) {
+    var cntMaxLength = parseInt($(this).attr('maxlength'));
+
+    if ($(this).text().length === cntMaxLength && event.keyCode != 8) {
+        event.preventDefault();
+    }
+});
+
 /*  提交用户认证信息*/
 $('.J-authenticate-btn').on('click', function(e) {
     var getArgs = function() {
@@ -162,6 +172,7 @@ $('.J-authenticate-btn').on('click', function(e) {
         if (getArgs().desc == '') {
             noticebox('请填写认证描述', 0);return;
         }
+        if (getArgs().desc.length > 200) return notice('认证描述不能大于 200 字', 0);
         getArgs().files = [getArgs().front_id, getArgs().behind_id];
     }
 
