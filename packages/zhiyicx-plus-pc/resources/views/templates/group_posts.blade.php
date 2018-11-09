@@ -106,7 +106,7 @@
                             @endif
                         </li>
                         <li>
-                            @if($post['pinned'])
+                            @if($post['pinned'] ?? false)
                                 <a href="javascript:;" onclick="post.cancelPinned('{{$post['id']}}');">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned"></use></svg>撤销置顶
                                 </a>
