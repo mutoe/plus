@@ -285,10 +285,10 @@
 .p-qa .m-snav {padding-bottom:20px;border-bottom: 1px solid #EDEDED;}
 .p-qa .m-snav>li{float:left;margin-right:50px;cursor: pointer;color: #777;}
 .m-tt{margin-top: 30px;margin-bottom:15px;font-weight:normal;}
+.m-tt .u-tm{line-height:25px;float:right;font-size:14px;color:#999;}
 .u-exc{padding:0 2px;margin-left: 10px;border-radius:5px;font-size:13px;color:#FEAA0A;border:1px solid #FEAA0A;}
 .m-subtt{height: 25px;align-items: center; position: relative;}
 .m-subtt .u-name{margin-left:10px;}
-.m-subtt .u-tm{line-height:25px;float:right;font-size:14px;color:#999;}
 .m-subtt .role{position: absolute;width: 14px; height: 14px;bottom: -3px;left: 15px; border-radius: 50%;}
 .m-subtt .m-tags{display:inline;font-size: 14px;color:#999;}
 .m-subtt .u-ll{margin-left: 10px;margin-right: 10px;}

@@ -35,3 +35,9 @@
 <script>
 export default { name: 'ui-nav-bar' };
 </script>
+
+<style scoped>
+.navbar-fixed-top {
+  z-index: 2000; /* fix zhiyicx/plus-component-pc#1093 */
+}
+</style>

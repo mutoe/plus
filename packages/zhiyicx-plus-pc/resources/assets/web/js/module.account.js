@@ -19,11 +19,11 @@ $('#J-user-info').on('click', function(e) {
         return;
     }
     if (args.data.name[0].match(/[0-9]/)) {
-        noticebox('用户名不能以数字开头');
+        noticebox('用户名不能以数字开头', 0);
         return;
     }
     if (args.data.name.match(/[^0-9a-z\u4e00-\u9fa5-]/ig)) {
-        noticebox('用户名只能包含数字、字母和下划线');
+        noticebox('用户名只能包含数字、字母和下划线', 0);
         return;
     }
     if (!args.data.bio) {

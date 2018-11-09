@@ -106,7 +106,7 @@
                             @endif
                         </li>
                         <li>
-                            @if(!empty($post['pinned']) && $post['pinned']['status'] == 1 && (strtotime($post['pinned']['expires_at']) > time()))
+                            @if($post['pinned'])
                                 <a href="javascript:;" onclick="post.cancelPinned('{{$post['id']}}');">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned"></use></svg>撤销置顶
                                 </a>

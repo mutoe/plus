@@ -56,7 +56,7 @@
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc">认证描述</label>
-                        <div class="text">{{$info['data']['desc']}}</div>
+                        <div class="text" style="height: auto;">{{$info['data']['desc']}}</div>
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc">认证资料</label>
