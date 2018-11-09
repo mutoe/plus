@@ -823,7 +823,7 @@ var comment = {
         this.support.to_uname = name;
         this.support.row_id = source_id;
         this.support.editor = $('#J-editor-' + type + this.support.row_id);
-        this.support.editor.text('回复 ' + this.support.to_uname+'：');
+        this.support.editor.val('回复 ' + this.support.to_uname+'：');
         this.support.editor.focus();
         this.support.editor[0].selectionStart = -1
         this.support.editor[0].selectionEnd = -1
@@ -882,7 +882,8 @@ var comment = {
             };
             if (_this.support.position) {
                 var html = '<p class="comment_con" id="comment'+res.comment.id+'">';
-                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + body + '';
+                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>回复 ';
+                    html +=     '<a href="'+ TS.SITE_URL +'/users/'+ _this.support.to_uid +'">'+ _this.support.to_uname +'</a>: ' + body;
                     if (_this.support.top)
                     html +=     '<a class="comment_del mouse" onclick="comment.pinneds(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">申请置顶</a>'
                     html +=     '<a class="comment_del mouse" onclick="comment.delete(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">删除</a>'
