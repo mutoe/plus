@@ -176,6 +176,7 @@ weibo.doPostFeed = function(type) {
             $('.ev-selected-topics').empty();
             layer.closeAll();
             _this.lockStatus = 0;
+            location.reload()
       })
       .catch(function (error) {
         _this.lockStatus = 0;
