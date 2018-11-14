@@ -121,7 +121,8 @@
                         @elseif(!empty($question['invitations']) && count($question['invitations']))
                             <a href="javascript:;" class="button set-amount">已邀请悬赏</a>
                         @else
-                            <a href="javascript:;" class="button set-amount">已设置悬赏</a>
+                            <a href="javascript:;" class="button set-amount">已设置悬赏 金额：{{ $question['amount'] ?? 0 }}</a>
+
                         @endif
                         <a class="button button-plain options" onclick="options(this)" type="button" aria-haspopup="true" aria-expanded="false">
                             <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>

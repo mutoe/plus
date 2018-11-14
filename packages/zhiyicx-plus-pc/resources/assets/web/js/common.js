@@ -698,6 +698,7 @@ var rewarded = {
         ly.confirm(html, '', '', function(){
             var num = $('#J-reward .current').length ? $('#J-reward .current').attr('num') : ($('#J-custom').val());
             var amount = pay_amount ? (pay_amount) : ($('#J-custom').val());
+            amount = num || amount
             if (!amount) return lyShowError("", "请输入打赏金额");
             var types = {
                 'user'  : '/api/v2/user/'+id+'/new-rewards',
@@ -708,7 +709,7 @@ var rewarded = {
             };
             rewarded.payload = {
                 id: id,
-                amount: num ? num : amount,
+                amount: amount,
                 type: types[type]
             }
 
@@ -823,7 +824,7 @@ var comment = {
         this.support.to_uname = name;
         this.support.row_id = source_id;
         this.support.editor = $('#J-editor-' + type + this.support.row_id);
-        this.support.editor.text('回复 ' + this.support.to_uname+'：');
+        this.support.editor.val('回复 ' + this.support.to_uname+'：');
         this.support.editor.focus();
         this.support.editor[0].selectionStart = -1
         this.support.editor[0].selectionEnd = -1
@@ -866,7 +867,7 @@ var comment = {
         axios.post(comment.urls(_this.support.row_id, _this.support.type), formData)
           .then(function (response) {
             _this.support.button.text('评论');
-            _this.support.editor.html('');
+            _this.support.editor.val('');
             _this.support.to_uid = 0;
             var res = response.data;
 
@@ -882,7 +883,8 @@ var comment = {
             };
             if (_this.support.position) {
                 var html = '<p class="comment_con" id="comment'+res.comment.id+'">';
-                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + body + '';
+                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>回复 ';
+                    html +=     '<a href="'+ TS.SITE_URL +'/users/'+ _this.support.to_uid +'">'+ _this.support.to_uname +'</a>: ' + body;
                     if (_this.support.top)
                     html +=     '<a class="comment_del mouse" onclick="comment.pinneds(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">申请置顶</a>'
                     html +=     '<a class="comment_del mouse" onclick="comment.delete(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">删除</a>'

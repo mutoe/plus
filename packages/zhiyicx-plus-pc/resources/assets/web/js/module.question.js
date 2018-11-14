@@ -230,7 +230,7 @@ var question = {
             }
             _this.lockStatus = 1;
             var num = $('.reward_spans .current').length > 0 ? $('.reward_spans .current').attr('num') : '';
-            var amount = $('.reward_input input').val();
+            var amount = args.amount = $('.reward_input input').val();
 
             if (!num && !amount) {
                 return false;
