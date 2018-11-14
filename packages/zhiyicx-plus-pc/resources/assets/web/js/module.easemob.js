@@ -1,6 +1,6 @@
 var easemob = {};
-easemob.window = null;
 easemob = {
+    messages: [],
     /*初始化*/
     init: function(){
         easemob.conn = new WebIM.connection({
@@ -23,7 +23,7 @@ easemob = {
             },
             /*收到文本消息*/
             onTextMessage: function ( message ) {
-                easemob.storeMes(message);
+                easemob.messages.push(message);
             },
             onPictureMessage: function (message) {
                 console.log(message);
@@ -84,6 +84,7 @@ easemob = {
         var unread_message_timeout = window.setInterval(easemob.getUnreadMessage, 20000);
         easemob.getUnreadChats();
         var unread_chat_timeout = window.setInterval(easemob.getUnreadChats, 1000);
+        var message_timeout = window.setInterval(easemob.storeMes, 500);
     },
 
     // 更新用户信息
@@ -94,7 +95,10 @@ easemob = {
     },
 
     /*接收消息存储*/
-    storeMes: function(message){
+    storeMes: function(){
+        var message = easemob.messages[0];
+        if (!message) return false;
+
         /*群聊*/
         if (message.type == 'groupchat') {
             window.TS.dataBase.room.where('[mid+group]').equals([TS.MID, message.to]).first(function(item){
@@ -189,7 +193,6 @@ easemob = {
             });
         } else {
             /*单聊*/
-            /*查询会话是否存在*/
             window.TS.dataBase.room.where('[mid+uid]').equals([TS.MID, message.from]).first(function(item){
                 var dbMsg = {};
                 dbMsg.id = message.id;
@@ -251,6 +254,8 @@ easemob = {
                 }
             });
         }
+
+        easemob.messages = _.drop(easemob.messages);
     },
 
     /*IM登录*/
