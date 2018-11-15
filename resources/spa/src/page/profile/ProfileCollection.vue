@@ -23,7 +23,7 @@
           class="m-sub-nav-item">
           <a>资讯</a>
         </router-link>
-        <router-link
+      <!-- <router-link
           replace
           exact
           tag="div"
@@ -40,7 +40,7 @@
           to="/profile/collection/posts"
           class="m-sub-nav-item">
           <a>帖子</a>
-        </router-link>
+        </router-link> -->
       </div>
       <keep-alive>
         <router-view/>

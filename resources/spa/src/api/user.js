@@ -274,3 +274,17 @@ export function patchCertification(payload) {
 export function getUserVerifyInfo() {
   return api.get("/user/certification", { validateStatus: s => s === 200 });
 }
+
+/**
+ * 举报用户
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} userId
+ * @param {string} reason
+ * @returns
+ */
+export function reportUser(userId, reason) {
+  const url = `/report/users/${userId}`;
+  return api.post(url, { reason }, { validateStatus: s => s === 201 });
+}

@@ -28,7 +28,7 @@
 
     </main>
 
-    <footer @click.capture.stop.prevent="popupBuyTS">
+    <footer>
       <v-switch
         v-if="paycontrol"
         v-model="pinned"
@@ -36,6 +36,37 @@
         class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row">
         <slot>是否收费</slot>
       </v-switch>
+      <div
+        v-show="pinned"
+        style="margin-top: -1px"
+        class="m-box-model m-lim-width m-main" >
+        <div class="m-pinned-amount-btns">
+          <p class="m-pinned-amount-label">设置文字收费金额</p>
+          <div v-if="items.length > 0" class="m-box m-aln-center">
+            <button
+              v-for="item in items"
+              :key="item"
+              :style="{ width: `${1 / items.length * 100}%` }"
+              :class="{ active: amount === item }"
+              class="m-pinned-amount-btn"
+              @click="chooseDefaultAmount(item)">{{ item }}</button>
+          </div>
+        </div>
+        <div class="m-box m-aln-center m-justify-bet m-bb1 m-bt1 m-pinned-row plr20 m-pinned-amount-customize">
+          <span>自定义金额</span>
+          <div class="m-box m-aln-center">
+            <input
+              v-model="customAmount"
+              type="number"
+              pattern="[0-9]*"
+              class="m-text-r"
+              placeholder="输入金额"
+              oninput="value=value.slice(0, 8)" >
+            <span>{{ currencyUnit }}</span>
+          </div>
+        </div>
+        <p class="m-pinned-amount-label plr20">注：超过{{ limit }}字部分内容收费</p>
+      </div>
     </footer>
   </div>
 </template>

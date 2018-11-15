@@ -22,12 +22,19 @@
       @onRefresh="onRefresh"
       @onLoadMore="onLoadMore">
 
-      <template v-for="card in newsList" >
+      <!-- 资讯顶部 banner 广告位 -->
+      <banner-ad type="news"/>
+
+      <template v-for="card in list" >
         <news-card
           v-if="card.author"
           :key="`news${card.id}`"
           :current-cate="currentCate"
           :news="card" />
+        <ad-card
+          v-if="card.space_id"
+          :key="`ad${card.id}`"
+          :ad="card"/>
       </template>
     </jo-load-more>
   </div>
@@ -37,22 +44,29 @@
 import _ from "lodash";
 import { mapState } from "vuex";
 import NewsCard from "./components/NewsCard.vue";
+import AdCard from "./components/AdCard.vue";
 import NewsFilter from "./components/NewsFilter.vue";
+import BannerAd from "@/components/advertisement/BannerAd.vue";
 
 export default {
   name: "NewsList",
   components: {
     NewsCard,
-    NewsFilter
+    AdCard,
+    NewsFilter,
+    BannerAd
   },
   data() {
     return {
+      list: [], // 混合列表
       currentCate: 0,
       newsList: [] // 资讯列表
     };
   },
   computed: {
     ...mapState({
+      advertiseList: state => state.news.advertise.list,
+      advertiseIndex: state => state.news.advertise.index,
       newsVerified: state => state.CONFIG["news:contribute"].verified,
       userVerify: state => state.USER_VERIFY || {}
     }),
@@ -66,6 +80,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch("news/getAdvertise");
     if (!this.newsList.length) this.$refs.loadmore.beforeRefresh();
     if (this.newsVerified) this.$store.dispatch("FETCH_USER_VERIFY");
   },
@@ -75,7 +90,8 @@ export default {
       this.currentCate = id;
       this.$refs.loadmore.beforeRefresh();
     },
-    async onRefresh() {
+    async onRefresh(callback) {
+      this.$store.commit("news/RESET_ADVERTISE");
       // GET /news
       const params =
         this.currentCate === 0
@@ -83,18 +99,36 @@ export default {
           : { cate_id: this.currentCate };
       const data = await this.$store.dispatch("news/getNewsList", params);
       this.newsList = data;
-      this.$refs.loadmore.afterRefresh(data.length < 10);
+      callback(data.length < 10);
+
+      // 如果有广告,并且还没插入完,从广告栈顶取出一条随机插入列表
+      if (this.advertiseIndex < this.advertiseList.length) {
+        let rand = ~~(Math.random() * 9) + 1;
+        rand > data.length && (rand = data.length);
+        data.splice(rand, 0, this.advertiseList[this.advertiseIndex]);
+        this.$store.commit("news/POPUP_ADVERTISE");
+      }
+
+      this.list = data;
     },
-    async onLoadMore() {
+    async onLoadMore(callback) {
       const params =
         this.currentCate === 0
           ? { recommend: 1 }
           : { cate_id: this.currentCate };
       Object.assign(params, { after: this.after });
       const data = await this.$store.dispatch("news/getNewsList", params);
-      this.$refs.loadmore.afterLoadMore(data.length < 10);
+      callback(data.length < 10);
 
-      this.newsList = [...this.newsList, ...data];
+      // 如果有广告,并且还没插入完,从广告栈顶取出一条随机插入列表
+      if (this.advertiseIndex < this.advertiseList.length) {
+        let rand = ~~(Math.random() * 9) + 1;
+        rand > data.length && (rand = data.length);
+        data.splice(rand, 0, this.advertiseList[this.advertiseIndex]);
+        this.$store.commit("news/POPUP_ADVERTISE");
+      }
+
+      this.list = [...this.list, ...data];
     },
     /**
      * 投稿前进行认证确认

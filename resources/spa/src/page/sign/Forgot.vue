@@ -25,7 +25,7 @@
         </div>
         <span
           :class="{ disabled: phone.length < 11 || countdown > 0 }"
-          class="m-flex-grow0 m-flex-shrink0 signup-form--row-append c_59b6d7"
+          class="m-flex-grow0 m-flex-shrink0 signup-form--row-append primary"
           @click="getCode"
         >{{ codeText }}</span>
       </div>
@@ -41,7 +41,7 @@
         </div>
         <span
           :class="{ disabled: email.length < 11 || countdown > 0 }"
-          class="signup-form--row-append c_59b6d7"
+          class="signup-form--row-append primary"
           @click="getCode" >{{ codeText }}</span>
       </div>
       <div class="m-form-row m-main">

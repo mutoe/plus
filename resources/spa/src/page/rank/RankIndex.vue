@@ -13,10 +13,17 @@
         tag="div"
         class="rank-nav-item"
         replace
+        to="/rank/questions">问答</router-link>
+      <router-link
+        tag="div"
+        class="rank-nav-item"
+        replace
         to="/rank/feeds">动态</router-link>
-
-      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS">问答</div>
-      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS">资讯</div>
+      <router-link
+        tag="div"
+        class="rank-nav-item"
+        replace
+        to="/rank/news">资讯</router-link>
     </div>
     <div class="rank-content">
       <keep-alive>

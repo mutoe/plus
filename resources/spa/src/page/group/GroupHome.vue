@@ -3,17 +3,20 @@
 
     <common-header>
       圈子
-      <div slot="right" @click.capture.stop.prevent="popupBuyTS">
+      <template slot="right">
         <svg class="m-style-svg m-svg-def" @click="onSearchClick">
           <use xlink:href="#icon-search"/>
         </svg>
         <svg class="m-style-svg m-svg-def" @click="beforeCreateGroup">
           <use xlink:href="#icon-group-create"/>
         </svg>
-      </div>
+      </template>
     </common-header>
 
-    <main @click.capture.stop.prevent="popupBuyTS">
+    <main>
+
+      <!-- 圈子首页顶部广告位 -->
+      <detail-ad type="group:home"/>
 
       <div class="group-label" @click="$router.push({ name: 'groups', query: { type: 'recommend' } })">
         <h2><strong>{{ groupTotalNumber }}</strong>个兴趣小组，等待你的加入！</h2>
@@ -69,11 +72,15 @@
 <script>
 import { mapState } from "vuex";
 import GroupItem from "./components/GroupItem.vue";
+import DetailAd from "@/components/advertisement/DetailAd.vue";
 import * as api from "@/api/group.js";
 
 export default {
   name: "GroupHome",
-  components: { GroupItem },
+  components: {
+    GroupItem,
+    DetailAd
+  },
   data() {
     return {
       myGroups: new Map(),

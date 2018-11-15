@@ -56,7 +56,7 @@ export default {
   right: -100px;
   padding: 100px;
   background-color: rgba(0, 0, 0, 0.4);
-  z-index: 200;
+  z-index: 100;
 
   .panel {
     display: flex;

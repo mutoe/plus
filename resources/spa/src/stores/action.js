@@ -9,8 +9,11 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    */
   async BOOTSTRAPPERS({ commit, dispatch }) {
-    bootApi.getBootstrappers().then(({ data: bootstrappers = {} }) => {
+    const promises = [bootApi.getBootstrappers(), bootApi.getAdvertiseType()];
+    Promise.all(promises).then(res => {
+      const [{ data: bootstrappers = {} }, { data: advertiseType = {} }] = res;
       commit("BOOTSTRAPPERS", bootstrappers);
+      commit("ADVERTISEMENT", advertiseType);
       dispatch("currency/updateCurrencyUnit");
     });
   },

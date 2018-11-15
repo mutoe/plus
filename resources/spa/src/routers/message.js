@@ -16,6 +16,14 @@ const AuditList = () =>
   import(/* webpackChunkName: 'message' */ "@/page/message/list/AuditList");
 const feedCommentAudit = () =>
   import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/feedCommentAudit");
+const newsCommentAudit = () =>
+  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/newsCommentAudit");
+const groupPostAudit = () =>
+  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/groupPostAudit");
+const groupCommentAudit = () =>
+  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/groupCommentAudit");
+const groupJoinAudit = () =>
+  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/groupJoinAudit");
 
 const chatList = () =>
   import(/* webpackChunkName: 'message' */ "@/page/message2/chat/chat-list.vue");
@@ -111,6 +119,38 @@ export default [
         component: feedCommentAudit,
         meta: {
           title: "动态评论置顶"
+        }
+      },
+      {
+        name: "auditNewsComments",
+        path: "newscomments",
+        component: newsCommentAudit,
+        meta: {
+          title: "文章评论置顶"
+        }
+      },
+      {
+        name: "auditGroupPosts",
+        path: "groupposts",
+        component: groupPostAudit,
+        meta: {
+          title: "帖子评论置顶"
+        }
+      },
+      {
+        name: "auditGroupComments",
+        path: "groupcomments",
+        component: groupCommentAudit,
+        meta: {
+          title: "帖子置顶"
+        }
+      },
+      {
+        name: "auditGroupJoins",
+        path: "groupjoins",
+        component: groupJoinAudit,
+        meta: {
+          title: "圈子加入申请"
         }
       }
     ]

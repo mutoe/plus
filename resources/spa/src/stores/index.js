@@ -17,6 +17,9 @@ const state = {
 
   CONFIG: lstore.getData("BOOTSTRAPPERS") || {},
 
+  /* 广告位信息 */
+  ADVERTISEMENT: lstore.getData("ADVERTISEMENT") || [],
+
   /* 终端信息 */
   BROWSER: detectOS(),
 
@@ -25,6 +28,9 @@ const state = {
 
   /* 当前选择的标签 临时数据 */
   CUR_SELECTED_TAGS: [],
+
+  /* 当前圈子的位置信息 临时数据 */
+  CUR_GROUP_LOCATION: {},
 
   //定位信息
   POSITION: lstore.getData("H5_CURRENT_POSITION") || {},

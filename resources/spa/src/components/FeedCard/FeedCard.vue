@@ -305,7 +305,11 @@ export default {
         actions.push({
           text: "申请动态置顶",
           method: () => {
-            this.popupBuyTS();
+            this.$bus.$emit("applyTop", {
+              type: "feed",
+              api: api.applyTopFeed,
+              payload: this.feedID
+            });
           }
         });
         actions.push({
@@ -335,7 +339,12 @@ export default {
         actions.push({
           text: "举报",
           method: () => {
-            this.$Message.info("举报功能开发中，敬请期待");
+            this.$bus.$emit("report", {
+              type: "feed",
+              payload: this.feedID,
+              username: this.user.name,
+              reference: this.body
+            });
           }
         });
       }
@@ -343,24 +352,47 @@ export default {
       this.$bus.$emit("actionSheet", actions, "取消");
     },
     commentAction({ isMine = false, placeholder, reply_user, comment }) {
+      const actions = [];
       if (isMine) {
         const isOwner = this.feed.user.id === this.CURRENTUSER.id;
-        const actionSheet = [
-          {
-            text: isOwner ? "评论置顶" : "申请评论置顶",
-            method: () => {
-              this.popupBuyTS();
-            }
-          },
-          { text: "删除评论", method: () => this.deleteComment(comment.id) }
-        ];
-        this.$bus.$emit("actionSheet", actionSheet);
+        actions.push({
+          text: isOwner ? "评论置顶" : "申请评论置顶",
+          method: () => {
+            this.$bus.$emit("applyTop", {
+              isOwner,
+              type: "feedComment",
+              api: api.applyTopFeedComment,
+              payload: { feedId: this.feedID, commentId: comment.id }
+            });
+          }
+        });
+        actions.push({
+          text: "删除评论",
+          method: () => this.deleteComment(comment.id)
+        });
       } else {
-        this.handleComment({
-          placeholder,
-          reply_user
+        actions.push({
+          text: "回复",
+          method: () => {
+            this.handleComment({
+              placeholder,
+              reply_user
+            });
+          }
+        });
+        actions.push({
+          text: "举报",
+          method: () => {
+            this.$bus.$emit("report", {
+              type: "comment",
+              payload: comment.id,
+              username: comment.user.name,
+              reference: comment.body
+            });
+          }
         });
       }
+      this.$bus.$emit("actionSheet", actions);
     },
     sendComment({ reply_user: replyUser, body }) {
       if (body && body.length === 0)

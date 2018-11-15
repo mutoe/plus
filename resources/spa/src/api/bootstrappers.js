@@ -75,6 +75,16 @@ export async function searchCityByName(
 }
 
 /**
+ * 查询所有广告位
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @returns
+ */
+export function getAdvertiseType() {
+  return api.get("/advertisingspace", { validateStatus: s => s === 200 });
+}
+
+/**
  * 获取启动信息
  * @author mutoe <mutoe@foxmail.com>
  * @export
@@ -82,4 +92,33 @@ export async function searchCityByName(
  */
 export function getBootstrappers() {
   return api.get("/bootstrappers", { validateStatus: s => s === 200 });
+}
+
+/**
+ * 根据广告位 id 获取一个广告位的广告列表
+ * @export
+ * @param {number} adId 从广告类型列表中获取的广告 id
+ * @returns
+ */
+export async function getAdsById(adId, defaultResponseValue = { data: [] }) {
+  if (!adId) {
+    return defaultResponseValue;
+  }
+
+  return await api.get(`/advertisingspace/${adId}/advertising`, {
+    validateStatus: status => status === 200
+  });
+}
+
+/**
+ * 批量获取广告列表 必须传入数组
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number[]} adIds
+ * @returns
+ */
+export function getAdsByIds(adIds) {
+  const url = "/advertisingspace/advertising";
+  const params = { space: adIds.join(",") };
+  return api.get(url, { params, validateStatus: s => s === 200 });
 }

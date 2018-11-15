@@ -241,3 +241,17 @@ export function uncollectNews(newsId) {
   const url = `/news/${newsId}/collections`;
   return api.delete(url, { validateStatus: s => s === 204 });
 }
+
+/**
+ * 举报动态
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {string} reason 举报理由
+ * @returns
+ */
+export function reportNews(newsId, reason) {
+  const url = `/news/${newsId}/reports`;
+  return api.post(url, { reason }, { validateStatus: s => s === 201 });
+}

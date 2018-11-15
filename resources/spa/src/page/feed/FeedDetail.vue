@@ -15,7 +15,7 @@
       <template
         v-if="!isMine"
         slot="right"
-        :class="{ c_59b6d7: relation.status !== 'unFollow' }" >
+        :class="{ primary: relation.status !== 'unFollow' }" >
         <svg class="m-style-svg m-svg-def" @click="followUserByStatus(relation.status)">
           <use :xlink:href="relation.icon"/>
         </svg>
@@ -98,6 +98,9 @@
         </div>
       </main>
 
+      <!-- 详情页广告位 -->
+      <detail-ad type="feed"/>
+
       <!-- 评论列表 -->
       <div id="comment_list" class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
@@ -108,12 +111,12 @@
           :pinned="true"
           :key="`pinned-comment-${comment.id}`"
           :comment="comment"
-          @click="replyComment"/>
+          @click="replyComment(comment)"/>
         <comment-item
           v-for="(comment) in comments"
           :key="comment.id"
           :comment="comment"
-          @click="replyComment"/>
+          @click="replyComment(comment)"/>
         <div class="m-box m-aln-center m-justify-center load-more-box">
           <div v-if="!pinnedCom.length && !comments.length" class="m-no-find"/>
           <span v-else-if="noMoreCom" class="load-more-ph">---没有更多---</span>
@@ -133,6 +136,7 @@
 import { mapState } from "vuex";
 import ArticleCard from "@/page/article/ArticleCard.vue";
 import CommentItem from "@/page/article/ArticleComment.vue";
+import DetailAd from "@/components/advertisement/DetailAd";
 import wechatShare from "@/util/wechatShare.js";
 import { limit } from "@/api";
 import { followUserByStatus, getUserInfoById } from "@/api/user.js";
@@ -142,7 +146,8 @@ export default {
   name: "FeedDetail",
   components: {
     ArticleCard,
-    CommentItem
+    CommentItem,
+    DetailAd
   },
   data() {
     return {
@@ -404,7 +409,17 @@ export default {
       return avatar.url || null;
     },
     rewardFeed() {
-      this.popupBuyTS();
+      const callback = amount => {
+        this.fetchRewards();
+        this.feed.reward_number += 1;
+        this.feed.reward_amount += amount;
+      };
+      this.$bus.$emit("reward", {
+        type: "feed",
+        api: api.rewardFeed,
+        payload: this.feedID,
+        callback
+      });
     },
     likeFeed() {
       const method = this.liked ? "delete" : "post";
@@ -488,7 +503,11 @@ export default {
             {
               text: "申请动态置顶",
               method: () => {
-                this.popupBuyTS();
+                this.$bus.$emit("applyTop", {
+                  type: "feed",
+                  api: api.applyTopFeed,
+                  payload: this.feedID
+                });
               }
             },
             {
@@ -521,35 +540,64 @@ export default {
             {
               text: "举报",
               method: () => {
-                this.$Message.info("举报功能开发中，敬请期待");
+                this.$bus.$emit("report", {
+                  type: "feed",
+                  payload: this.feedID,
+                  username: this.user.name,
+                  reference: this.feed.feed_content
+                });
               }
             }
           ];
       this.$bus.$emit("actionSheet", [...defaultActions, ...actions], "取消");
     },
-    replyComment(uid, uname, commentId) {
+    replyComment(comment) {
+      const actions = [];
       // 是否是自己的评论
-      if (uid === this.CURRENTUSER.id) {
+      if (comment.user_id === this.CURRENTUSER.id) {
         // 是否是自己文章的评论
-        const isOwner = uid === this.user.id;
-        const actionSheet = [
-          {
-            text: isOwner ? "评论置顶" : "申请评论置顶",
-            method: () => {
-              this.popupBuyTS();
-            }
-          },
-          { text: "删除评论", method: () => this.deleteComment(commentId) }
-        ];
-        this.$bus.$emit("actionSheet", actionSheet, "取消");
+        const isOwner = comment.user_id === this.user.id;
+        actions.push({
+          text: isOwner ? "评论置顶" : "申请评论置顶",
+          method: () => {
+            this.$bus.$emit("applyTop", {
+              isOwner,
+              type: "feedComment",
+              api: api.applyTopFeedComment,
+              payload: { feedId: this.feedID, commentId: comment.id },
+              callback: this.fetchFeedComments
+            });
+          }
+        });
+        actions.push({
+          text: "删除评论",
+          method: () => this.deleteComment(comment.id)
+        });
       } else {
-        this.$bus.$emit("commentInput", {
-          placeholder: `回复： ${uname}`,
-          onOk: text => {
-            this.sendComment({ reply_user: uid, body: text });
+        actions.push({
+          text: "回复",
+          method: () => {
+            this.$bus.$emit("commentInput", {
+              placeholder: `回复： ${comment.user.name}`,
+              onOk: text => {
+                this.sendComment({ reply_user: comment.user_id, body: text });
+              }
+            });
+          }
+        });
+        actions.push({
+          text: "举报",
+          method: () => {
+            this.$bus.$emit("report", {
+              type: "comment",
+              payload: comment.id,
+              username: comment.user.name,
+              reference: comment.body
+            });
           }
         });
       }
+      this.$bus.$emit("actionSheet", actions);
     },
     sendComment({ reply_user: replyUser, body }) {
       const params = {};

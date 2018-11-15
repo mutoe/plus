@@ -30,7 +30,7 @@
       <image-list :edit="pinned" style="padding: 0 .3rem .3rem"/>
     </main>
 
-    <footer @click.capture.stop.prevent="popupBuyTS">
+    <footer>
       <v-switch
         v-if="paycontrol"
         v-model="pinned"
@@ -101,6 +101,22 @@ export default {
           this.$Message.error("存在上传失败的图片，请确认");
           this.loading = false;
           return;
+        }
+        if (this.pinned) {
+          if (!this.composePhoto.some(item => item.amount > 0)) {
+            this.$bus.$emit(
+              "actionSheet",
+              [
+                {
+                  text: "应配置至少一张图片收费",
+                  method: () => {}
+                }
+              ],
+              "取消"
+            );
+            this.loading = false;
+            return;
+          }
         }
         this.$http
           .post(

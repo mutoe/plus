@@ -72,6 +72,9 @@
         </div>
       </div>
 
+      <!-- 资讯详情页广告位 -->
+      <detail-ad type="news"/>
+
       <div class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ commentCount | formatNum }}条评论</li>
@@ -82,12 +85,12 @@
             :key="`pinned-${comment.id}`"
             :comment="comment"
             :pinned="true"
-            @click="replyComment" />
+            @click="replyComment(comment)" />
           <comment-item
             v-for="(comment) in comments"
             :key="`comment-${comment.id}`"
             :comment="comment"
-            @click="replyComment" />
+            @click="replyComment(comment)" />
           <div class="m-box m-aln-center m-justify-center load-more-box">
             <span v-if="noMoreCom" class="load-more-ph">---没有更多---</span>
             <span
@@ -107,6 +110,7 @@
 import { mapState } from "vuex";
 import ArticleCard from "@/page/article/ArticleCard.vue";
 import CommentItem from "@/page/article/ArticleComment.vue";
+import DetailAd from "@/components/advertisement/DetailAd.vue";
 import wechatShare from "@/util/wechatShare.js";
 import md from "@/util/markdown.js";
 import { limit } from "@/api";
@@ -117,7 +121,8 @@ export default {
   name: "NewsDetail",
   components: {
     ArticleCard,
-    CommentItem
+    CommentItem,
+    DetailAd
   },
   data() {
     return {
@@ -335,7 +340,17 @@ export default {
       });
     },
     rewardNews() {
-      this.popupBuyTS();
+      const callback = amount => {
+        this.fetchRewards();
+        this.reward.count += 1;
+        this.reward.amount += amount;
+      };
+      this.$bus.$emit("reward", {
+        type: "news",
+        api: api.rewardNews,
+        payload: this.newsID,
+        callback
+      });
     },
     likeNews() {
       // DELETE /news/{news}/likes
@@ -415,41 +430,64 @@ export default {
             {
               text: "举报",
               method: () => {
-                this.$Message.info("举报功能开发中，敬请期待");
+                this.$bus.$emit("report", {
+                  type: "news",
+                  payload: this.newsID,
+                  username: this.news.user.name,
+                  reference: this.news.title
+                });
               }
             }
           ];
       this.$bus.$emit("actionSheet", [...defaultActions, ...actions], "取消");
     },
-    replyComment(uid, uname, commentId) {
+    replyComment(comment) {
+      const actions = [];
       // 是否是自己的评论
-      if (uid === this.CURRENTUSER.id) {
+      if (comment.user_id === this.CURRENTUSER.id) {
         // 是否是自己文章的评论
-        const isOwner = uid === this.userID;
-        const actionSheet = [
-          {
-            text: isOwner ? "评论置顶" : "申请评论置顶",
-            method: () => {
-              this.$bus.$emit("applyTop", {
-                isOwner,
-                type: "newsComment",
-                api: api.applyTopNewsComment,
-                payload: { newsId: this.newsID, commentId },
-                callback: this.fetchNewsComments
-              });
-            }
-          },
-          { text: "删除评论", method: () => this.deleteComment(commentId) }
-        ];
-        this.$bus.$emit("actionSheet", actionSheet, "取消");
+        const isOwner = comment.user_id === this.userID;
+        actions.push({
+          text: isOwner ? "评论置顶" : "申请评论置顶",
+          method: () => {
+            this.$bus.$emit("applyTop", {
+              isOwner,
+              type: "newsComment",
+              api: api.applyTopNewsComment,
+              payload: { newsId: this.newsID, commentId: comment.id },
+              callback: this.fetchNewsComments
+            });
+          }
+        });
+        actions.push({
+          text: "删除评论",
+          method: () => this.deleteComment(comment.id)
+        });
       } else {
-        this.$bus.$emit("commentInput", {
-          placeholder: `回复： ${uname}`,
-          onOk: text => {
-            this.sendComment({ reply_user: uid, body: text });
+        actions.push({
+          text: "回复",
+          method: () => {
+            this.$bus.$emit("commentInput", {
+              placeholder: `回复： ${comment.user.name}`,
+              onOk: text => {
+                this.sendComment({ reply_user: comment.user_id, body: text });
+              }
+            });
+          }
+        });
+        actions.push({
+          text: "举报",
+          method: () => {
+            this.$bus.$emit("report", {
+              type: "comment",
+              payload: comment.id,
+              username: comment.user.name,
+              reference: comment.body
+            });
           }
         });
       }
+      this.$bus.$emit("actionSheet", actions);
     },
     sendComment({ reply_user: replyUser, body }) {
       const params = {};

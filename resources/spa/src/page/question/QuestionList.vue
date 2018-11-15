@@ -1,5 +1,5 @@
 <template>
-  <div class="p-question-list" @click.capture.stop.prevent="popupBuyTS">
+  <div class="p-question-list">
 
     <!-- Question navs. -->
     <nav class="nav">
@@ -53,7 +53,7 @@
       </div>
     </main>
 
-    <button class="create-question">
+    <button class="create-question" @click="$router.push({ name:'postQuestion' })">
       <svg class="m-style-svg m-svg-small">
         <use xlink:href="#icon-plus"/>
       </svg>
@@ -65,7 +65,7 @@
 import message from "plus-message-bundle";
 import LinearLoading from "@/icons/LinearLoading.vue";
 import QuestionCard from "./components/QuestionCard.vue";
-import { list } from "@/api/questions";
+import { list } from "@/api/question/questions";
 
 export default {
   name: "QuestionList",
@@ -156,7 +156,7 @@ export default {
 
 <style lang="less" scoped>
 .p-question-list {
-  padding-top: 180px !important;
+  padding-top: 180px;
   padding-bottom: 100px;
   min-height: 100vh;
 

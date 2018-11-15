@@ -22,9 +22,9 @@
         <span class="m-text-cut">{{ user.name }}</span>
       </div>
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-end">
-        <!-- <svg class="m-style-svg m-svg-def">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more"></use>
-        </svg> -->
+        <svg class="m-style-svg m-svg-def" @click="onMoreClick">
+          <use xlink:href="#icon-more"/>
+        </svg>
       </div>
     </header>
     <div v-if="loading" class="m-pos-f m-spinner">
@@ -79,13 +79,27 @@
       <div
         v-clickoutside="hidenFilter"
         class="m-box m-aln-center m-justify-bet m-urh-filter-box"
-        @click="popupBuyTS">
+        @click="showFilter = !showFilter">
         <span>{{ feedsCount }}条动态</span>
         <div v-if="isMine" class="m-box m-aln-center m-urh-filter">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
             <use xlink:href="#icon-list"/>
           </svg>
+          <transition v-if="showFilter">
+            <ul class="m-urh-filter-options">
+              <li
+                v-for="(val, key) of feedTypes"
+                :key="key"
+                class="m-box m-aln-center m-justify-bet"
+                @click="screen = key">
+                <span>{{ val }}</span>
+                <svg v-if="screen === key" class="m-style-svg m-svg-small">
+                  <use xlink:href="#icon-yes"/>
+                </svg>
+              </li>
+            </ul>
+          </transition>
         </div>
       </div>
       <ul class="m-urh-feeds">
@@ -120,7 +134,7 @@
         <span>打赏</span>
       </div>
       <div
-        :class="{ c_59b6d7: relation.status !== 'unFollow' }"
+        :class="{ primary: relation.status !== 'unFollow' }"
         class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
         @click="followUserByStatus(relation.status)">
         <svg class="m-style-svg m-svg-def">
@@ -412,7 +426,12 @@ export default {
       });
     },
     rewardUser() {
-      this.popupBuyTS();
+      this.$bus.$emit("reward", {
+        type: "user",
+        api: api.rewardUser,
+        payload: this.user.id,
+        callback: () => {}
+      });
     },
     followUserByStatus(status) {
       if (!status || this.fetchFollow) return;
@@ -442,7 +461,6 @@ export default {
         this.tags = data;
       });
     },
-
     fetchUserFeed(loadmore) {
       if (this.fetchFeeding) return;
       this.fetchFeeding = true;
@@ -545,6 +563,21 @@ export default {
     stopDrag() {
       this.dragging = false;
       this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0);
+    },
+    onMoreClick() {
+      const actions = [];
+      actions.push({
+        text: "举报",
+        method: () => {
+          this.$bus.$emit("report", {
+            type: "user",
+            payload: this.userID,
+            username: this.user.name,
+            reference: this.user.bio
+          });
+        }
+      });
+      this.$bus.$emit("actionSheet", actions);
     }
   }
 };

@@ -106,14 +106,15 @@ export default {
       this.$http
         .post(
           "socialite/wechat",
-          {
-            access_token: accessToken
-          },
-          {
-            validateStatus: s => s === 201
-          }
+          { access_token: accessToken },
+          { validateStatus: s => s === 201 || s === 404 }
         )
-        .then(({ data: { token = "", user = {} } = {} }) => {
+        .then(({ status, data: { token = "", user = {} } = {} }) => {
+          if (status !== 201) {
+            this.loading = false;
+            this.getWechatUserInfo(accessToken, openId);
+            return;
+          }
           // 保存用户信息 并跳转
           this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
           this.$nextTick(() => {
@@ -125,10 +126,6 @@ export default {
             this.$lstore.setData("H5_ACCESS_TOKEN", `Bearer ${token}`);
             this.$store.commit("SAVE_CURRENTUSER", user);
           });
-        })
-        .catch(() => {
-          this.loading = false;
-          this.getWechatUserInfo(accessToken, openId);
         });
     },
 

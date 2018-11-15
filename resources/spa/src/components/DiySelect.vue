@@ -2,7 +2,7 @@
   <div
     :class="{open}"
     class="diy-select"
-    @click="onClick">
+    @click="open = !open">
     <div class="diy-select--label">{{ curSelectValue }}</div>
     <div v-show="open" class="diy-select--options">
       <div
@@ -25,8 +25,7 @@ export default {
   props: {
     value: { type: null, default: "" },
     options: { type: Array, default: () => [] },
-    placeholder: { type: String, default: "请选择" },
-    readonly: { type: Boolean, default: false }
+    placeholder: { type: String, default: "请选择" }
   },
   data() {
     return {
@@ -60,10 +59,6 @@ export default {
     setCurVal(val) {
       this.curVal = val;
       this.$emit("input", val.value);
-    },
-    onClick() {
-      if (this.readonly) return this.$emit("click");
-      this.open = !this.open;
     }
   }
 };

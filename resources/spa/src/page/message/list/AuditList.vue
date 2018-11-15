@@ -3,15 +3,13 @@
 
     <common-header>
       <diy-select
-        :readonly="true"
         :options="options"
         v-model="currentType"
         placeholder="动态评论置顶"
-        style="margin-top: -1px"
-        @click="popupBuyTS"/>
+        style="margin-top: -1px"/>
     </common-header>
 
-    <div class="container" @click.capture.stop.prevent="popupBuyTS">
+    <div class="container">
       <router-view/>
     </div>
 
@@ -42,6 +40,7 @@ const options = [
     label: "圈子加入申请"
   }
 ];
+// const items = {};
 
 export default {
   name: "AuditList",
@@ -52,9 +51,8 @@ export default {
     currentType: "feedcomments"
   }),
   watch: {
-    currentType(newVal, oldVal) {
-      this.currentType = oldVal;
-      this.popupBuyTS();
+    currentType(type) {
+      this.$router.replace(`/message/audits/${type}`);
     }
   },
   created() {
