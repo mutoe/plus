@@ -18,6 +18,26 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-return [
-    'limit' => 50,
-];
+namespace SlimKit\Plus\Packages\Feed\Seeds;
+
+use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
+
+class SettingTableSeeder extends Seeder
+{
+    /**
+     * Run the package seeder.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function run()
+    {
+        setting('feed')->set([
+            'reward-switch' => true,
+            'pay-switch' => true,
+            'pay-items' => [100, 500, 1000],
+            'pay-word-limit' => 50,
+        ]);
+    }
+}
