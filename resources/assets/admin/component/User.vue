@@ -38,9 +38,15 @@
                 第三方 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="#">QQ&nbsp;登录</a></li>
-                <li><a href="#">微信登录</a></li>
-                <li><a href="#">微博登录</a></li>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/qq' }">
+                  <a href="#">QQ&nbsp;登录</a>
+                </router-link>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/wechat' }">
+                  <a href="#">微信登录</a>
+                </router-link>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/weibo' }">
+                  <a href="#">微博登录</a>
+                </router-link>
                 <li class="divider"></li>
                 <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/easemob' }">
                   <a href="#">环信即时聊天</a>
