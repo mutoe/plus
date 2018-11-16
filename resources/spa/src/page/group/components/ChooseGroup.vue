@@ -18,37 +18,37 @@
 </template>
 
 <script>
-import GroupItem from "./GroupItem.vue";
+import GroupItem from './GroupItem.vue'
 
 export default {
-  name: "ChooseGroup",
+  name: 'ChooseGroup',
   components: { GroupItem },
-  data() {
+  data () {
     return {
       visible: false,
-      list: []
-    };
+      list: [],
+    }
   },
-  created() {
-    this.fetchList();
+  created () {
+    this.fetchList()
   },
   methods: {
-    show() {
-      this.visible = true;
+    show () {
+      this.visible = true
     },
-    close() {
-      this.visible = false;
+    close () {
+      this.visible = false
     },
-    async fetchList() {
-      const list = await this.$store.dispatch("group/getMyGroups");
-      this.list = list;
+    async fetchList () {
+      const list = await this.$store.dispatch('group/getMyGroups')
+      this.list = list
     },
-    selectGroup(group) {
-      this.$emit("change", group);
-      this.close();
-    }
-  }
-};
+    selectGroup (group) {
+      this.$emit('change', group)
+      this.close()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

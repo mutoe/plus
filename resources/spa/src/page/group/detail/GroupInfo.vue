@@ -50,32 +50,32 @@
 
 <script>
 export default {
-  name: "GroupInfo",
+  name: 'GroupInfo',
   computed: {
-    group() {
-      return this.$store.state.group.current || {};
+    group () {
+      return this.$store.state.group.current || {}
     },
-    groupId() {
-      return this.$route.params.groupId;
+    groupId () {
+      return this.$route.params.groupId
     },
-    category() {
-      return this.group.category || {};
+    category () {
+      return this.group.category || {}
     },
-    location() {
-      const location = this.group.location;
-      if (location) return location;
-      return "不显示位置";
-    }
+    location () {
+      const location = this.group.location
+      if (location) return location
+      return '不显示位置'
+    },
   },
-  created() {
-    if (!this.group.id) this.fetchGroupInfo();
+  created () {
+    if (!this.group.id) this.fetchGroupInfo()
   },
   methods: {
-    fetchGroupInfo() {
-      this.$store.dispatch("group/getGroupById", { groupId: this.groupId });
-    }
-  }
-};
+    fetchGroupInfo () {
+      this.$store.dispatch('group/getGroupById', { groupId: this.groupId })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

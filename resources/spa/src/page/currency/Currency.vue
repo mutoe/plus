@@ -68,52 +68,51 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import PopupDialog from "@/components/PopupDialog.vue";
-import DetailAd from "@/components/advertisement/DetailAd.vue";
+import { mapState } from 'vuex'
+import PopupDialog from '@/components/PopupDialog.vue'
+import DetailAd from '@/components/advertisement/DetailAd.vue'
 
 export default {
-  name: "Currency",
+  name: 'Currency',
   components: { PopupDialog, DetailAd },
-  data() {
+  data () {
     return {
-      fromPageTitle: ""
-    };
+      fromPageTitle: '',
+    }
   },
   computed: {
     ...mapState({
-      user: "CURRENTUSER",
-      currency: "currency"
+      user: 'CURRENTUSER',
+      currency: 'currency',
     }),
-    rule() {
-      return this.currency.rule.replace(/\n/g, "<br>");
-    }
+    rule () {
+      return this.currency.rule.replace(/\n/g, '<br>')
+    },
   },
-  created() {
-    this.fromPageTitle = document.title;
-    document.title = this.currencyUnit;
+  created () {
+    this.fromPageTitle = document.title
+    document.title = this.currencyUnit
   },
-  mounted() {
-    if (!this.currency.recharge.length)
-      this.$store.dispatch("currency/getCurrencyInfo");
+  mounted () {
+    if (!this.currency.recharge.length) { this.$store.dispatch('currency/getCurrencyInfo') }
 
-    const amount = this.$route.query.total_amount;
+    const amount = this.$route.query.total_amount
     if (amount) {
-      this.$store.dispatch("fetchUserInfo");
+      this.$store.dispatch('fetchUserInfo')
       this.$Message.success(
         `共消耗${amount}元, 获得 ${amount * 100} ${this.currencyUnit}!`
-      );
+      )
     }
   },
-  destroyed() {
-    document.title = this.fromPageTitle;
+  destroyed () {
+    document.title = this.fromPageTitle
   },
   methods: {
-    showRule() {
-      this.$refs.dialog.show();
-    }
-  }
-};
+    showRule () {
+      this.$refs.dialog.show()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

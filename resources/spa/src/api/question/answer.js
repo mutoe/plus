@@ -1,4 +1,4 @@
-import api from "../api.js";
+import api from '../api.js'
 
 /**
  * List answers by default
@@ -9,11 +9,11 @@ import api from "../api.js";
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function listByDefault(question, offset = 0, limit = 15) {
+export function listByDefault (question, offset = 0, limit = 15) {
   return api.get(`/questions/${question}/answers`, {
-    params: { offset, limit, order_type: "default" },
-    validateStatus: status => status === 200
-  });
+    params: { offset, limit, order_type: 'default' },
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -25,11 +25,11 @@ export function listByDefault(question, offset = 0, limit = 15) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function listByTime(question, offset = 0, limit = 15) {
+export function listByTime (question, offset = 0, limit = 15) {
   return api.get(`/questions/${question}/answers`, {
-    params: { offset, limit, order_type: "time" },
-    validateStatus: status => status === 200
-  });
+    params: { offset, limit, order_type: 'time' },
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -38,9 +38,9 @@ export function listByTime(question, offset = 0, limit = 15) {
  * @param {number} answerId
  * @returns
  */
-export function like(answerId) {
-  const url = `/question-answers/${answerId}/likes`;
-  return api.post(url, {}, { validateStatus: s => s === 201 });
+export function like (answerId) {
+  const url = `/question-answers/${answerId}/likes`
+  return api.post(url, {}, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -49,9 +49,9 @@ export function like(answerId) {
  * @param {number} answerId
  * @returns
  */
-export function unlike(answerId) {
-  const url = `/question-answers/${answerId}/likes`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function unlike (answerId) {
+  const url = `/question-answers/${answerId}/likes`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -61,9 +61,9 @@ export function unlike(answerId) {
  * @param {number} answerId
  * @returns
  */
-export function collect(answerId) {
-  const url = `/user/question-answer/collections/${answerId}`;
-  return api.post(url, {}, { validateStatus: s => s === 201 });
+export function collect (answerId) {
+  const url = `/user/question-answer/collections/${answerId}`
+  return api.post(url, {}, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -73,9 +73,9 @@ export function collect(answerId) {
  * @param {number} answerId
  * @returns
  */
-export function unCollect(answerId) {
-  const url = `/user/question-answer/collections/${answerId}`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function unCollect (answerId) {
+  const url = `/user/question-answer/collections/${answerId}`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -85,9 +85,9 @@ export function unCollect(answerId) {
  * @param {number} answerId
  * @returns
  */
-export function getAnswer(answerId) {
-  const url = `/question-answers/${answerId}`;
-  return api.get(url, { validateStatus: s => s === 200 });
+export function getAnswer (answerId) {
+  const url = `/question-answers/${answerId}`
+  return api.get(url, { validateStatus: s => s === 200 })
 }
 
 /**
@@ -100,9 +100,9 @@ export function getAnswer(answerId) {
  * @param {number} [params.after=0]
  * @returns
  */
-export function getAnswerComments(answerId, params) {
-  const url = `/question-answers/${answerId}/comments`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getAnswerComments (answerId, params) {
+  const url = `/question-answers/${answerId}/comments`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -116,11 +116,11 @@ export function getAnswerComments(answerId, params) {
  * @param {number} [data.anonymity] 1: 匿名 0: 不匿名
  * @returns
  */
-export function postAnswer(questionId, data) {
-  const url = `/questions/${questionId}/answers`;
+export function postAnswer (questionId, data) {
+  const url = `/questions/${questionId}/answers`
   return api.post(url, data, {
-    validateStatus: s => s === 201
-  });
+    validateStatus: s => s === 201,
+  })
 }
 
 /**
@@ -132,9 +132,9 @@ export function postAnswer(questionId, data) {
  * @param {number} payload.amount 打赏金额
  * @returns
  */
-export function rewardAnswer(answerId, payload) {
-  const url = `/question-answers/${answerId}/new-rewards`;
-  return api.post(url, payload, { validateStatus: s => s === 200 });
+export function rewardAnswer (answerId, payload) {
+  const url = `/question-answers/${answerId}/new-rewards`
+  return api.post(url, payload, { validateStatus: s => s === 200 })
 }
 
 /**
@@ -148,9 +148,9 @@ export function rewardAnswer(answerId, payload) {
  * @param {number} [params.offset = 0] offset
  * @returns
  */
-export function getRewards(answerId, params) {
-  const url = `/question-answers/${answerId}/rewarders`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getRewards (answerId, params) {
+  const url = `/question-answers/${answerId}/rewarders`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -161,9 +161,9 @@ export function getRewards(answerId, params) {
  * @param {number} commentId
  * @returns
  */
-export function deleteAnswerComment(answerId, commentId) {
-  const url = `/question-answers/${answerId}/comments/${commentId}`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function deleteAnswerComment (answerId, commentId) {
+  const url = `/question-answers/${answerId}/comments/${commentId}`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -175,7 +175,7 @@ export function deleteAnswerComment(answerId, commentId) {
  * @param {string} reason
  * @returns
  */
-export function reportAnswer(answerId, reason) {
-  const url = `/question-answers/${answerId}/reports`;
-  return api.post(url, { reason }, { validateStatus: s => s === 201 });
+export function reportAnswer (answerId, reason) {
+  const url = `/question-answers/${answerId}/reports`
+  return api.post(url, { reason }, { validateStatus: s => s === 201 })
 }

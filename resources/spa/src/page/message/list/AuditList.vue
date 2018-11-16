@@ -17,49 +17,49 @@
 </template>
 
 <script>
-const prefixCls = "auditList";
+const prefixCls = 'auditList'
 const options = [
   {
-    value: "feedcomments",
-    label: "动态评论置顶"
+    value: 'feedcomments',
+    label: '动态评论置顶',
   },
   {
-    value: "newscomments",
-    label: "文章评论置顶"
+    value: 'newscomments',
+    label: '文章评论置顶',
   },
   {
-    value: "groupposts",
-    label: "帖子置顶"
+    value: 'groupposts',
+    label: '帖子置顶',
   },
   {
-    value: "groupcomments",
-    label: "帖子评论置顶"
+    value: 'groupcomments',
+    label: '帖子评论置顶',
   },
   {
-    value: "groupjoins",
-    label: "圈子加入申请"
-  }
-];
+    value: 'groupjoins',
+    label: '圈子加入申请',
+  },
+]
 // const items = {};
 
 export default {
-  name: "AuditList",
+  name: 'AuditList',
   data: () => ({
     prefixCls,
     refreshData: [],
     options,
-    currentType: "feedcomments"
+    currentType: 'feedcomments',
   }),
   watch: {
-    currentType(type) {
-      this.$router.replace(`/message/audits/${type}`);
-    }
+    currentType (type) {
+      this.$router.replace(`/message/audits/${type}`)
+    },
   },
-  created() {
-    const regex = new RegExp("/message/audits/");
-    this.currentType = this.$route.path.replace(regex, "");
-  }
-};
+  created () {
+    const regex = new RegExp('/message/audits/')
+    this.currentType = this.$route.path.replace(regex, '')
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -8,34 +8,34 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import md from "@/util/markdown.js";
+import { mapState } from 'vuex'
+import md from '@/util/markdown.js'
 
 export default {
-  name: "GroupProtocol",
-  data() {
+  name: 'GroupProtocol',
+  data () {
     return {
-      visible: false
-    };
+      visible: false,
+    }
   },
   computed: {
-    ...mapState("group", ["protocol"]),
-    body() {
-      return md(this.protocol || "");
-    }
+    ...mapState('group', ['protocol']),
+    body () {
+      return md(this.protocol || '')
+    },
   },
-  created() {
-    this.$store.dispatch("group/getProtocol");
+  created () {
+    this.$store.dispatch('group/getProtocol')
   },
   methods: {
-    show() {
-      this.visible = true;
+    show () {
+      this.visible = true
     },
-    close() {
-      this.visible = false;
-    }
-  }
-};
+    close () {
+      this.visible = false
+    },
+  },
+}
 </script>
 
 <style lang="less">

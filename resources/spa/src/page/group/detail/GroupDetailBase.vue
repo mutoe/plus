@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "GroupDetailBase"
-};
+  name: 'GroupDetailBase',
+}
 </script>

@@ -34,79 +34,79 @@
 </template>
 
 <script>
-import { like, unlike } from "@/api/question/answer";
+import { like, unlike } from '@/api/question/answer'
 
 export default {
-  name: "QuestionAnswerItem",
+  name: 'QuestionAnswerItem',
   props: {
-    answer: { type: Object, required: true }
+    answer: { type: Object, required: true },
   },
   data: () => ({
-    likeTargetHanding: false
+    likeTargetHanding: false,
   }),
   computed: {
-    anonymity() {
-      const { anonymity } = this.answer;
-      return !!anonymity;
+    anonymity () {
+      const { anonymity } = this.answer
+      return !!anonymity
     },
-    user() {
-      const { user = {} } = this.answer;
-      return user;
+    user () {
+      const { user = {} } = this.answer
+      return user
     },
-    body() {
-      const body = this.answer.body || "";
-      return body.replace(/@!\[image]\(\d+\)/g, "[图片]");
+    body () {
+      const body = this.answer.body || ''
+      return body.replace(/@!\[image]\(\d+\)/g, '[图片]')
     },
-    isMine() {
-      return this.user.id === this.$store.state.CURRENTUSER.id;
-    }
+    isMine () {
+      return this.user.id === this.$store.state.CURRENTUSER.id
+    },
   },
   methods: {
-    handleLike() {
+    handleLike () {
       like(this.answer.id)
         .then(() => {
-          this.likeTargetHanding = false;
-          this.answer.liked = true;
-          this.answer.likes_count += 1;
+          this.likeTargetHanding = false
+          this.answer.liked = true
+          this.answer.likes_count += 1
         })
         .catch(({ response: { data } = {} }) => {
-          this.likeTargetHanding = false;
-          this.$Message.error(data);
-        });
+          this.likeTargetHanding = false
+          this.$Message.error(data)
+        })
     },
-    handleUnlike() {
+    handleUnlike () {
       unlike(this.answer.id)
         .then(() => {
-          this.likeTargetHanding = false;
-          this.answer.liked = false;
-          this.answer.likes_count -= 1;
+          this.likeTargetHanding = false
+          this.answer.liked = false
+          this.answer.likes_count -= 1
         })
         .catch(({ response: { data } = {} }) => {
-          this.likeTargetHanding = false;
-          this.$Message.error(data);
-        });
+          this.likeTargetHanding = false
+          this.$Message.error(data)
+        })
     },
-    handleLikeTarget() {
+    handleLikeTarget () {
       if (this.likeTargetHanding) {
-        this.$Message.warning("正在执行，请勿重复点击!");
-        return;
+        this.$Message.warning('正在执行，请勿重复点击!')
+        return
       } else if (this.answer.liked) {
-        this.handleUnlike();
-        return;
+        this.handleUnlike()
+        return
       }
-      this.handleLike();
+      this.handleLike()
     },
-    viewDetail() {
+    viewDetail () {
       this.$router.push(
         `/questions/${this.answer.question_id}/answers/${this.answer.id}`
-      );
+      )
     },
-    viewUser() {
-      if (!this.user.id) return;
-      this.$router.push(`/users/${this.user.id}`);
-    }
-  }
-};
+    viewUser () {
+      if (!this.user.id) return
+      this.$router.push(`/users/${this.user.id}`)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

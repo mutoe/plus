@@ -1,4 +1,4 @@
-import api from "../api.js";
+import api from '../api.js'
 
 /**
  * The topics API query function.
@@ -11,11 +11,11 @@ import api from "../api.js";
  * @param {string} params.name search keyword
  * @returns
  */
-export function query(params = {}) {
-  return api.get("/question-topics", {
+export function query (params = {}) {
+  return api.get('/question-topics', {
     params,
-    validateStatus: status => status === 200
-  });
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -27,8 +27,8 @@ export function query(params = {}) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function all(offset = 0, limit = 15, follow = true) {
-  return query({ offset, limit, follow });
+export function all (offset = 0, limit = 15, follow = true) {
+  return query({ offset, limit, follow })
 }
 
 /**
@@ -41,19 +41,19 @@ export function all(offset = 0, limit = 15, follow = true) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function search(name = null, offset = 0, limit = 15, follow = true) {
-  return query({ name, offset, limit, follow });
+export function search (name = null, offset = 0, limit = 15, follow = true) {
+  return query({ name, offset, limit, follow })
 }
 
-export function userQuery(params = {}) {
-  return api.get("/user/question-topics", {
+export function userQuery (params = {}) {
+  return api.get('/user/question-topics', {
     params,
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
-export function getFollowTopics(after = 0, limit = 15) {
-  return userQuery({ after, limit, type: "follow" });
+export function getFollowTopics (after = 0, limit = 15) {
+  return userQuery({ after, limit, type: 'follow' })
 }
 
 /**
@@ -62,9 +62,9 @@ export function getFollowTopics(after = 0, limit = 15) {
  * @param {number} topicId
  * @returns
  */
-export function followTopic(topicId) {
-  const url = `/user/question-topics/${topicId}`;
-  return api.put(url, {}, { validateStatus: s => s === 201 });
+export function followTopic (topicId) {
+  const url = `/user/question-topics/${topicId}`
+  return api.put(url, {}, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -74,10 +74,10 @@ export function followTopic(topicId) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function unfollowTopic(id) {
+export function unfollowTopic (id) {
   return api.delete(`/user/question-topics/${id}`, {
-    validateStatus: status => status === 204
-  });
+    validateStatus: status => status === 204,
+  })
 }
 
 /**
@@ -87,10 +87,10 @@ export function unfollowTopic(id) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function show(topic) {
+export function show (topic) {
   return api.get(`/question-topics/${topic}`, {
-    validateStatus: status => status === 200
-  });
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -103,9 +103,9 @@ export function show(topic) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function questions(topic, type, offset = 0, limit = 15) {
+export function questions (topic, type, offset = 0, limit = 15) {
   return api.get(`/question-topics/${topic}/questions`, {
     params: { type, offset, limit },
-    validateStatus: status => status === 200
-  });
+    validateStatus: status => status === 200,
+  })
 }

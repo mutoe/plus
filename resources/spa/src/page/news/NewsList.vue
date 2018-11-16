@@ -41,135 +41,135 @@
 </template>
 
 <script>
-import _ from "lodash";
-import { mapState } from "vuex";
-import NewsCard from "./components/NewsCard.vue";
-import AdCard from "./components/AdCard.vue";
-import NewsFilter from "./components/NewsFilter.vue";
-import BannerAd from "@/components/advertisement/BannerAd.vue";
+import _ from 'lodash'
+import { mapState } from 'vuex'
+import NewsCard from './components/NewsCard.vue'
+import AdCard from './components/AdCard.vue'
+import NewsFilter from './components/NewsFilter.vue'
+import BannerAd from '@/components/advertisement/BannerAd.vue'
 
 export default {
-  name: "NewsList",
+  name: 'NewsList',
   components: {
     NewsCard,
     AdCard,
     NewsFilter,
-    BannerAd
+    BannerAd,
   },
-  data() {
+  data () {
     return {
       list: [], // 混合列表
       currentCate: 0,
-      newsList: [] // 资讯列表
-    };
+      newsList: [], // 资讯列表
+    }
   },
   computed: {
     ...mapState({
       advertiseList: state => state.news.advertise.list,
       advertiseIndex: state => state.news.advertise.index,
-      newsVerified: state => state.CONFIG["news:contribute"].verified,
-      userVerify: state => state.USER_VERIFY || {}
+      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      userVerify: state => state.USER_VERIFY || {},
     }),
-    after() {
-      const len = this.newsList.length;
-      return len > 0 ? this.newsList[len - 1].id : 0;
+    after () {
+      const len = this.newsList.length
+      return len > 0 ? this.newsList[len - 1].id : 0
     },
-    isLogin() {
-      const user = this.$store.state.CURRENTUSER;
-      return Object.keys(user).length;
-    }
+    isLogin () {
+      const user = this.$store.state.CURRENTUSER
+      return Object.keys(user).length
+    },
   },
-  mounted() {
-    this.$store.dispatch("news/getAdvertise");
-    if (!this.newsList.length) this.$refs.loadmore.beforeRefresh();
-    if (this.newsVerified) this.$store.dispatch("FETCH_USER_VERIFY");
+  mounted () {
+    this.$store.dispatch('news/getAdvertise')
+    if (!this.newsList.length) this.$refs.loadmore.beforeRefresh()
+    if (this.newsVerified) this.$store.dispatch('FETCH_USER_VERIFY')
   },
   methods: {
-    onCateChange({ id = 0 } = {}) {
-      this.newsList = [];
-      this.currentCate = id;
-      this.$refs.loadmore.beforeRefresh();
+    onCateChange ({ id = 0 } = {}) {
+      this.newsList = []
+      this.currentCate = id
+      this.$refs.loadmore.beforeRefresh()
     },
-    async onRefresh(callback) {
-      this.$store.commit("news/RESET_ADVERTISE");
+    async onRefresh (callback) {
+      this.$store.commit('news/RESET_ADVERTISE')
       // GET /news
       const params =
         this.currentCate === 0
           ? { recommend: 1 }
-          : { cate_id: this.currentCate };
-      const data = await this.$store.dispatch("news/getNewsList", params);
-      this.newsList = data;
-      callback(data.length < 10);
+          : { cate_id: this.currentCate }
+      const data = await this.$store.dispatch('news/getNewsList', params)
+      this.newsList = data
+      this.$refs.loadmore.afterRefresh(data.length < 10)
 
       // 如果有广告,并且还没插入完,从广告栈顶取出一条随机插入列表
       if (this.advertiseIndex < this.advertiseList.length) {
-        let rand = ~~(Math.random() * 9) + 1;
-        rand > data.length && (rand = data.length);
-        data.splice(rand, 0, this.advertiseList[this.advertiseIndex]);
-        this.$store.commit("news/POPUP_ADVERTISE");
+        let rand = ~~(Math.random() * 9) + 1
+        rand > data.length && (rand = data.length)
+        data.splice(rand, 0, this.advertiseList[this.advertiseIndex])
+        this.$store.commit('news/POPUP_ADVERTISE')
       }
 
-      this.list = data;
+      this.list = data
     },
-    async onLoadMore(callback) {
+    async onLoadMore (callback) {
       const params =
         this.currentCate === 0
           ? { recommend: 1 }
-          : { cate_id: this.currentCate };
-      Object.assign(params, { after: this.after });
-      const data = await this.$store.dispatch("news/getNewsList", params);
-      callback(data.length < 10);
+          : { cate_id: this.currentCate }
+      Object.assign(params, { after: this.after })
+      const data = await this.$store.dispatch('news/getNewsList', params)
+      this.$refs.loadmore.afterLoadMore(data.length < 10)
 
       // 如果有广告,并且还没插入完,从广告栈顶取出一条随机插入列表
       if (this.advertiseIndex < this.advertiseList.length) {
-        let rand = ~~(Math.random() * 9) + 1;
-        rand > data.length && (rand = data.length);
-        data.splice(rand, 0, this.advertiseList[this.advertiseIndex]);
-        this.$store.commit("news/POPUP_ADVERTISE");
+        let rand = ~~(Math.random() * 9) + 1
+        rand > data.length && (rand = data.length)
+        data.splice(rand, 0, this.advertiseList[this.advertiseIndex])
+        this.$store.commit('news/POPUP_ADVERTISE')
       }
 
-      this.list = [...this.list, ...data];
+      this.list = [...this.list, ...data]
     },
     /**
      * 投稿前进行认证确认
      */
-    beforeCreatePost() {
+    beforeCreatePost () {
       // 如果后台设置了不需要验证 或 用户已经认证就直接跳转
       const noNeedVerify =
-        !this.$store.state.CONFIG["news:contribute"].verified ||
-        !_.isEmpty(this.$store.state.CURRENTUSER.verified);
-      if (noNeedVerify) return this.$router.push({ path: "/post/release" });
+        !this.$store.state.CONFIG['news:contribute'].verified ||
+        !_.isEmpty(this.$store.state.CURRENTUSER.verified)
+      if (noNeedVerify) return this.$router.push({ path: '/post/release' })
       else if (this.userVerify.status === 0) {
-        this.$Message.error("您的认证正在等待审核，通过审核后可发布帖子");
+        this.$Message.error('您的认证正在等待审核，通过审核后可发布帖子')
       } else {
         const actions = [
           {
-            text: "个人认证",
+            text: '个人认证',
             method: () =>
               this.$router.push({
-                path: "/profile/certificate",
-                query: { type: "user" }
-              })
+                path: '/profile/certificate',
+                query: { type: 'user' },
+              }),
           },
           {
-            text: "企业认证",
+            text: '企业认证',
             method: () =>
               this.$router.push({
-                path: "/profile/certificate",
-                query: { type: "org" }
-              })
-          }
-        ];
+                path: '/profile/certificate',
+                query: { type: 'org' },
+              }),
+          },
+        ]
         this.$bus.$emit(
-          "actionSheet",
+          'actionSheet',
           actions,
-          "取消",
-          "认证用户才能创建投稿，去认证？"
-        );
+          '取消',
+          '认证用户才能创建投稿，去认证？'
+        )
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

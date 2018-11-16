@@ -19,17 +19,17 @@
 
 <script>
 export default {
-  name: "CircleLoading",
+  name: 'CircleLoading',
   props: {
-    size: { type: String, default: "" },
-    color: { type: String, default: "dark" }
+    size: { type: String, default: '' },
+    color: { type: String, default: 'dark' },
   },
   computed: {
-    css() {
-      return [this.size, this.color];
-    }
-  }
-};
+    css () {
+      return [this.size, this.color]
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

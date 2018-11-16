@@ -13,52 +13,52 @@
 
 <script>
 export default {
-  name: "GroupPermission",
-  data() {
+  name: 'GroupPermission',
+  data () {
     return {
-      current: this.remote
-    };
+      current: this.remote,
+    }
   },
   computed: {
-    groupId() {
-      return this.$route.params.groupId;
+    groupId () {
+      return this.$route.params.groupId
     },
-    group() {
-      return this.$store.state.group.current;
+    group () {
+      return this.$store.state.group.current
     },
-    remote() {
-      let permissions = this.group.permissions || "";
-      permissions = permissions.split(",");
-      if (permissions.includes("member")) return "member";
-      else if (permissions.includes("administrator")) return "manager";
-      return "founder";
-    }
+    remote () {
+      let permissions = this.group.permissions || ''
+      permissions = permissions.split(',')
+      if (permissions.includes('member')) return 'member'
+      else if (permissions.includes('administrator')) return 'manager'
+      return 'founder'
+    },
   },
   watch: {
-    current(val, oldVal) {
-      this.current = val;
-      if (!oldVal) return;
-      this.switch(val);
+    current (val, oldVal) {
+      this.current = val
+      if (!oldVal) return
+      this.switch(val)
     },
-    remote(val) {
-      this.current = val;
-    }
+    remote (val) {
+      this.current = val
+    },
   },
-  mounted() {
-    this.current = this.remote;
+  mounted () {
+    this.current = this.remote
   },
   methods: {
-    switch(role) {
-      let permissions = ["founder"];
-      if (role === "manager") permissions.push("administrator");
-      if (role === "member") permissions.push("member", "administrator");
-      this.$store.dispatch("group/changePermissions", {
+    switch (role) {
+      let permissions = ['founder']
+      if (role === 'manager') permissions.push('administrator')
+      if (role === 'member') permissions.push('member', 'administrator')
+      this.$store.dispatch('group/changePermissions', {
         groupId: this.groupId,
-        permissions
-      });
-    }
-  }
-};
+        permissions,
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

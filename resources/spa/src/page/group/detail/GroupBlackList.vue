@@ -23,78 +23,78 @@
 </template>
 
 <script>
-import _ from "lodash";
-import SearchBar from "@/components/common/SearchBar.vue";
-import GroupUserItem from "../components/GroupUserItem.vue";
+import _ from 'lodash'
+import SearchBar from '@/components/common/SearchBar.vue'
+import GroupUserItem from '../components/GroupUserItem.vue'
 
 export default {
-  name: "GroupBlackList",
+  name: 'GroupBlackList',
   components: { SearchBar, GroupUserItem },
-  data() {
+  data () {
     return {
-      keyword: "",
+      keyword: '',
       blackList: [],
-      searchList: []
-    };
+      searchList: [],
+    }
   },
   computed: {
-    group() {
-      return this.$store.state.group.current;
+    group () {
+      return this.$store.state.group.current
     },
-    groupId() {
-      return Number(this.$route.params.groupId);
-    }
+    groupId () {
+      return Number(this.$route.params.groupId)
+    },
   },
   watch: {
-    keyword(val, oldVal) {
-      if (val.trim() === "") return (this.searchList = []);
-      if (val.trim() === oldVal.trim()) return;
-      this.searchUser(val);
-    }
+    keyword (val, oldVal) {
+      if (val.trim() === '') return (this.searchList = [])
+      if (val.trim() === oldVal.trim()) return
+      this.searchUser(val)
+    },
   },
-  mounted() {
-    if (!this.group.id) this.fetchGroup();
-    this.fetchMembers();
+  mounted () {
+    if (!this.group.id) this.fetchGroup()
+    this.fetchMembers()
   },
   methods: {
-    async fetchMembers() {
-      const data = await this.$store.dispatch("group/getMembers", {
+    async fetchMembers () {
+      const data = await this.$store.dispatch('group/getMembers', {
         groupId: this.groupId,
-        type: "blacklist",
-        limit: 100
-      });
-      this.blackList = data;
+        type: 'blacklist',
+        limit: 100,
+      })
+      this.blackList = data
     },
-    fetchGroup() {
-      this.$store.dispatch("group/getGroupById", { groupId: this.groupId });
+    fetchGroup () {
+      this.$store.dispatch('group/getGroupById', { groupId: this.groupId })
     },
-    searchUser: _.debounce(async function(keyword) {
-      this.searchList = [];
-      const result = await this.$store.dispatch("group/getMembers", {
+    searchUser: _.debounce(async function (keyword) {
+      this.searchList = []
+      const result = await this.$store.dispatch('group/getMembers', {
         groupId: this.groupId,
         name: keyword,
-        type: "blacklist"
-      });
-      this.searchList = result;
+        type: 'blacklist',
+      })
+      this.searchList = result
     }, 450),
-    onMoreClick(memberId) {
-      const actions = [];
+    onMoreClick (memberId) {
+      const actions = []
       actions.push({
-        text: "移出黑名单",
+        text: '移出黑名单',
         method: async () => {
-          await this.$store.dispatch("group/moveoutBlackList", {
+          await this.$store.dispatch('group/moveoutBlackList', {
             groupId: this.groupId,
-            memberId
-          });
-          this.blackList = this.blackList.filter(m => m.id !== memberId);
-          this.$Message.success("操作成功");
-          this.fetchMembers();
-        }
-      });
-      this.$bus.$emit("actionSheet", actions);
-    }
-  }
-};
+            memberId,
+          })
+          this.blackList = this.blackList.filter(m => m.id !== memberId)
+          this.$Message.success('操作成功')
+          this.fetchMembers()
+        },
+      })
+      this.$bus.$emit('actionSheet', actions)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

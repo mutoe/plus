@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import TextareaInput from "@/components/common/TextareaInput.vue";
+import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
-  name: "FormInputItem",
+  name: 'FormInputItem',
   components: { TextareaInput },
   props: {
-    value: { type: String, default: "" },
+    value: { type: String, default: '' },
     label: { type: String, required: true },
     readonly: { type: Boolean, default: false },
 
@@ -44,29 +44,29 @@ export default {
      */
     type: {
       type: String,
-      default: "input",
+      default: 'input',
       validator: value => {
-        return ["input", "textarea"].includes(value);
-      }
+        return ['input', 'textarea'].includes(value)
+      },
     },
     maxlength: { type: [Number, String], default: null },
     warnlength: { type: [Number, String], default: null },
-    placeholder: { type: String, default: "" }
+    placeholder: { type: String, default: '' },
   },
-  data() {
+  data () {
     return {
-      textareaContent: ""
-    };
-  },
-  watch: {
-    textareaContent(val) {
-      this.$emit("input", val);
+      textareaContent: '',
     }
   },
-  mounted() {
-    this.textareaContent = this.value || "";
-  }
-};
+  watch: {
+    textareaContent (val) {
+      this.$emit('input', val)
+    },
+  },
+  mounted () {
+    this.textareaContent = this.value || ''
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -18,34 +18,34 @@
 
 <script>
 export default {
-  name: "FormTagsItem",
+  name: 'FormTagsItem',
   props: {
     value: { type: Array, default: () => [] },
-    label: { type: String, default: "标签" },
-    readonly: { type: Boolean, default: false }
+    label: { type: String, default: '标签' },
+    readonly: { type: Boolean, default: false },
   },
   methods: {
-    switchTags() {
-      if (this.readonly) return;
-      const chooseTags = this.value.map(t => t.id);
+    switchTags () {
+      if (this.readonly) return
+      const chooseTags = this.value.map(t => t.id)
       const nextStep = tags => {
-        this.$emit("input", tags);
-      };
+        this.$emit('input', tags)
+      }
       const onSelect = tagId => {
-        this.$emit("select", tagId);
-      };
+        this.$emit('select', tagId)
+      }
       const onRemove = tagId => {
-        this.$emit("delete", tagId);
-      };
-      this.$bus.$emit("choose-tags", {
+        this.$emit('delete', tagId)
+      }
+      this.$bus.$emit('choose-tags', {
         chooseTags,
         nextStep,
         onSelect,
-        onRemove
-      });
-    }
-  }
-};
+        onRemove,
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

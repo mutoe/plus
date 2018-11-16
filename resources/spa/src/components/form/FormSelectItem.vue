@@ -12,21 +12,21 @@
 
 <script>
 export default {
-  name: "FormSelectItem",
+  name: 'FormSelectItem',
   props: {
-    value: { type: [String, Number], default: "" },
-    label: { type: String, default: "" },
-    placeholder: { type: String, default: "" },
+    value: { type: [String, Number], default: '' },
+    label: { type: String, default: '' },
+    placeholder: { type: String, default: '' },
     multiline: { type: Boolean, default: false },
-    readonly: { type: Boolean, default: false }
+    readonly: { type: Boolean, default: false },
   },
   methods: {
-    onClick() {
-      if (this.readonly) return;
-      this.$emit("click");
-    }
-  }
-};
+    onClick () {
+      if (this.readonly) return
+      this.$emit('click')
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

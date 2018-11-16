@@ -37,14 +37,14 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "GroupPostItem",
+  name: 'GroupPostItem',
   props: {
-    like: { type: Object, default: () => {} }
+    like: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     /**
@@ -63,9 +63,9 @@ export default {
     //   }
     //   return false;
     // }
-    user() {
-      return this.like.user || {};
-    }
+    user () {
+      return this.like.user || {}
+    },
   },
   methods: {
     /**
@@ -75,12 +75,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        likeable: { id = 0 }
-      } = this.like;
-      this.$router.push(`/feeds/${id}`);
-    }
-  }
-};
+        likeable: { id = 0 },
+      } = this.like
+      this.$router.push(`/feeds/${id}`)
+    },
+  },
+}
 </script>

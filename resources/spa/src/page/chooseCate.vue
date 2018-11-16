@@ -20,44 +20,44 @@
 
 <script>
 export default {
-  name: "ChooseCate",
-  data() {
+  name: 'ChooseCate',
+  data () {
     return {
       show: false,
-      cates: []
-    };
+      cates: [],
+    }
   },
-  created() {
-    this.fetchCates();
-    this.$bus.$on("choose-cate", callback => {
-      typeof callback === "function" && (this.callback = callback);
-      this.show = true;
-      this.scrollable = false;
-    });
+  created () {
+    this.fetchCates()
+    this.$bus.$on('choose-cate', callback => {
+      typeof callback === 'function' && (this.callback = callback)
+      this.show = true
+      this.scrollable = false
+    })
   },
-  beforeDestroy() {
-    this.$bus.$off("choose-cate");
+  beforeDestroy () {
+    this.$bus.$off('choose-cate')
   },
   methods: {
-    callback() {},
-    selected(cate) {
-      typeof this.callback === "function" && this.callback(cate);
-      this.cancel();
+    callback () {},
+    selected (cate) {
+      typeof this.callback === 'function' && this.callback(cate)
+      this.cancel()
     },
-    cancel() {
-      this.show = false;
-      this.scrollable = true;
+    cancel () {
+      this.show = false
+      this.scrollable = true
     },
-    fetchCates() {
+    fetchCates () {
       // GET /news/cates
       this.$http
         .get(`/news/cates`)
-        .then(({ data: { my_cates = [], more_cates = [] } }) => {
-          this.cates = [...my_cates, ...more_cates];
-        });
-    }
-  }
-};
+        .then(({ data: { my_cates: myCates = [], more_cates: moreCates = [] } }) => {
+          this.cates = [...myCates, ...moreCates]
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -63,120 +63,120 @@
 </template>
 
 <script>
-import { signinByAccount } from "@/api/user.js";
-import { generateString } from "@/util";
+import { signinByAccount } from '@/api/user.js'
+import { generateString } from '@/util'
 
 export default {
-  name: "Signin",
-  data() {
+  name: 'Signin',
+  data () {
     return {
-      err: "",
-      account: "",
-      code: "",
+      err: '',
+      account: '',
+      code: '',
       loading: false,
       codeLoading: false,
       countdown: 0,
-      isRegister: false
-    };
+      isRegister: false,
+    }
   },
   computed: {
-    disabled() {
+    disabled () {
       return (
         this.account.length !== 11 ||
         this.code.length < 4 ||
         this.code.length > 6 ||
         this.loading
-      );
+      )
     },
-    disabledCode() {
-      return this.account.length !== 11 || this.countdown || this.codeLoading;
+    disabledCode () {
+      return this.account.length !== 11 || this.countdown || this.codeLoading
     },
-    codeText() {
-      return this.countdown > 0 ? `${this.countdown}s后重发` : "获取验证码";
-    }
+    codeText () {
+      return this.countdown > 0 ? `${this.countdown}s后重发` : '获取验证码'
+    },
   },
   methods: {
-    countDown() {
+    countDown () {
       const t = setInterval(() => {
         if (--this.countdown <= 0) {
-          this.countdown = 0;
-          clearInterval(t);
+          this.countdown = 0
+          clearInterval(t)
         }
-      }, 1000);
+      }, 1000)
     },
-    beforeGetCode() {
-      if (this.disabledCode) return;
-      this.codeLoading = true;
+    beforeGetCode () {
+      if (this.disabledCode) return
+      this.codeLoading = true
       this.$http
         .get(`/users/${this.account}`, {
-          validateStatus: s => s === 200 || s === 404
+          validateStatus: s => s === 200 || s === 404,
         })
         .then(({ data: user = {} }) => {
-          if (user.id) this.isRegister = false;
-          else this.isRegister = true;
-          this.getCode();
+          if (user.id) this.isRegister = false
+          else this.isRegister = true
+          this.getCode()
         })
         .catch(err => {
-          this.codeLoading = false;
-          return Promise.reject(err);
-        });
+          this.codeLoading = false
+          return Promise.reject(err)
+        })
     },
-    getCode() {
-      let param = { phone: this.account };
-      const url = this.isRegister ? "/verifycodes/register" : "/verifycodes";
+    getCode () {
+      let param = { phone: this.account }
+      const url = this.isRegister ? '/verifycodes/register' : '/verifycodes'
       this.$http
         .post(url, param, { validateStatus: s => s === 202 })
         .then(() => {
-          this.countdown = 60;
-          this.countDown();
+          this.countdown = 60
+          this.countDown()
         })
         .finally(() => {
-          this.codeLoading = false;
-        });
+          this.codeLoading = false
+        })
     },
-    signinByCode() {
-      this.loading = true;
+    signinByCode () {
+      this.loading = true
 
       signinByAccount({
         login: this.account,
-        verifiable_code: this.code
+        verifiable_code: this.code,
       }).then(state => {
-        this.loading = false;
+        this.loading = false
         state &&
           this.$nextTick(() => {
-            this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
-          });
-      });
+            this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
+          })
+      })
     },
-    signupByCode() {
-      this.loading = true;
+    signupByCode () {
+      this.loading = true
       const params = {
-        name: "用户" + generateString(6),
+        name: '用户' + generateString(6),
         phone: this.account,
-        verifiable_type: "sms",
-        verifiable_code: this.code
-      };
+        verifiable_type: 'sms',
+        verifiable_code: this.code,
+      }
       this.$http
-        .post("/users", params)
+        .post('/users', params)
         .then(({ data: { token } }) => {
           if (token) {
-            this.$Message.success("注册成功");
-            this.$lstore.setData("H5_ACCESS_TOKEN", `Bearer ${token}`);
-            this.$store.dispatch("fetchUserInfo");
+            this.$Message.success('注册成功')
+            this.$lstore.setData('H5_ACCESS_TOKEN', `Bearer ${token}`)
+            this.$store.dispatch('fetchUserInfo')
             this.$nextTick(() => {
-              this.$router.push("/");
-            });
+              this.$router.push('/')
+            })
           }
         })
         .catch(err => {
-          this.$Message.error(err.response.data);
+          this.$Message.error(err.response.data)
         })
         .finally(() => {
-          this.loading = false;
-        });
-    }
-  }
-};
+          this.loading = false
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

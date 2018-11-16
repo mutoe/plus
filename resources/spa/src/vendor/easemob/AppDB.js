@@ -129,9 +129,9 @@ const AppDB = {
             return false;
           }
           if (chatType === "chat") {
-            return item.from == id || item.to == id;
+            return item.from === id || item.to === id;
           } else {
-            return item.to == id;
+            return item.to === id;
           }
         })
         .reverse()

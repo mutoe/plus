@@ -58,7 +58,6 @@
             </p>
           </template>
 
-
         </div>
         <div class="plr20 m-lim-width" style="margin-top: 0.6rem">
           <button
@@ -78,13 +77,13 @@
 </template>
 
 <script>
-import { noop } from "@/util";
-import PasswordConfirm from "@/components/common/PasswordConfirm.vue";
+import { noop } from '@/util'
+import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 
 export default {
-  name: "ApplyTop",
+  name: 'ApplyTop',
   components: { PasswordConfirm },
-  data() {
+  data () {
     return {
       day: 0,
       show: false,
@@ -92,36 +91,36 @@ export default {
       loading: false,
       customAmount: null,
       isOwner: false,
-      applyType: "", // 申请置顶的类型
+      applyType: '', // 申请置顶的类型
       applyApi: noop, // 申请置顶的api 类型是一个 Promise 对象
       applyPayload: {}, // 申请置顶的负载数据，如feedID等
-      applyCallback: noop
-    };
+      applyCallback: noop,
+    }
   },
   computed: {
-    amount() {
-      return this.day * this.customAmount;
+    amount () {
+      return this.day * this.customAmount
     },
-    items() {
-      return [1, 5, 10];
+    items () {
+      return [1, 5, 10]
     },
-    disabled() {
-      return this.amount < 0;
+    disabled () {
+      return this.amount < 0
     },
-    currency() {
-      const currency = this.$store.state.CURRENTUSER.currency || {};
-      return currency.sum || 0;
+    currency () {
+      const currency = this.$store.state.CURRENTUSER.currency || {}
+      return currency.sum || 0
     },
-    isManager() {
-      return this.applyType === "post-manager";
-    }
+    isManager () {
+      return this.applyType === 'post-manager'
+    },
   },
   watch: {
-    $route(to, from) {
-      if (to !== from) this.cancel();
-    }
+    $route (to, from) {
+      if (to !== from) this.cancel()
+    },
   },
-  created() {
+  created () {
     /**
      * 弹出申请置顶窗口 (hooks -> applyTop)
      * @author mutoe <mutoe@foxmail.com>
@@ -132,73 +131,73 @@ export default {
      * @param {boolean} [options.isOwner = false] 是否是文章的所有者
      * @param {requestCallback} [options.callback = noop] 申请置顶成功后执行的回调方法
      */
-    this.$bus.$on("applyTop", options => {
-      const { type, api, payload, isOwner = false, callback = noop } = options;
-      this.applyType = type;
-      this.applyApi = api;
-      this.applyPayload = payload;
-      this.isOwner = isOwner;
-      this.applyCallback = callback || noop;
-      this.open();
-    });
+    this.$bus.$on('applyTop', options => {
+      const { type, api, payload, isOwner = false, callback = noop } = options
+      this.applyType = type
+      this.applyApi = api
+      this.applyPayload = payload
+      this.isOwner = isOwner
+      this.applyCallback = callback || noop
+      this.open()
+    })
   },
   methods: {
-    showPasswordConfirm() {
+    showPasswordConfirm () {
       if (this.currency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`);
-        this.cancel();
-        return this.$router.push({ name: "currencyRecharge" });
+        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.cancel()
+        return this.$router.push({ name: 'currencyRecharge' })
       }
-      if (this.isManager) this.applyTop();
-      else this.$refs.password.show();
+      if (this.isManager) this.applyTop()
+      else this.$refs.password.show()
     },
-    applyTop(password) {
-      if (this.loading || !this.applyType) return;
-      this.loading = true;
+    applyTop (password) {
+      if (this.loading || !this.applyType) return
+      this.loading = true
       const params = {
         amount: ~~this.amount,
         day: this.day,
-        password
-      };
+        password,
+      }
 
       this.applyApi(this.applyPayload, params)
         .then(({ data = {} }) => {
-          this.loading = false;
-          this.$Message.success(data);
-          this.applyCallback();
-          this.$nextTick(this.cancel);
+          this.loading = false
+          this.$Message.success(data)
+          this.applyCallback()
+          this.$nextTick(this.cancel)
         })
         .catch(err => {
-          this.loading = false;
-          this.$Message.error(err.response.data);
-        });
+          this.loading = false
+          this.$Message.error(err.response.data)
+        })
     },
-    chooseDefaultDay(day) {
-      this.day = day;
+    chooseDefaultDay (day) {
+      this.day = day
     },
-    resetProps() {
-      this.day = this.items[0];
+    resetProps () {
+      this.day = this.items[0]
     },
-    async open() {
-      this.show = true;
-      this.scrollable = false;
-      const { currency } = await this.$store.dispatch("fetchUserInfo");
-      this.currencySum = currency.sum || 0;
-      this.day = this.items[0];
+    async open () {
+      this.show = true
+      this.scrollable = false
+      const { currency } = await this.$store.dispatch('fetchUserInfo')
+      this.currencySum = currency.sum || 0
+      this.day = this.items[0]
     },
-    cancel() {
-      this.show = false;
-      this.day = null;
-      this.customAmount = null;
-      this.scrollable = true;
-      this.isOwner = false;
-      this.applyType = "";
-      this.applyApi = noop;
-      this.applyPayload = {};
-      this.applyCallback = noop;
-    }
-  }
-};
+    cancel () {
+      this.show = false
+      this.day = null
+      this.customAmount = null
+      this.scrollable = true
+      this.isOwner = false
+      this.applyType = ''
+      this.applyApi = noop
+      this.applyPayload = {}
+      this.applyCallback = noop
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

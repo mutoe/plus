@@ -80,7 +80,7 @@ export function startSingleChat(option) {
 
 export async function generateMessage(message) {
   const { to, from, type, delay } = message;
-  const bySelf = lstore.getData("H5_CUR_USER").id == from;
+  const bySelf = lstore.getData("H5_CUR_USER").id === from;
   const info =
     type === "chat" ? await getUserInfoById(from) : await getGroupInfo(to);
   const user =

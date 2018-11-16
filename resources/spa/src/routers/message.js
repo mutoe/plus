@@ -7,152 +7,152 @@
  */
 
 const notification = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/list/MyNotifications.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyNotifications.vue')
 const msgComments = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/list/MyComments.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyComments.vue')
 const msgLikes = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/list/MyLikes.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyLikes.vue')
 const AuditList = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/list/AuditList");
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/AuditList')
 const feedCommentAudit = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/feedCommentAudit");
+  import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/feedCommentAudit')
 const newsCommentAudit = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/newsCommentAudit");
+  import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/newsCommentAudit')
 const groupPostAudit = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/groupPostAudit");
+  import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/groupPostAudit')
 const groupCommentAudit = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/groupCommentAudit");
+  import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/groupCommentAudit')
 const groupJoinAudit = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message/children/audits/groupJoinAudit");
+  import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/groupJoinAudit')
 
 const chatList = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message2/chat/chat-list.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-list.vue')
 const chatRoom = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message2/chat/chat-room.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-room.vue')
 
 // 通知
 const MessageIndex = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message2/index.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message2/index.vue')
 const info = () =>
-  import(/* webpackChunkName: 'message' */ "@/page/message2/info/index.vue");
+  import(/* webpackChunkName: 'message' */ '@/page/message2/info/index.vue')
 
 export default [
   {
-    path: "/message",
+    path: '/message',
     component: MessageIndex,
-    redirect: "/message/info",
+    redirect: '/message/info',
     meta: {
-      title: "消息",
-      requiresAuth: true
+      title: '消息',
+      requiresAuth: true,
     },
     children: [
       {
-        path: "info",
+        path: 'info',
         component: info,
         meta: {
-          title: "消息",
-          requiresAuth: true
-        }
+          title: '消息',
+          requiresAuth: true,
+        },
       },
       {
-        path: "chats",
+        path: 'chats',
         component: chatList,
         meta: {
-          title: "聊天",
-          requiresAuth: true
-        }
-      }
-    ]
+          title: '聊天',
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
-    path: "/chats/:chatID(\\d+)",
+    path: '/chats/:chatID(\\d+)',
     component: chatRoom,
     meta: {
-      title: "对话",
-      requiresAuth: true
-    }
+      title: '对话',
+      requiresAuth: true,
+    },
   },
   {
-    path: "/message/notification",
+    path: '/message/notification',
     component: notification,
     meta: {
-      title: "通知",
-      requiresAuth: true
-    }
+      title: '通知',
+      requiresAuth: true,
+    },
   },
   {
-    path: "/message/comments",
+    path: '/message/comments',
     component: msgComments,
     meta: {
-      title: "评论我的",
-      requiresAuth: true
-    }
+      title: '评论我的',
+      requiresAuth: true,
+    },
   },
   {
-    path: "/message/likes",
+    path: '/message/likes',
     component: msgLikes,
     meta: {
-      title: "赞过我的",
-      requiresAuth: true
-    }
+      title: '赞过我的',
+      requiresAuth: true,
+    },
   },
   {
-    path: "/message/audits",
+    path: '/message/audits',
     component: AuditList,
     meta: {
-      title: "审核列表",
-      requiresAuth: true
-    }
+      title: '审核列表',
+      requiresAuth: true,
+    },
   },
   {
-    path: "/message/audits",
+    path: '/message/audits',
     component: AuditList,
-    redirect: "/message/audits/feedcomments",
+    redirect: '/message/audits/feedcomments',
     meta: {
-      title: "审核列表",
-      requiresAuth: true
+      title: '审核列表',
+      requiresAuth: true,
     },
     children: [
       {
-        name: "auditFeedComments",
-        path: "feedcomments",
+        name: 'auditFeedComments',
+        path: 'feedcomments',
         component: feedCommentAudit,
         meta: {
-          title: "动态评论置顶"
-        }
+          title: '动态评论置顶',
+        },
       },
       {
-        name: "auditNewsComments",
-        path: "newscomments",
+        name: 'auditNewsComments',
+        path: 'newscomments',
         component: newsCommentAudit,
         meta: {
-          title: "文章评论置顶"
-        }
+          title: '文章评论置顶',
+        },
       },
       {
-        name: "auditGroupPosts",
-        path: "groupposts",
+        name: 'auditGroupPosts',
+        path: 'groupposts',
         component: groupPostAudit,
         meta: {
-          title: "帖子评论置顶"
-        }
+          title: '帖子评论置顶',
+        },
       },
       {
-        name: "auditGroupComments",
-        path: "groupcomments",
+        name: 'auditGroupComments',
+        path: 'groupcomments',
         component: groupCommentAudit,
         meta: {
-          title: "帖子置顶"
-        }
+          title: '帖子置顶',
+        },
       },
       {
-        name: "auditGroupJoins",
-        path: "groupjoins",
+        name: 'auditGroupJoins',
+        path: 'groupjoins',
         component: groupJoinAudit,
         meta: {
-          title: "圈子加入申请"
-        }
-      }
-    ]
-  }
-];
+          title: '圈子加入申请',
+        },
+      },
+    ],
+  },
+]

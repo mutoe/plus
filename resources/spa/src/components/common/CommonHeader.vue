@@ -17,21 +17,21 @@
 </template>
 
 <script>
-import { noop } from "@/util";
+import { noop } from '@/util'
 
 export default {
-  name: "CommonHeader",
+  name: 'CommonHeader',
   props: {
     back: { type: Function, default: noop },
-    pinned: { type: Boolean, default: false }
+    pinned: { type: Boolean, default: false },
   },
   methods: {
-    onBackClick() {
-      if (this.back === noop) this.goBack();
-      else this.back();
-    }
-  }
-};
+    onBackClick () {
+      if (this.back === noop) this.goBack()
+      else this.back()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

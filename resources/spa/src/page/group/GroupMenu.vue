@@ -8,32 +8,32 @@
 </template>
 <script>
 export default {
-  name: "GroupMenu",
+  name: 'GroupMenu',
   props: {
     value: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data() {
+  data () {
     return {
-      open: false
-    };
+      open: false,
+    }
   },
   computed: {
     // 侧边栏相关
-    menuStyle() {
+    menuStyle () {
       return {
-        transform: `translateX(${this.open ? 0 : (400 / 750) * 100 + "%"})`,
+        transform: `translateX(${this.open ? 0 : (400 / 750) * 100 + '%'})`,
         transition: `all .5s ease`,
-        zIndex: this.open ? 99 : -99
-      };
-    }
+        zIndex: this.open ? 99 : -99,
+      }
+    },
   },
   methods: {
-    showMenu() {
-      this.$emit("input", !this.value);
-    }
-  }
-};
+    showMenu () {
+      this.$emit('input', !this.value)
+    },
+  },
+}
 </script>

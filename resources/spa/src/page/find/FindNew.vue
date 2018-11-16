@@ -11,36 +11,36 @@
   </jo-load-more>
 </template>
 <script>
-import UserItem from "@/components/UserItem.vue";
-import { findUserByType } from "@/api/user.js";
+import UserItem from '@/components/UserItem.vue'
+import { findUserByType } from '@/api/user.js'
 export default {
-  name: "FindPop",
+  name: 'FindPop',
   components: {
-    UserItem
+    UserItem,
   },
-  data() {
+  data () {
     return {
-      users: []
-    };
+      users: [],
+    }
   },
-  activated() {
-    this.$refs.loadmore.beforeRefresh();
+  activated () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh(callback) {
-      findUserByType("latests").then(({ data: users } = {}) => {
-        users && (this.users = users);
-        callback(users.length < 15);
-      });
+    onRefresh () {
+      findUserByType('latests').then(({ data: users } = {}) => {
+        users && (this.users = users)
+        this.$refs.loadmore.afterRefresh(users.length < 15)
+      })
     },
-    onLoadMore(callback) {
-      findUserByType("latests", {
-        offset: this.users.length
+    onLoadMore () {
+      findUserByType('latests', {
+        offset: this.users.length,
       }).then(({ data: users }) => {
-        this.users = [...this.users, ...users];
-        callback(users.length < 15);
-      });
-    }
-  }
-};
+        this.users = [...this.users, ...users]
+        this.$refs.loadmore.afterLoadmore(users.length < 15)
+      })
+    },
+  },
+}
 </script>

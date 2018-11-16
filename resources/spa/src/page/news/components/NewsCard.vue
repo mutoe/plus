@@ -20,45 +20,45 @@
 
 <script>
 export default {
-  name: "NewsCard",
+  name: 'NewsCard',
   props: {
     currentCate: { type: Number, default: 0 },
-    news: { type: Object, required: true }
+    news: { type: Object, required: true },
   },
-  data() {
+  data () {
     return {
       hits: 0,
       cate: null,
       image: null,
       title: null,
       author: null,
-      time: ""
-    };
+      time: '',
+    }
   },
-  mounted() {
-    this.formatData();
+  mounted () {
+    this.formatData()
   },
   methods: {
-    formatData() {
+    formatData () {
       const {
         hits = 0,
-        author = "",
+        author = '',
         image = {},
-        title = "",
+        title = '',
         created_at: createdAt,
-        category = {}
-      } = this.news;
-      this.hits = hits;
-      this.title = title;
-      this.author = author;
-      this.time = createdAt;
-      this.cate = category.name;
+        category = {},
+      } = this.news
+      this.hits = hits
+      this.title = title
+      this.author = author
+      this.time = createdAt
+      this.cate = category.name
       this.image = image
         ? `${this.$http.defaults.baseURL}/files/${image.id}?w=190&h=135`
-        : null;
-    }
-  }
-};
+        : null
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

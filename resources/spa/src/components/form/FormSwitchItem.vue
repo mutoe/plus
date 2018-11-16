@@ -15,27 +15,27 @@
 
 <script>
 export default {
-  name: "FormSwitchItem",
+  name: 'FormSwitchItem',
   props: {
     value: { type: Boolean, default: false },
-    label: { type: String, default: "" }
+    label: { type: String, default: '' },
   },
-  data() {
+  data () {
     return {
-      currentValue: this.value
-    };
+      currentValue: this.value,
+    }
   },
   watch: {
-    currentValue(val) {
-      this.$emit("input", val);
-    }
+    currentValue (val) {
+      this.$emit('input', val)
+    },
   },
   methods: {
-    onClick() {
-      this.$refs.label.click();
-    }
-  }
-};
+    onClick () {
+      this.$refs.label.click()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

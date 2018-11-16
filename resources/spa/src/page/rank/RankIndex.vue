@@ -35,24 +35,24 @@
 </template>
 
 <script>
-import HeadTop from "../../components/HeadTop";
+import HeadTop from '../../components/HeadTop'
 export default {
-  name: "RankIndex",
+  name: 'RankIndex',
   components: {
-    HeadTop
+    HeadTop,
   },
   methods: {
-    cancel() {
-      this.to("/discover");
+    cancel () {
+      this.to('/discover')
     },
-    to(path) {
-      path = typeof path === "string" ? { path } : path;
+    to (path) {
+      path = typeof path === 'string' ? { path } : path
       if (path) {
-        this.$router.push(path);
+        this.$router.push(path)
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang='less' scoped>

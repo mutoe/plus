@@ -34,39 +34,38 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "WalletInfo",
+  name: 'WalletInfo',
   filters: {
-    postfix(val, pos) {
-      if (!val) return "0.00";
-      return val.toFixed(pos);
-    }
+    postfix (val, pos) {
+      if (!val) return '0.00'
+      return val.toFixed(pos)
+    },
   },
-  data() {
+  data () {
     return {
       // detail: {}
-    };
-  },
-  computed: {
-    ...mapState({ wallet: "wallet" }),
-    id() {
-      return Number(this.$route.params.id);
-    },
-    detail() {
-      return this.$store.getters["wallet/getWalletById"](this.id);
-    },
-    user() {
-      return this.$store.state.CURRENTUSER;
     }
   },
-  mounted() {
-    if (!this.wallet.list.length)
-      this.$store.dispatch("wallet/getWalletOrders");
+  computed: {
+    ...mapState({ wallet: 'wallet' }),
+    id () {
+      return Number(this.$route.params.id)
+    },
+    detail () {
+      return this.$store.getters['wallet/getWalletById'](this.id)
+    },
+    user () {
+      return this.$store.state.CURRENTUSER
+    },
   },
-  methods: {}
-};
+  mounted () {
+    if (!this.wallet.list.length) { this.$store.dispatch('wallet/getWalletOrders') }
+  },
+  methods: {},
+}
 </script>
 
 <style lang="less" scoped>

@@ -39,26 +39,26 @@
 
 <script>
 export default {
-  name: "TopicCard",
+  name: 'TopicCard',
   props: {
     topic: { type: Object, required: true },
-    type: { type: String, default: "hot" }
+    type: { type: String, default: 'hot' },
   },
   computed: {
-    avatar() {
-      const avatar = this.topic.avatar || {};
-      return avatar.url || null;
-    }
+    avatar () {
+      const avatar = this.topic.avatar || {}
+      return avatar.url || null
+    },
   },
   methods: {
-    handleUnfollow(topic) {
-      this.$emit("unfollow", topic);
+    handleUnfollow (topic) {
+      this.$emit('unfollow', topic)
     },
-    handleFollow(topic) {
-      this.$emit("follow", topic);
-    }
-  }
-};
+    handleFollow (topic) {
+      this.$emit('follow', topic)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

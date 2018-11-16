@@ -21,20 +21,20 @@
 </template>
 
 <script>
-import "c-swipe/dist/swipe.css";
-import { Swipe, SwipeItem } from "c-swipe";
-import * as bootApi from "@/api/bootstrappers.js";
+import 'c-swipe/dist/swipe.css'
+import { Swipe, SwipeItem } from 'c-swipe'
+import * as bootApi from '@/api/bootstrappers.js'
 
 /**
  * 广告位类型映射表
  */
 const adMap = {
-  "feed:hot": "feed:list:top",
-  news: "news:list:top"
-};
+  'feed:hot': 'feed:list:top',
+  news: 'news:list:top',
+}
 
 export default {
-  name: "BannerAd",
+  name: 'BannerAd',
   components: { Swipe, SwipeItem },
   props: {
     /**
@@ -45,41 +45,41 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: val => Object.keys(adMap).includes(val)
+      validator: val => Object.keys(adMap).includes(val),
     },
     /**
      * 轮播图轮询时间 ms
      * @type {number}
      */
-    loopTime: { type: Number, default: 3000 }
+    loopTime: { type: Number, default: 3000 },
   },
-  data() {
+  data () {
     return {
-      list: [] // 轮播图列表
-    };
+      list: [], // 轮播图列表
+    }
   },
   computed: {
     /**
      * 顶部 banner 广告列表
      * @returns {number}
      */
-    adTypeId() {
-      const adType = this.$store.getters.getAdTypeBySpace(adMap[this.type]);
-      return adType.id;
-    }
+    adTypeId () {
+      const adType = this.$store.getters.getAdTypeBySpace(adMap[this.type])
+      return adType.id
+    },
   },
-  mounted() {
-    this.fetchList();
+  mounted () {
+    this.fetchList()
   },
   methods: {
-    fetchList() {
+    fetchList () {
       // TODO: @mutoe [api] refactor there with vuex action
       bootApi.getAdsById(this.adTypeId).then(({ data }) => {
-        this.list = data.sort((a, b) => a.sort < b.sort);
-      });
-    }
-  }
-};
+        this.list = data.sort((a, b) => a.sort < b.sort)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

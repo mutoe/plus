@@ -10,21 +10,21 @@
 </template>
 
 <script>
-import md from "@/util/markdown";
+import md from '@/util/markdown'
 
 export default {
-  name: "AboutUs",
+  name: 'AboutUs',
   computed: {
-    aboutUs() {
-      const { aboutUs = {} } = this.$store.state.CONFIG.site;
-      return aboutUs;
+    aboutUs () {
+      const { aboutUs = {} } = this.$store.state.CONFIG.site
+      return aboutUs
     },
-    body() {
-      const content = this.aboutUs.content || "";
-      return md(content);
-    }
-  }
-};
+    body () {
+      const content = this.aboutUs.content || ''
+      return md(content)
+    },
+  },
+}
 </script>
 
 <style lang='less' scoped>

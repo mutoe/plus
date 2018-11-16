@@ -70,18 +70,18 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import GroupItem from "./components/GroupItem.vue";
-import DetailAd from "@/components/advertisement/DetailAd.vue";
-import * as api from "@/api/group.js";
+import { mapState } from 'vuex'
+import GroupItem from './components/GroupItem.vue'
+import DetailAd from '@/components/advertisement/DetailAd.vue'
+import * as api from '@/api/group.js'
 
 export default {
-  name: "GroupHome",
+  name: 'GroupHome',
   components: {
     GroupItem,
-    DetailAd
+    DetailAd,
   },
-  data() {
+  data () {
     return {
       myGroups: new Map(),
       recGroups: [],
@@ -90,79 +90,78 @@ export default {
 
       fetchRecing: false,
       myGroupChangeTracker: 0,
-      myGroupsCount: 0
-    };
+      myGroupsCount: 0,
+    }
   },
   computed: {
     ...mapState({
-      CONFIG: "CONFIG",
-      user: "CURRENTUSER"
+      CONFIG: 'CONFIG',
+      user: 'CURRENTUSER',
     }),
-    groups() {
-      return this.myGroupChangeTracker && [...this.myGroups.values()];
-    }
+    groups () {
+      return this.myGroupChangeTracker && [...this.myGroups.values()]
+    },
   },
-  created() {
-    this.fetchMyGroups();
-    this.fetchRecGroups();
+  created () {
+    this.fetchMyGroups()
+    this.fetchRecGroups()
     api.getGroupTotalNumber().then(count => {
-      this.groupTotalNumber = count;
-    });
+      this.groupTotalNumber = count
+    })
   },
   methods: {
-    formateGroups(groups) {
+    formateGroups (groups) {
       groups.forEach(group => {
-        this.myGroups.set(group.id, group);
-        this.myGroupChangeTracker += 1;
-      });
+        this.myGroups.set(group.id, group)
+        this.myGroupChangeTracker += 1
+      })
     },
-    async fetchMyGroups() {
-      const groups = await this.$store.dispatch("group/getMyGroups", {
-        limit: 6 // 获取 6 条数据，判断是否大于5个圈子
-      });
-      this.myGroupsCount = groups.length;
-      this.formateGroups(groups.slice(0, 5));
+    async fetchMyGroups () {
+      const groups = await this.$store.dispatch('group/getMyGroups', {
+        limit: 6, // 获取 6 条数据，判断是否大于5个圈子
+      })
+      this.myGroupsCount = groups.length
+      this.formateGroups(groups.slice(0, 5))
     },
-    async fetchRecGroups() {
-      if (this.fetchRecing) return;
-      this.fetchRecing = true;
-      const groups = await this.$store.dispatch("group/getGroups", {
-        type: "random",
-        limit: 5
-      });
-      this.recGroups = groups;
-      this.clickCount += 1;
-      this.fetchRecing = false;
+    async fetchRecGroups () {
+      if (this.fetchRecing) return
+      this.fetchRecing = true
+      const groups = await this.$store.dispatch('group/getGroups', {
+        type: 'random',
+        limit: 5,
+      })
+      this.recGroups = groups
+      this.clickCount += 1
+      this.fetchRecing = false
     },
-    onSearchClick() {
-      this.$router.push({ name: "groupSearch" });
+    onSearchClick () {
+      this.$router.push({ name: 'groupSearch' })
     },
     /**
      * 创建圈子前检查
      */
-    beforeCreateGroup() {
-      const { need_verified: needVerified } = this.CONFIG["group:create"];
-      const { verified } = this.user;
+    beforeCreateGroup () {
+      const { need_verified: needVerified } = this.CONFIG['group:create']
+      const { verified } = this.user
 
       // 如果不需要认证或已经认证
-      if (!needVerified || verified)
-        return this.$router.push({ name: "groupCreate" });
+      if (!needVerified || verified) { return this.$router.push({ name: 'groupCreate' }) }
 
       const actions = [
         {
-          text: "去认证",
-          method: () => this.$router.push({ name: "ProfileCertificate" })
-        }
-      ];
+          text: '去认证',
+          method: () => this.$router.push({ name: 'ProfileCertificate' }),
+        },
+      ]
       this.$bus.$emit(
-        "actionSheet",
+        'actionSheet',
         actions,
-        "取消",
-        "认证用户才能创建圈子, 去认证?"
-      );
-    }
-  }
-};
+        '取消',
+        '认证用户才能创建圈子, 去认证?'
+      )
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

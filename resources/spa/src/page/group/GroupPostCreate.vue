@@ -53,72 +53,72 @@
 </template>
 
 <script>
-import ChooseGroup from "./components/ChooseGroup.vue";
+import ChooseGroup from './components/ChooseGroup.vue'
 
 export default {
-  name: "GroupPostCreate",
+  name: 'GroupPostCreate',
   components: {
-    ChooseGroup
+    ChooseGroup,
   },
-  data() {
+  data () {
     return {
-      title: "",
-      content: "",
+      title: '',
+      content: '',
       group: {},
-      feed: false
-    };
-  },
-  computed: {
-    groupId() {
-      return this.$route.query.group;
-    },
-    disabled() {
-      if (!this.groupId && !this.group.id) return true;
-      return !this.title || !this.content;
+      feed: false,
     }
   },
-  mounted() {
-    this.initGroup();
+  computed: {
+    groupId () {
+      return this.$route.query.group
+    },
+    disabled () {
+      if (!this.groupId && !this.group.id) return true
+      return !this.title || !this.content
+    },
+  },
+  mounted () {
+    this.initGroup()
   },
   methods: {
-    async onSubmit() {
-      if (this.disabled) return;
+    async onSubmit () {
+      if (this.disabled) return
       const params = {
         groupId: this.groupId || this.group.id,
         title: this.title,
         body: this.content,
         summary: this.content,
-        sync_feed: Number(this.feed)
-      };
-      const data = await this.$store.dispatch("group/createPost", params);
+        sync_feed: Number(this.feed),
+      }
+      const data = await this.$store.dispatch('group/createPost', params)
       if (data) {
-        this.$Message.success(data.message);
+        this.$Message.success(data.message)
         this.$router.replace({
-          name: "groupPostDetail",
-          params: { groupId: data.post.group_id, postId: data.post.id }
-        });
+          name: 'groupPostDetail',
+          params: { groupId: data.post.group_id, postId: data.post.id },
+        })
       }
     },
-    async initGroup() {
+    async initGroup () {
       // 从 store 中读取当前圈子信息
-      if (!this.group.id && this.groupId)
-        this.group = this.$store.state.group.current;
+      if (!this.group.id && this.groupId) { this.group = this.$store.state.group.current }
 
       // 如果没有读到, 去远端拉取
-      if (!this.group.id && this.groupId)
-        this.group = await this.$store.dispatch("group/getGroupById", {
-          groupId: this.groupId
-        });
+      if (!this.group.id && this.groupId) {
+        this.group = await this.$store.dispatch('group/getGroupById', {
+          groupId: this.groupId,
+        })
+      }
     },
 
-    selectGroup() {
-      this.$refs.chooseGroup.show();
+    selectGroup () {
+      this.$refs.chooseGroup.show()
     },
-    onGroupChange(group) {
-      this.group = group;
-    }
-  }
-};
+    onGroupChange (group) {
+      this.group = group
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

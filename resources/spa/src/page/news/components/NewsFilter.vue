@@ -40,10 +40,10 @@
 </template>
 
 <script>
-const prefixCls = "news__filter";
+const prefixCls = 'news__filter'
 export default {
-  name: "NewsFilter",
-  data() {
+  name: 'NewsFilter',
+  data () {
     return {
       prefixCls,
       editing: false,
@@ -54,70 +54,70 @@ export default {
 
       currentCate: {
         id: 0,
-        name: "推荐"
-      }
-    };
+        name: '推荐',
+      },
+    }
   },
 
   watch: {
-    editing() {},
-    showAll(val) {
-      !val && (this.editing = !1);
-    }
+    editing () {},
+    showAll (val) {
+      !val && (this.editing = !1)
+    },
   },
 
-  mounted() {
-    this.fetchCates();
+  mounted () {
+    this.fetchCates()
   },
   methods: {
-    showEditor() {
-      this.showAll = !this.showAll;
+    showEditor () {
+      this.showAll = !this.showAll
     },
-    onOk() {
+    onOk () {
       if (this.editing) {
-        this.editing = false;
-        const follows = this.myCates.map(c => c.id).join(",");
-        this.$http.patch("/news/categories/follows", {
-          follows
-        });
-        this.showAll = false;
-        this.$emit("onOk", this.myCates);
+        this.editing = false
+        const follows = this.myCates.map(c => c.id).join(',')
+        this.$http.patch('/news/categories/follows', {
+          follows,
+        })
+        this.showAll = false
+        this.$emit('onOk', this.myCates)
       } else {
-        this.editing = true;
+        this.editing = true
       }
     },
-    chooseCate(e, cate) {
+    chooseCate (e, cate) {
       if (this.showAll) {
         if (this.editing) {
-          const index = this.myCates.findIndex(c => c.id === cate.id);
+          const index = this.myCates.findIndex(c => c.id === cate.id)
           if (index > -1) {
-            this.moreCates.push(cate);
-            this.myCates.splice(index, 1);
+            this.moreCates.push(cate)
+            this.myCates.splice(index, 1)
           } else {
-            const index2 = this.moreCates.findIndex(c => c.id === cate.id);
-            this.myCates.push(cate);
-            this.moreCates.splice(index2, 1);
+            const index2 = this.moreCates.findIndex(c => c.id === cate.id)
+            this.myCates.push(cate)
+            this.moreCates.splice(index2, 1)
           }
         } else {
-          this.editing = true;
+          this.editing = true
         }
       } else {
         if (cate.id !== this.currentCate.id) {
-          const { target: el } = e;
-          this.currentCate = { ...cate, el };
-          this.$emit("change", this.currentCate);
+          const { target: el } = e
+          this.currentCate = { ...cate, el }
+          this.$emit('change', this.currentCate)
         }
       }
     },
-    async fetchCates() {
+    async fetchCates () {
       const {
-        data: { my_cates: myCates, more_cates: moreCates } = {}
-      } = await this.$http.get("/news/cates");
-      this.myCates = myCates ? [...myCates] : [];
-      this.moreCates = moreCates ? [...moreCates] : [];
-    }
-  }
-};
+        data: { my_cates: myCates, more_cates: moreCates } = {},
+      } = await this.$http.get('/news/cates')
+      this.myCates = myCates ? [...myCates] : []
+      this.moreCates = moreCates ? [...moreCates] : []
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

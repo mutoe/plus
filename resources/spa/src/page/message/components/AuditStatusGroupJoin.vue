@@ -28,44 +28,44 @@
 </template>
 
 <script>
-import AuditContent from "./AuditContent.vue";
+import AuditContent from './AuditContent.vue'
 
 export default {
-  name: "GroupJoinCard",
+  name: 'GroupJoinCard',
   components: { AuditContent },
   props: {
-    audit: { type: Object, required: true }
+    audit: { type: Object, required: true },
   },
   computed: {
-    group() {
-      return this.audit.group;
-    }
+    group () {
+      return this.audit.group
+    },
   },
   methods: {
-    getAuditContent(audit) {
-      const { group } = audit || {};
+    getAuditContent (audit) {
+      const { group } = audit || {}
       return {
         image: this.getGroupAvatar(group),
-        commentBody: "",
+        commentBody: '',
         video: false,
         content: this.getGroupTitle(group),
         commentableDel: audit.group === null,
         commentDel: null,
-        type: "group",
-        contentId: audit.group ? group.id : 0
-      };
+        type: 'group',
+        contentId: audit.group ? group.id : 0,
+      }
     },
     // 获取动态第一个图片
-    getGroupAvatar(group) {
-      return group.avatar;
+    getGroupAvatar (group) {
+      return group.avatar
     },
-    //获取动态内容
-    getGroupTitle(group) {
-      const { summary } = group || {};
-      return summary;
+    // 获取动态内容
+    getGroupTitle (group) {
+      const { summary } = group || {}
+      return summary
     },
-    accept() {
-      const { group_id: group = 0, member_id: member = 0 } = this.audit;
+    accept () {
+      const { group_id: group = 0, member_id: member = 0 } = this.audit
       this.$http
         .patch(
           `/plus-group/currency-groups/${group}/members/${member}/audit`,
@@ -73,13 +73,13 @@ export default {
           { validateStatus: s => s === 201 }
         )
         .then(({ data }) => {
-          this.audit.audit_at = 1;
-          this.audit.status = 1;
-          this.$Message.success(data);
-        });
+          this.audit.audit_at = 1
+          this.audit.status = 1
+          this.$Message.success(data)
+        })
     },
-    reject() {
-      const { group_id: group = 0, member_id: member = 0 } = this.audit;
+    reject () {
+      const { group_id: group = 0, member_id: member = 0 } = this.audit
       this.$http
         .patch(
           `/plus-group/currency-groups/${group}/members/${member}/audit`,
@@ -87,22 +87,22 @@ export default {
           { validateStatus: s => s === 201 }
         )
         .then(({ data }) => {
-          this.audit.audit_at = 1;
-          this.audit.status = 2;
-          this.$Message.success(data);
-        });
+          this.audit.audit_at = 1
+          this.audit.status = 2
+          this.$Message.success(data)
+        })
     },
-    showOperations(audit) {
-      if (audit.status !== 0) return;
+    showOperations (audit) {
+      if (audit.status !== 0) return
 
       const actions = [
-        { text: "同意", method: this.accept },
-        { text: "驳回", method: this.reject }
-      ];
-      this.$bus.$emit("actionSheet", actions);
-    }
-  }
-};
+        { text: '同意', method: this.accept },
+        { text: '驳回', method: this.reject },
+      ]
+      this.$bus.$emit('actionSheet', actions)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

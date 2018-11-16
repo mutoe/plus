@@ -105,129 +105,127 @@
 </template>
 
 <script>
-import ChooseGroupCate from "./components/chooseGroupCate.vue";
-import GroupProtocol from "./components/GroupProtocol.vue";
-import { encodeGeoHash } from "@/util/geohash";
+import ChooseGroupCate from './components/chooseGroupCate.vue'
+import GroupProtocol from './components/GroupProtocol.vue'
+import { encodeGeoHash } from '@/util/geohash'
 
 export default {
-  name: "GroupCreate",
+  name: 'GroupCreate',
   components: {
     ChooseGroupCate,
-    GroupProtocol
+    GroupProtocol,
   },
-  data() {
+  data () {
     return {
       loading: false,
       needPaid: false,
       category: {}, // 分类
       tags: [], // 标签
       location: {
-        label: "设置圈子的地理位置"
+        label: '设置圈子的地理位置',
       },
       avatar: null, // 头像, Blob 或 File 对象
 
       privateMode: false, // 是否私有圈子
 
       form: {
-        name: "", // 圈名
-        summary: "", // 简介
+        name: '', // 圈名
+        summary: '', // 简介
         allow_feed: 0,
-        mode: "public",
-        money: "",
-        notice: "" // 公告
-      }
-    };
+        mode: 'public',
+        money: '',
+        notice: '', // 公告
+      },
+    }
   },
   computed: {
-    disabled() {
+    disabled () {
       // 必填字段
       if (
         !this.avatar ||
         !this.form.name ||
         !this.tags.length ||
         !this.form.mode
-      )
-        return true;
+      ) { return true }
 
       // 如果设置了收费圈子却没有设置金额 或金额超出范围 不允许提交
-      if (this.form.mode === "paid" && !this.form.money.match(/^\d{1,8}$/))
-        return true;
+      if (this.form.mode === 'paid' && !this.form.money.match(/^\d{1,8}$/)) { return true }
 
-      return false;
+      return false
     },
     allowFeed: {
-      get() {
-        return !!this.form.allow_feed;
+      get () {
+        return !!this.form.allow_feed
       },
-      set(val) {
-        this.form.allow_feed = val ? 1 : 0;
-      }
-    }
+      set (val) {
+        this.form.allow_feed = val ? 1 : 0
+      },
+    },
   },
   watch: {
-    privateMode(val) {
-      this.form.mode = !val ? "public" : this.needPaid ? "paid" : "private";
+    privateMode (val) {
+      this.form.mode = !val ? 'public' : this.needPaid ? 'paid' : 'private'
     },
-    needPaid(val) {
-      if (val) this.form.mode = "paid";
+    needPaid (val) {
+      if (val) this.form.mode = 'paid'
       else {
-        this.form.mode = "private";
-        this.form.money = null;
+        this.form.mode = 'private'
+        this.form.money = null
       }
     },
-    "form.money"(val) {
-      if (val) this.needPaid = true;
-    }
+    'form.money' (val) {
+      if (val) this.needPaid = true
+    },
   },
   methods: {
-    showProtocol() {
-      this.$refs.protocol.show();
+    showProtocol () {
+      this.$refs.protocol.show()
     },
-    switchCate() {
-      this.$refs.chooseGroupCate.show();
+    switchCate () {
+      this.$refs.chooseGroupCate.show()
     },
-    onGroupCateChange(cate) {
-      this.category = cate;
+    onGroupCateChange (cate) {
+      this.category = cate
     },
-    async handleOk() {
-      if (this.loading) return;
-      this.loading = true;
+    async handleOk () {
+      if (this.loading) return
+      this.loading = true
 
       // 构造 FormData 对象 (因为头像上传需要)
-      const formData = new FormData();
+      const formData = new FormData()
 
       // 挂载表单数据
       for (const key in this.form) {
-        if (!this.form[key]) continue;
-        formData.append(key, this.form[key]);
+        if (!this.form[key]) continue
+        formData.append(key, this.form[key])
       }
 
       // 挂载标签
       for (const tag of this.tags) {
-        formData.append("tags[][id]", tag.id);
+        formData.append('tags[][id]', tag.id)
       }
 
       // 挂载位置信息
       if (this.location.label) {
-        const geoHash = encodeGeoHash(this.location.lat, this.location.lng);
-        formData.append("location", this.location.label);
-        formData.append("latitude", this.location.lat);
-        formData.append("longitude", this.location.lng);
-        formData.append("geo_hash", geoHash);
+        const geoHash = encodeGeoHash(this.location.lat, this.location.lng)
+        formData.append('location', this.location.label)
+        formData.append('latitude', this.location.lat)
+        formData.append('longitude', this.location.lng)
+        formData.append('geo_hash', geoHash)
       }
 
       // 挂载头像
-      formData.append("avatar", this.avatar);
+      formData.append('avatar', this.avatar)
 
       // 提交后端
-      const payload = { category: this.category.id, formData };
-      const result = await this.$store.dispatch("group/createGroup", payload);
-      this.loading = false;
-      this.$Message.success(result);
-      this.goBack();
-    }
-  }
-};
+      const payload = { category: this.category.id, formData }
+      const result = await this.$store.dispatch('group/createGroup', payload)
+      this.loading = false
+      this.$Message.success(result)
+      this.goBack()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

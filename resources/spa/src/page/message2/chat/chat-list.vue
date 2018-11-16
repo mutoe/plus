@@ -1,6 +1,7 @@
 <template>
   <div class="chat-list">
     <jo-load-more
+      ref="loadmore"
       :auto-load="false"
       :show-bottom="false"
       style="height: 100%"
@@ -14,37 +15,37 @@
   </div>
 </template>
 <script>
-import chatItem from "./chat-item.vue";
-import { mapState, mapActions } from "vuex";
-import { startSingleChat } from "@/vendor/easemob/";
+import chatItem from './chat-item.vue'
+import { mapState, mapActions } from 'vuex'
+import { startSingleChat } from '@/vendor/easemob/'
 export default {
-  name: "ChatList",
+  name: 'ChatList',
   components: {
-    chatItem
+    chatItem,
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
     ...mapState({
-      chatRooms: state => state.EASEMOB.chatRooms
-    })
+      chatRooms: state => state.EASEMOB.chatRooms,
+    }),
   },
-  mounted() {
-    this.initChatRooms();
+  mounted () {
+    this.initChatRooms()
   },
   methods: {
     startSingleChat,
-    ...mapActions(["initChatRooms"]),
-    onRefresh(callback) {
+    ...mapActions(['initChatRooms']),
+    onRefresh (callback) {
       this.initChatRooms().then(() => {
         setTimeout(() => {
-          callback(false);
-        }, 1e3);
-      });
-    }
-  }
-};
+          this.$refs.loadmore.afterRefresh(false)
+        }, 1000)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less">

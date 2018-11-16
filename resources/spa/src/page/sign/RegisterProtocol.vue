@@ -15,20 +15,20 @@
 </template>
 
 <script>
-import markdownIt from "markdown-it";
+import markdownIt from 'markdown-it'
 
 // TODO: 注册页面和协议页面切换时保留过渡动画
 
 export default {
-  name: "RegisterProtocol",
+  name: 'RegisterProtocol',
   computed: {
-    content() {
-      let content = this.$store.state.CONFIG.registerSettings.content;
-      content = content.replace(/<br>/, "\n");
-      return markdownIt({ html: true }).render(content);
-    }
-  }
-};
+    content () {
+      let content = this.$store.state.CONFIG.registerSettings.content
+      content = content.replace(/<br>/, '\n')
+      return markdownIt({ html: true }).render(content)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

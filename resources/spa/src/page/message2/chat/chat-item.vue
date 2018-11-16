@@ -22,68 +22,68 @@
 </template>
 
 <script>
-import { timeOffset } from "@/filters.js";
+import { timeOffset } from '@/filters.js'
 
 export default {
-  name: "ChatItem",
+  name: 'ChatItem',
   props: {
     item: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  data() {
+  data () {
     return {
-      timeOffset
-    };
+      timeOffset,
+    }
   },
   computed: {
-    type() {
-      return this.item.type;
+    type () {
+      return this.item.type
     },
-    info() {
-      return this.item.info;
+    info () {
+      return this.item.info
     },
-    name() {
-      return this.item.name;
+    name () {
+      return this.item.name
     },
-    avatar() {
-      const avatar = this.item.avatar || {};
-      return avatar.url || null;
+    avatar () {
+      const avatar = this.item.avatar || {}
+      return avatar.url || null
     },
-    time() {
-      return this.item.time;
+    time () {
+      return this.item.time
     },
-    latest() {
-      return this.item.latest || { data: "" };
+    latest () {
+      return this.item.latest || { data: '' }
     },
-    count() {
-      return this.item.unreadCount || 0;
+    count () {
+      return this.item.unreadCount || 0
     },
-    avatarStyle() {
+    avatarStyle () {
       return this.avatar
-        ? ""
-        : this.type === "chat"
+        ? ''
+        : this.type === 'chat'
           ? `m-avatar-box-${this.info.sex}`
-          : `m-avatar-box-group`;
+          : `m-avatar-box-group`
     },
-    userCount() {
-      const { affiliations_count: count } = this.info;
-      return count > 0 ? `(${count})` : "";
-    }
+    userCount () {
+      const { affiliations_count: count } = this.info
+      return count > 0 ? `(${count})` : ''
+    },
   },
   methods: {
-    handelView() {
+    handelView () {
       // this.count > 0 &&
       //   // WebIMDB.readMessage(this.item.type, this.item.from).then(res => {
       //   //   res > 0 && this.$store.dispatch("initChats");
       //   // });
       this.$nextTick(() => {
-        this.$router.push(`/chats/${this.item.id}`);
-      });
-    }
-  }
-};
+        this.$router.push(`/chats/${this.item.id}`)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

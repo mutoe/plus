@@ -42,48 +42,48 @@
 </template>
 
 <script>
-import _ from "lodash";
-import SearchBar from "@/components/common/SearchBar.vue";
-import TopicCard from "./components/TopicCard.vue";
-import QuestionCard from "./components/QuestionCard.vue";
-import { queryList as queryQuestions } from "@/api/question/questions";
-import { query as queryTopics } from "@/api/question/topics";
-import { limit } from "@/api";
-import { noop } from "@/util";
+import _ from 'lodash'
+import SearchBar from '@/components/common/SearchBar.vue'
+import TopicCard from './components/TopicCard.vue'
+import QuestionCard from './components/QuestionCard.vue'
+import { queryList as queryQuestions } from '@/api/question/questions'
+import { query as queryTopics } from '@/api/question/topics'
+import { limit } from '@/api'
+import { noop } from '@/util'
 
 export default {
-  name: "QuestionSearch",
+  name: 'QuestionSearch',
   components: { TopicCard, QuestionCard, SearchBar },
-  data() {
+  data () {
     return {
-      type: "question",
-      keyword: "", // search keyword
+      type: 'question',
+      keyword: '', // search keyword
       offset: 0, // search offset
       limit: 15,
       list: [], // search result
-      noData: false
-    };
+      noData: false,
+    }
   },
   computed: {
-    after() {
-      const len = this.list.length;
-      return len > 0 ? this.list[len - 1].id : 0;
-    }
+    after () {
+      const len = this.list.length
+      return len > 0 ? this.list[len - 1].id : 0
+    },
   },
   watch: {
-    $route(to) {
-      this.type = to.query.type || "question";
-      this.list = [];
-      this.offset = 0;
-      this.noData = false;
-      this.keyword = "";
+    $route (to) {
+      this.type = to.query.type || 'question'
+      this.list = []
+      this.offset = 0
+      this.noData = false
+      this.keyword = ''
     },
-    keyword() {
-      this.searchQuestions();
-    }
+    keyword () {
+      this.searchQuestions()
+    },
   },
-  mounted() {
-    this.type = this.$route.query.type || "question";
+  mounted () {
+    this.type = this.$route.query.type || 'question'
   },
   methods: {
     /**
@@ -92,59 +92,60 @@ export default {
      *
      * @author mutoe <mutoe@foxmail.com>
      * @param {InputEvent} input event
-     * @param {requestCallback} callback
      */
-    searchQuestions: _.debounce(function(event, callback) {
-      if (!this.keyword) return;
-      this.offset = 0;
-      this.type === "question"
-        ? this.queryQuestions(callback)
-        : this.queryTopics(callback);
+    searchQuestions: _.debounce(function (event) {
+      if (!this.keyword) return
+      this.offset = 0
+      this.type === 'question'
+        ? this.queryQuestions()
+        : this.queryTopics()
     }, 600),
 
-    queryQuestions(callback = noop) {
+    queryQuestions () {
       const params = {
         offset: this.offset,
         limit: this.limit,
-        type: "all",
-        subject: this.keyword
-      };
+        type: 'all',
+        subject: this.keyword,
+      }
       queryQuestions(params).then(({ data }) => {
         if (this.offset === 0) {
-          this.list = data;
+          this.list = data
+          this.$refs.loadmore.afterRefresh(data.length < limit)
         } else {
-          this.list = [...this.list, ...data];
+          this.list = [...this.list, ...data]
+          this.$refs.loadmore.afterLoadMore(data.length < limit)
         }
-        this.noData = !this.list.length;
-        callback(data.length < limit);
-      });
+        this.noData = !this.list.length
+      })
     },
-    queryTopics(callback = noop) {
+    queryTopics (callback = noop) {
       const params = {
         offset: this.offset,
         limit: this.limit,
-        name: this.keyword
-      };
+        name: this.keyword,
+      }
       queryTopics(params).then(({ data }) => {
         if (this.offset === 0) {
-          this.list = data;
+          this.list = data
+          this.$refs.loadmore.afterRefresh(data.length < limit)
         } else {
-          this.list = [...this.list, ...data];
+          this.list = [...this.list, ...data]
+          this.$refs.loadmore.afterLoadMore(data.length < limit)
         }
-        this.noData = !this.list.length;
-        callback(data.length < limit);
-      });
+        this.noData = !this.list.length
+      })
     },
-    onRefresh(callback) {
-      this.offset = 0;
-      this.searchQuestions(null, callback);
+    onRefresh () {
+      this.offset = 0
+      this.searchQuestions(null)
     },
-    onLoadMore(callback) {
-      this.offset = this.list.length;
-      this.searchQuestions(null, callback);
-    }
-  }
-};
+    onLoadMore () {
+      this.offset = this.list.length
+      this.searchQuestions(null)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -40,18 +40,18 @@
 </template>
 
 <script>
-import QuestionListAnswerCard from "../QuestionListAnswerCard.vue";
-import { baseURL } from "@/api";
-import { syntaxTextAndImage } from "@/util/markdown";
+import QuestionListAnswerCard from '../QuestionListAnswerCard.vue'
+import { baseURL } from '@/api'
+import { syntaxTextAndImage } from '@/util/markdown'
 
 export default {
-  name: "QuestionCard",
+  name: 'QuestionCard',
   components: {
-    QuestionListAnswerCard
+    QuestionListAnswerCard,
   },
   props: {
     question: { type: Object, required: true },
-    noExcellent: { type: Boolean, default: false }
+    noExcellent: { type: Boolean, default: false },
   },
   computed: {
     /**
@@ -60,9 +60,9 @@ export default {
      * @return {Object|null}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    answer() {
-      const { answer } = this.question;
-      return answer || {};
+    answer () {
+      const { answer } = this.question
+      return answer || {}
     },
 
     /**
@@ -71,8 +71,8 @@ export default {
      * @return {Object: { images: Array, text: string }}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    body() {
-      return syntaxTextAndImage(this.question.body);
+    body () {
+      return syntaxTextAndImage(this.question.body)
     },
 
     /**
@@ -81,15 +81,15 @@ export default {
      * @return {string|false}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    firstImageStyle() {
-      const body = this.answer.body || "";
-      const image = body.match(/@!\[image]\((\d+)\)/);
+    firstImageStyle () {
+      const body = this.answer.body || ''
+      const image = body.match(/@!\[image]\((\d+)\)/)
 
-      if (!image) return false;
-      return `background-image: url(${baseURL}/files/${image[1]})`;
-    }
-  }
-};
+      if (!image) return false
+      return `background-image: url(${baseURL}/files/${image[1]})`
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

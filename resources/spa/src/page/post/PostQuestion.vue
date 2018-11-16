@@ -121,14 +121,14 @@
 </template>
 
 <script>
-import _ from "lodash";
-import { mapGetters } from "vuex";
-import TextareaInput from "@/components/common/TextareaInput.vue";
+import _ from 'lodash'
+import { mapGetters } from 'vuex'
+import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
-  name: "PostQuestion",
+  name: 'PostQuestion',
   components: { TextareaInput },
-  data() {
+  data () {
     return {
       step: 1,
       loading: false,
@@ -141,205 +141,200 @@ export default {
 
       animated: {},
 
-      topicKeyWord: "",
+      topicKeyWord: '',
       selectedTops: [],
 
       question: {
-        title: "",
-        body: ""
-      }
-    };
+        title: '',
+        body: '',
+      },
+    }
   },
   computed: {
-    ...mapGetters(["compose"]),
-    title() {
+    ...mapGetters(['compose']),
+    title () {
       switch (this.step) {
         case 1:
-          return "发布问题";
+          return '发布问题'
         case 2:
-          return "问题详情";
+          return '问题详情'
         case 3:
-          return "至少添加一个专题";
+          return '至少添加一个专题'
         case 4:
-          return "悬赏（可跳过）";
+          return '悬赏（可跳过）'
         default:
-          return "发布问题";
+          return '发布问题'
       }
     },
-    disabled() {
+    disabled () {
       switch (this.step) {
         case 1:
-          return !this.question.title;
+          return !this.question.title
         case 2:
-          return !this.question.body;
+          return !this.question.body
         case 3:
-          return !0;
+          return !0
         case 4:
-          return !0;
+          return !0
       }
-    }
+    },
   },
   watch: {
-    step(val) {
+    step (val) {
       val === 2 &&
         this.$nextTick(() => {
-          this.$refs.editor.innerHTML = this.question.body;
-        });
-      val === 3 && this.getTopics();
+          this.$refs.editor.innerHTML = this.question.body
+        })
+      val === 3 && this.getTopics()
     },
-    compose(val) {
-      this.question.title = val;
+    compose (val) {
+      this.question.title = val
     },
-    ["question.title"]() {
-      this.serachQuestionByKey();
-    }
+    'question.title' () {
+      this.serachQuestionByKey()
+    },
   },
-  created() {
-    const question = this.$lstore.getData("H5_POST_QUESTION_DRAFT");
+  created () {
+    const question = this.$lstore.getData('H5_POST_QUESTION_DRAFT')
 
     question &&
       (question.title || question.body) &&
-      Object.assign(this.question, question);
+      Object.assign(this.question, question)
   },
   methods: {
-    selectedTopic(topic) {
-      if (this.selectedTops.includes(topic))
-        return this.$Message.error("专题不能重复");
-      if (this.selectedTops.length > 4)
-        return this.$Message.error("添加专题不可以超过5个");
+    selectedTopic (topic) {
+      if (this.selectedTops.includes(topic)) { return this.$Message.error('专题不能重复') }
+      if (this.selectedTops.length > 4) { return this.$Message.error('添加专题不可以超过5个') }
 
-      this.selectedTops.push(topic);
+      this.selectedTops.push(topic)
     },
     /**
      * 搜索问题
      * 使用 lodash.debounce 防抖，450ms
      */
-    serachQuestionByKey: _.debounce(async function() {
-      const data = await this.$store.dispatch("question/searchQuestion", {
+    serachQuestionByKey: _.debounce(async function () {
+      const data = await this.$store.dispatch('question/searchQuestion', {
         keyword: this.question.title,
-        type: "all"
-      });
-      this.questions = data;
+        type: 'all',
+      })
+      this.questions = data
     }, 450),
 
     /**
      * 搜索话题
      * 使用 lodash.debounce 防抖，450ms
      */
-    inputTopicKeyWord: _.debounce(async function() {
-      const data = await this.$store.dispatch("question/searchTopics", {
-        keyword: this.topicKeyWord
-      });
-      this.topics = data;
+    inputTopicKeyWord: _.debounce(async function () {
+      const data = await this.$store.dispatch('question/searchTopics', {
+        keyword: this.topicKeyWord,
+      })
+      this.topics = data
     }, 450),
 
-    onBlur() {
-      this.showPlaceholder = this.question.body.length === 0;
+    onBlur () {
+      this.showPlaceholder = this.question.body.length === 0
       // this.moveCurPos();
     },
-    moveCurPos() {},
-    autoFoucs() {
-      this.$refs.editor.focus();
-      this.showPlaceholder = false;
+    moveCurPos () {},
+    autoFoucs () {
+      this.$refs.editor.focus()
+      this.showPlaceholder = false
     },
-    setContent(e) {
-      const value = e.target.innerText;
-      if (value === this.question.body) return;
-      this.question.body = value;
+    setContent (e) {
+      const value = e.target.innerText
+      if (value === this.question.body) return
+      this.question.body = value
       // this.moveCurPos();
     },
-    getTopics() {
+    getTopics () {
       // GET /question-topics
       this.$http.get(`/question-topics`).then(({ data = [] }) => {
-        this.topics = data;
-      });
+        this.topics = data
+      })
     },
-    getAvatar(avatar) {
-      avatar = avatar || {};
-      return avatar.url || null;
+    getAvatar (avatar) {
+      avatar = avatar || {}
+      return avatar.url || null
     },
-    preStep() {
-      this.step > 1 &&
-        ((this.animated = {
-          enterClass: "animated slideInLeft",
-          leaveClass: "animated slideOutRight"
-        }),
-        (this.step -= 1));
+    preStep () {
+      if (this.step <= 1) return
+      this.animated = {
+        enterClass: 'animated slideInLeft',
+        leaveClass: 'animated slideOutRight',
+      }
+      this.step -= 1
     },
-    nextStep() {
-      if (this.disabled) return;
+    nextStep () {
+      if (this.disabled) return
       if (this.step < 4) {
         this.animated = {
-          enterClass: "animated slideInRight",
-          leaveClass: "animated slideOutLeft"
-        };
-        var endsWithQuesionMark =
-          this.question.title.endsWith("?") ||
-          this.question.title.endsWith("？");
-        if (this.step === 1 && endsWithQuesionMark) {
-          this.question.title += "?";
+          enterClass: 'animated slideInRight',
+          leaveClass: 'animated slideOutLeft',
         }
-        this.step += 1;
+        var endsWithQuesionMark =
+          this.question.title.endsWith('?') ||
+          this.question.title.endsWith('？')
+        if (this.step === 1 && endsWithQuesionMark) {
+          this.question.title += '?'
+        }
+        this.step += 1
       }
     },
-    beforePost() {
-      const { body, title } = this.question;
-      if (!body) return (this.step = 2), this.$Message.error("请输入问题详情");
+    beforePost () {
+      const { body, title } = this.question
+      if (!body) return (this.step = 2) && this.$Message.error('请输入问题详情')
 
-      if (!title) return (this.step = 1), this.$Message.error("请输入问题标题");
+      if (!title) return (this.step = 1) && this.$Message.error('请输入问题标题')
 
-      if (this.selectedTops.length === 0)
-        return (this.step = 3), this.$Message.error("至少选择一个专题");
+      if (this.selectedTops.length === 0) return (this.step = 3) && this.$Message.error('至少选择一个专题')
 
       this.postQuestion({
         subject: title,
         topics: this.selectedTops,
         body,
-        text_body: body
-      });
+        text_body: body,
+      })
     },
-    postQuestion(params) {
-      if (this.loading) return;
-      this.loading = true;
+    postQuestion (params) {
+      if (this.loading) return
+      this.loading = true
       // POST /questions
       this.$http
-        .post(`/questions`, params, {
-          validateStatus: s => s === 201
-        })
+        .post(`/questions`, params, { validateStatus: s => s === 201 })
         .then(({ data: { message, question } }) => {
-          this.$Message.success(message);
-          this.$router.push(`/questions/${question.id}`);
-          this.$lstore.removeData("H5_POST_QUESTION_DRAFT");
+          this.$Message.success(message)
+          this.$router.push(`/questions/${question.id}`)
+          this.$lstore.removeData('H5_POST_QUESTION_DRAFT')
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
-    cancel() {
+    cancel () {
       this.question.title || this.question.body
         ? this.$bus.$emit(
-            "actionSheet",
-            [
-              {
-                style: { color: "#f4504d" },
-                text: "放弃",
-                method: this.goBack
+          'actionSheet',
+          [
+            {
+              style: { color: '#f4504d' },
+              text: '放弃',
+              method: this.goBack,
+            },
+            {
+              text: '保存草稿',
+              method: () => {
+                this.$lstore.setData('H5_POST_QUESTION_DRAFT', this.question)
+                this.goBack()
               },
-              {
-                text: "保存草稿",
-                method: () => {
-                  this.$lstore.setData("H5_POST_QUESTION_DRAFT", this.question);
-                  this.goBack();
-                }
-              }
-            ],
-            "取消",
-            "你还有未发布的内容，是否放弃发布？"
-          )
-        : this.goBack();
-    }
-  }
-};
+            },
+          ],
+          '取消',
+          '你还有未发布的内容，是否放弃发布？'
+        )
+        : this.goBack()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

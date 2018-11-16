@@ -33,36 +33,36 @@
 </template>
 
 <script>
-import { version } from "@/main";
+import { version } from '@/main'
 
 export default {
-  name: "Settings",
-  data() {
+  name: 'Settings',
+  data () {
     return {
-      version
-    };
+      version,
+    }
   },
   methods: {
-    signOut() {
+    signOut () {
       const actions = [
         {
-          text: "退出",
-          style: { color: "#f4504d" },
+          text: '退出',
+          style: { color: '#f4504d' },
           method: () => {
-            this.$store.dispatch("SIGN_OUT");
+            this.$store.dispatch('SIGN_OUT')
             this.$nextTick(() => {
-              this.$router.push("/signin");
-            });
-          }
-        }
-      ];
-      this.$bus.$emit("actionSheet", actions, "取消", "确认退出?");
+              this.$router.push('/signin')
+            })
+          },
+        },
+      ]
+      this.$bus.$emit('actionSheet', actions, '取消', '确认退出?')
     },
-    aboutUs() {
-      const { aboutUs = {} } = this.$store.state.CONFIG.site;
-      if (aboutUs.url) return (location.href = aboutUs.url);
-      this.$router.push("/about");
-    }
-  }
-};
+    aboutUs () {
+      const { aboutUs = {} } = this.$store.state.CONFIG.site
+      if (aboutUs.url) return (location.href = aboutUs.url)
+      this.$router.push('/about')
+    },
+  },
+}
 </script>

@@ -37,19 +37,19 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "ProductItem",
+  name: 'ProductItem',
   props: {
-    like: { type: Object, default: () => {} }
+    like: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
-    user() {
-      const { user } = this.like || { user: {} };
-      return user;
+    user () {
+      const { user } = this.like || { user: {} }
+      return user
     },
     /**
      * 获取图片,并计算地址
@@ -58,16 +58,16 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    getImage() {
-      const { like } = this;
-      const { length } = like.likeable.images;
+    getImage () {
+      const { like } = this
+      const { length } = like.likeable.images
       if (length > 0) {
-        const { 0: img = {} } = like.likeable.images;
-        return `${this.$http.defaults.baseURL}/files/${img.id}`;
+        const { 0: img = {} } = like.likeable.images
+        return `${this.$http.defaults.baseURL}/files/${img.id}`
       }
 
-      return false;
-    }
+      return false
+    },
   },
   methods: {
     /**
@@ -77,12 +77,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        likeable: { id = 0 }
-      } = this.like;
-      this.$router.push(`/feeds/${id}`);
-    }
-  }
-};
+        likeable: { id = 0 },
+      } = this.like
+      this.$router.push(`/feeds/${id}`)
+    },
+  },
+}
 </script>

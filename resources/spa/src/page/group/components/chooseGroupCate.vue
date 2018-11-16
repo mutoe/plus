@@ -20,36 +20,36 @@
 </template>
 <script>
 export default {
-  name: "ChooseGroupCate",
-  data() {
+  name: 'ChooseGroupCate',
+  data () {
     return {
       showPage: false,
-      title: ""
-    };
+      title: '',
+    }
   },
   computed: {
-    categories() {
-      return this.$store.state.group.categories;
-    }
+    categories () {
+      return this.$store.state.group.categories
+    },
   },
-  mounted() {
-    this.$store.dispatch("group/getGroupTypes");
+  mounted () {
+    this.$store.dispatch('group/getGroupTypes')
   },
   methods: {
-    show() {
-      this.showPage = true;
-      this.scrollable = false;
+    show () {
+      this.showPage = true
+      this.scrollable = false
     },
-    selected(cate) {
-      this.$emit("change", cate);
-      this.cancel();
+    selected (cate) {
+      this.$emit('change', cate)
+      this.cancel()
     },
-    cancel() {
-      this.showPage = false;
-      this.scrollable = true;
-    }
-  }
-};
+    cancel () {
+      this.showPage = false
+      this.scrollable = true
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

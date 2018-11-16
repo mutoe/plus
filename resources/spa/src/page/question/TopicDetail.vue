@@ -97,92 +97,92 @@
 </template>
 
 <script>
-import QuestionCard from "./components/QuestionCard.vue";
-import * as api from "@/api/question/topics";
+import QuestionCard from './components/QuestionCard.vue'
+import * as api from '@/api/question/topics'
 
 export default {
-  name: "TopicDetail",
+  name: 'TopicDetail',
   components: {
-    QuestionCard
+    QuestionCard,
   },
   data: () => ({
     topic: {},
     loading: true,
     questions: [],
-    typeNavOffsetTop: 0
+    typeNavOffsetTop: 0,
   }),
   computed: {
-    id() {
-      return this.$route.params.id;
+    id () {
+      return this.$route.params.id
     },
-    type() {
-      const { type = "hot" } = this.$route.query;
-      return type;
+    type () {
+      const { type = 'hot' } = this.$route.query
+      return type
     },
-    avatar() {
-      const avatar = this.topic.avatar || {};
-      return avatar.url || null;
-    }
+    avatar () {
+      const avatar = this.topic.avatar || {}
+      return avatar.url || null
+    },
   },
   watch: {
-    $route(newRoute, oldRoute) {
+    $route (newRoute, oldRoute) {
       if (
         newRoute.path === oldRoute.path &&
         newRoute.query.type !== oldRoute.query.type
       ) {
-        this.questions = [];
-        this.$refs.loadmore.beforeRefresh();
+        this.questions = []
+        this.$refs.loadmore.beforeRefresh()
       }
-    }
+    },
   },
-  mounted() {
-    this.typeNavOffsetTop = this.$refs.types.offsetTop;
-    document.addEventListener("scroll", this.handleScrolling);
+  mounted () {
+    this.typeNavOffsetTop = this.$refs.types.offsetTop
+    document.addEventListener('scroll', this.handleScrolling)
   },
   methods: {
-    handleRefresh() {
+    handleRefresh () {
       api
         .show(this.id)
         .then(({ data }) => {
-          this.loading = false;
-          this.topic = data;
-          this.handleRefreshQuestions();
+          this.loading = false
+          this.topic = data
+          this.handleRefreshQuestions()
         })
         .catch(({ response: { data } = {} }) => {
-          this.loading = true;
-          this.$refs.loadmore.afterRefresh(false);
-          this.$Message.error(data);
-        });
+          this.loading = true
+          this.$refs.loadmore.afterRefresh(false)
+          this.$Message.error(data)
+        })
     },
-    handleRefreshQuestions() {
-      const offset = 0;
-      const limit = 15;
+    handleRefreshQuestions () {
+      const offset = 0
+      const limit = 15
       api
         .questions(this.id, this.type, offset, limit)
         .then(({ data }) => {
-          this.questions = data;
-          this.$refs.loadmore.afterRefresh(data.length < limit);
+          this.questions = data
+          this.$refs.loadmore.afterRefresh(data.length < limit)
         })
         .catch(({ response: { data } = {} }) => {
-          this.$refs.loadmore.afterRefresh(true);
-          this.$Message.error(data);
-        });
+          this.$refs.loadmore.afterRefresh(true)
+          this.$Message.error(data)
+        })
     },
-    handleLoadQuestions() {
-      const offset = this.questions.length;
-      const limit = 15;
+    handleLoadQuestions () {
+      const offset = this.questions.length
+      const limit = 15
       api
         .questions(this.id, this.type, offset, limit)
         .then(({ data }) => {
-          this.questions = [...this.questions, ...data];
-          this.$refs.loadmore.afterLoadMore(data.length < limit);
+          this.questions = [...this.questions, ...data]
+          this.$refs.loadmore.afterLoadMore(data.length < limit)
         })
         .catch(({ response: { data } = {} }) => {
-          this.$refs.loadmore.afterLoadMore(true);
-          this.$Message.error(data);
-        });
+          this.$refs.loadmore.afterLoadMore(true)
+          this.$Message.error(data)
+        })
     },
-    handleScrolling() {
+    handleScrolling () {
       // const nav = this.$refs.types;
       // const offsetTop = this.typeNavOffsetTop;
       // const y = document.documentElement.scrollTop + 48;
@@ -196,39 +196,39 @@ export default {
       // nav.style.marginTop = "-1rem";
       // nav.style.top = "1.16rem";
     },
-    handleFollow(topic) {
+    handleFollow (topic) {
       api
         .followTopic(topic.id)
         .then(() => {
-          topic.has_follow = true;
-          this.follows_count += 1;
+          topic.has_follow = true
+          this.follows_count += 1
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-        });
+          this.$Message.error(data)
+        })
     },
-    handleUnfollow(topic) {
+    handleUnfollow (topic) {
       api
         .unfollowTopic(topic.id)
         .then(() => {
-          topic.has_follow = false;
-          topic.follows_count -= 1;
-          if (this.type === "follow") {
-            let newTopics = [];
+          topic.has_follow = false
+          topic.follows_count -= 1
+          if (this.type === 'follow') {
+            let newTopics = []
             this.topics.forEach(_topic => {
               if (_topic.id !== topic.id) {
-                newTopics.push(_topic);
+                newTopics.push(_topic)
               }
-            });
-            this.topics = newTopics;
+            })
+            this.topics = newTopics
           }
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-        });
-    }
-  }
-};
+          this.$Message.error(data)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

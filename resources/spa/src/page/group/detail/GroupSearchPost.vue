@@ -23,36 +23,36 @@
 </template>
 
 <script>
-import _ from "lodash";
-import SearchBar from "@/components/common/SearchBar.vue";
-import GroupFeedCard from "@/components/FeedCard/GroupFeedCard.vue";
+import _ from 'lodash'
+import SearchBar from '@/components/common/SearchBar.vue'
+import GroupFeedCard from '@/components/FeedCard/GroupFeedCard.vue'
 
 export default {
-  name: "SearchPost",
+  name: 'SearchPost',
   components: {
     SearchBar,
-    GroupFeedCard
+    GroupFeedCard,
   },
-  data() {
+  data () {
     return {
-      keywordOrigin: "",
+      keywordOrigin: '',
       list: [],
       loading: false,
-      noResult: false
-    };
+      noResult: false,
+    }
   },
   computed: {
-    keyword() {
-      return this.keywordOrigin.trim();
+    keyword () {
+      return this.keywordOrigin.trim()
     },
-    groupId() {
-      return this.$route.params.groupId;
-    }
+    groupId () {
+      return this.$route.params.groupId
+    },
   },
   watch: {
-    keyword() {
-      this.onSearchInput();
-    }
+    keyword () {
+      this.onSearchInput()
+    },
   },
   methods: {
     /**
@@ -60,33 +60,33 @@ export default {
      * 不要使用箭头函数，会导致 this 作用域丢失
      * @author mutoe <mutoe@foxmail.com>
      */
-    onSearchInput: _.debounce(async function() {
-      if (!this.keyword) return;
-      this.loading = true;
-      const data = await this.$store.dispatch("group/searchPosts", {
-        keyword: this.keyword,
-        group_id: this.groupId
-      });
-      this.loading = false;
-      this.list = data;
-      this.noResult = !this.list.length;
-      this.$refs.loadmore.afterRefresh(data.length < 15);
-    }, 600),
-
-    async onLoadMore() {
-      if (!this.keyword) return;
-      this.loading = true;
-      const data = await this.$store.dispatch("group/searchPosts", {
+    onSearchInput: _.debounce(async function () {
+      if (!this.keyword) return
+      this.loading = true
+      const data = await this.$store.dispatch('group/searchPosts', {
         keyword: this.keyword,
         group_id: this.groupId,
-        offset: this.list.length
-      });
-      this.loading = false;
-      this.list = [...this.list, ...data];
-      this.$refs.loadmore.afterLoadMore(data.length < 15);
-    }
-  }
-};
+      })
+      this.loading = false
+      this.list = data
+      this.noResult = !this.list.length
+      this.$refs.loadmore.afterRefresh(data.length < 15)
+    }, 600),
+
+    async onLoadMore () {
+      if (!this.keyword) return
+      this.loading = true
+      const data = await this.$store.dispatch('group/searchPosts', {
+        keyword: this.keyword,
+        group_id: this.groupId,
+        offset: this.list.length,
+      })
+      this.loading = false
+      this.list = [...this.list, ...data]
+      this.$refs.loadmore.afterLoadMore(data.length < 15)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -35,15 +35,15 @@
 </template>
 
 <script>
-import { noop } from "@/util";
-import { reportFeed } from "@/api/feeds";
-import { reportNews } from "@/api/news";
-import { reportPost, reportPostComment } from "@/api/group";
-import { reportUser } from "@/api/user";
-import { reportQuestion } from "@/api/question/questions";
-import { reportAnswer } from "@/api/question/answer";
-import { reportComment } from "@/api";
-import TextareaInput from "@/components/common/TextareaInput";
+import { noop } from '@/util'
+import { reportFeed } from '@/api/feeds'
+import { reportNews } from '@/api/news'
+import { reportPost, reportPostComment } from '@/api/group'
+import { reportUser } from '@/api/user'
+import { reportQuestion } from '@/api/question/questions'
+import { reportAnswer } from '@/api/question/answer'
+import { reportComment } from '@/api'
+import TextareaInput from '@/components/common/TextareaInput'
 
 const apiMap = {
   feed: reportFeed,
@@ -53,57 +53,57 @@ const apiMap = {
   comment: reportComment,
   user: reportUser,
   question: reportQuestion,
-  answer: reportAnswer
-};
+  answer: reportAnswer,
+}
 
 export default {
-  name: "Report",
+  name: 'Report',
   components: { TextareaInput },
-  data() {
+  data () {
     return {
       show: false,
       loading: false,
-      reason: "",
-      type: "",
+      reason: '',
+      type: '',
       api: noop,
       callback: noop,
       payload: {},
-      username: "",
-      reference: ""
-    };
+      username: '',
+      reference: '',
+    }
   },
   computed: {
-    disabled() {
-      return !this.reason;
+    disabled () {
+      return !this.reason
     },
-    typeText() {
+    typeText () {
       switch (this.type) {
-        case "feed":
-          return "动态";
-        case "news":
-          return "资讯";
-        case "group":
-          return "圈子";
-        case "post":
-          return "帖子";
-        case "comment":
-        case "postComment":
-          return "评论";
-        case "question":
-          return "问题";
-        case "answer":
-          return "回答";
+        case 'feed':
+          return '动态'
+        case 'news':
+          return '资讯'
+        case 'group':
+          return '圈子'
+        case 'post':
+          return '帖子'
+        case 'comment':
+        case 'postComment':
+          return '评论'
+        case 'question':
+          return '问题'
+        case 'answer':
+          return '回答'
         default:
-          return "";
+          return ''
       }
-    }
+    },
   },
   watch: {
-    $route(to, from) {
-      if (to !== from) this.cancel();
-    }
+    $route (to, from) {
+      if (to !== from) this.cancel()
+    },
   },
-  created() {
+  created () {
     /**
      * 弹出举报窗口 (hooks -> report)
      * @author mutoe <mutoe@foxmail.com>
@@ -115,52 +115,52 @@ export default {
      * @param {string} options.reference 被举报的内容
      * @param {requestCallback} [options.callback] 举报成功后的回调方法
      */
-    this.$bus.$on("report", options => {
-      this.type = options.type;
-      this.reason = options.reason;
-      this.callback = options.callback || noop;
-      this.payload = options.payload;
-      this.username = options.username;
-      this.reference = options.reference;
-      this.open();
-    });
+    this.$bus.$on('report', options => {
+      this.type = options.type
+      this.reason = options.reason
+      this.callback = options.callback || noop
+      this.payload = options.payload
+      this.username = options.username
+      this.reference = options.reference
+      this.open()
+    })
   },
   methods: {
-    report() {
-      if (this.loding || !this.type) return;
-      this.loading = true;
+    report () {
+      if (this.loding || !this.type) return
+      this.loading = true
       apiMap[this.type](this.payload, this.reason)
         .then(() => {
-          this.$Message.success("举报成功");
-          this.callback();
-          this.$nextTick(this.cancel);
+          this.$Message.success('举报成功')
+          this.callback()
+          this.$nextTick(this.cancel)
         })
         .catch(({ response: { data: message } }) => {
-          message && this.$Message.error(message);
+          message && this.$Message.error(message)
         })
         .finally(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
-    resetProps() {
-      this.type = "";
-      this.reason = "";
-      this.callback = noop;
-      this.payload = {};
-      this.username = "";
-      this.reference = "";
+    resetProps () {
+      this.type = ''
+      this.reason = ''
+      this.callback = noop
+      this.payload = {}
+      this.username = ''
+      this.reference = ''
     },
-    open() {
-      this.show = true;
-      this.scrollable = false;
+    open () {
+      this.show = true
+      this.scrollable = false
     },
-    cancel() {
-      this.show = false;
-      this.scrollable = true;
-      this.resetProps();
-    }
-  }
-};
+    cancel () {
+      this.show = false
+      this.scrollable = true
+      this.resetProps()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

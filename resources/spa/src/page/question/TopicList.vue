@@ -31,146 +31,146 @@
 </template>
 
 <script>
-import TopicCard from "./components/TopicCard.vue";
-import * as api from "@/api/question/topics";
+import TopicCard from './components/TopicCard.vue'
+import * as api from '@/api/question/topics'
 
 export default {
-  name: "TopicList",
+  name: 'TopicList',
   components: {
-    TopicCard
+    TopicCard,
   },
   data: () => ({
-    topics: []
+    topics: [],
   }),
   computed: {
-    type() {
-      const { type = "hot" } = this.$route.query;
-      return type;
+    type () {
+      const { type = 'hot' } = this.$route.query
+      return type
     },
-    loadContainer() {
-      return this.$refs.LoadQuestionTopicsContainer;
+    loadContainer () {
+      return this.$refs.LoadQuestionTopicsContainer
     },
-    user() {
-      const { CURRENTUSER: user } = this.$store.state;
-      return user;
-    }
+    user () {
+      const { CURRENTUSER: user } = this.$store.state
+      return user
+    },
   },
   watch: {
-    type() {
-      this.topics = [];
-      this.loadContainer.beforeRefresh();
-    }
+    type () {
+      this.topics = []
+      this.loadContainer.beforeRefresh()
+    },
   },
-  mounted() {
-    this.loadContainer.beforeRefresh();
+  mounted () {
+    this.loadContainer.beforeRefresh()
   },
   methods: {
-    handleRefresh() {
-      if (this.type === "follow") {
-        this.handleRefreshByFollow();
+    handleRefresh () {
+      if (this.type === 'follow') {
+        this.handleRefreshByFollow()
 
-        return;
+        return
       }
 
-      this.handleRefreshByAll();
+      this.handleRefreshByAll()
     },
-    handleRefreshByAll() {
-      const offset = 0;
-      const limit = 15;
+    handleRefreshByAll () {
+      const offset = 0
+      const limit = 15
       api
         .all(offset, limit)
         .then(({ data }) => {
-          this.topics = data;
-          this.loadContainer.topEnd(false);
-          this.loadContainer.bottomEnd(data.length < limit);
+          this.topics = data
+          this.loadContainer.topEnd(false)
+          this.loadContainer.bottomEnd(data.length < limit)
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-          this.loadContainer.topEnd(false);
-          this.loadContainer.bottomEnd(true);
-        });
+          this.$Message.error(data)
+          this.loadContainer.topEnd(false)
+          this.loadContainer.bottomEnd(true)
+        })
     },
-    handleRefreshByFollow() {
-      const after = 0;
-      const limit = 15;
+    handleRefreshByFollow () {
+      const after = 0
+      const limit = 15
       api
         .getFollowTopics(after, limit)
         .then(({ data }) => {
-          this.topics = data;
-          this.loadContainer.topEnd(false);
-          this.loadContainer.bottomEnd(data.length < limit);
+          this.topics = data
+          this.loadContainer.topEnd(false)
+          this.loadContainer.bottomEnd(data.length < limit)
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-          this.loadContainer.topEnd(false);
-          this.loadContainer.bottomEnd(true);
-        });
+          this.$Message.error(data)
+          this.loadContainer.topEnd(false)
+          this.loadContainer.bottomEnd(true)
+        })
     },
-    handleLoadMore() {
-      if (this.type === "follow") {
-        this.handleLoadMoreByFollow();
+    handleLoadMore () {
+      if (this.type === 'follow') {
+        this.handleLoadMoreByFollow()
 
-        return;
+        return
       }
 
-      this.handleLoadMoreByAll();
+      this.handleLoadMoreByAll()
     },
-    handleLoadMoreByAll() {
-      const offset = this.topics.length;
-      const limit = 15;
+    handleLoadMoreByAll () {
+      const offset = this.topics.length
+      const limit = 15
       api
         .all(offset, limit)
         .then(({ data }) => {
-          this.topics = [...this.topics, ...data];
-          this.loadContainer.bottomEnd(data.length < limit);
+          this.topics = [...this.topics, ...data]
+          this.loadContainer.bottomEnd(data.length < limit)
         })
         .catch(({ response: { data } = {} }) => {
-          this.loadContainer.bottomEnd(true);
-          this.$Message.error(data);
-        });
+          this.loadContainer.bottomEnd(true)
+          this.$Message.error(data)
+        })
     },
-    handleLoadMoreByFollow() {
-      const { id: after } = this.topisc[this.topics.length];
-      const limit = 15;
+    handleLoadMoreByFollow () {
+      const { id: after } = this.topisc[this.topics.length]
+      const limit = 15
       api
         .getFollowTopics(after, limit)
         .then(({ data }) => {
-          this.topics = [...this.topics, ...data];
-          this.loadContainer.bottomEnd(data.length < limit);
+          this.topics = [...this.topics, ...data]
+          this.loadContainer.bottomEnd(data.length < limit)
         })
         .catch(({ response: { data } = {} }) => {
-          this.loadContainer.bottomEnd(true);
-          this.$Message.error(data);
-        });
+          this.loadContainer.bottomEnd(true)
+          this.$Message.error(data)
+        })
     },
-    handleFollow(topic) {
+    handleFollow (topic) {
       api.followTopic(topic.id).then(() => {
-        topic.has_follow = true;
-        this.follows_count += 1;
-      });
+        topic.has_follow = true
+        this.follows_count += 1
+      })
     },
-    handleUnfollow(topic) {
+    handleUnfollow (topic) {
       api
         .unfollowTopic(topic.id)
         .then(() => {
-          topic.has_follow = false;
-          topic.follows_count -= 1;
-          if (this.type === "follow") {
-            let newTopics = [];
+          topic.has_follow = false
+          topic.follows_count -= 1
+          if (this.type === 'follow') {
+            let newTopics = []
             this.topics.forEach(_topic => {
               if (_topic.id !== topic.id) {
-                newTopics.push(_topic);
+                newTopics.push(_topic)
               }
-            });
-            this.topics = newTopics;
+            })
+            this.topics = newTopics
           }
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-        });
-    }
-  }
-};
+          this.$Message.error(data)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

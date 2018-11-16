@@ -16,22 +16,22 @@
 </template>
 
 <script>
-import { noop } from "@/util";
+import { noop } from '@/util'
 
 export default {
-  name: "SearchBar",
+  name: 'SearchBar',
   props: {
-    value: { type: String, default: "" },
-    placeholder: { type: String, default: "搜索" },
-    back: { type: Function, default: noop }
+    value: { type: String, default: '' },
+    placeholder: { type: String, default: '搜索' },
+    back: { type: Function, default: noop },
   },
   methods: {
-    onBackClick() {
-      if (this.back === noop) this.goBack();
-      else this.back();
-    }
-  }
-};
+    onBackClick () {
+      if (this.back === noop) this.goBack()
+      else this.back()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

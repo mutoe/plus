@@ -202,37 +202,37 @@
 </template>
 
 <script>
-import _ from "lodash";
-import GroupFeedCard from "@/components/FeedCard/GroupFeedCard.vue";
+import _ from 'lodash'
+import GroupFeedCard from '@/components/FeedCard/GroupFeedCard.vue'
 
-import { getGroudFeedsByType } from "@/api/group.js";
+import { getGroudFeedsByType } from '@/api/group.js'
 
 export default {
-  name: "GroupDetail",
+  name: 'GroupDetail',
   directives: {
     clickoutside: {
-      bind(el, binding) {
-        function documentHandler(e) {
+      bind (el, binding) {
+        function documentHandler (e) {
           if (el.contains(e.target)) {
-            return false;
+            return false
           }
           if (binding.expression) {
-            binding.value(e);
+            binding.value(e)
           }
         }
-        el.__vueClickOutside__ = documentHandler;
-        document.addEventListener("click", documentHandler);
+        el.__vueClickOutside__ = documentHandler
+        document.addEventListener('click', documentHandler)
       },
-      unbind(el) {
-        document.removeEventListener("click", el.__vueClickOutside__);
-        delete el.__vueClickOutside__;
-      }
-    }
+      unbind (el) {
+        document.removeEventListener('click', el.__vueClickOutside__)
+        delete el.__vueClickOutside__
+      },
+    },
   },
   components: {
-    GroupFeedCard
+    GroupFeedCard,
   },
-  data() {
+  data () {
     return {
       preGID: 0,
 
@@ -246,11 +246,11 @@ export default {
 
       typeFilter: null,
       showFilter: false,
-      screen: "latest_post",
+      screen: 'latest_post',
 
       feedTypes: {
-        latest_post: "最新帖子",
-        latest_reply: "最新回复"
+        latest_post: '最新帖子',
+        latest_reply: '最新回复',
       },
 
       noMoreData: false,
@@ -258,238 +258,239 @@ export default {
 
       posts: [],
       pinneds: [],
-      showSlide: false
-    };
+      showSlide: false,
+    }
   },
   computed: {
-    groupId() {
-      return this.$route.params.groupId;
+    groupId () {
+      return this.$route.params.groupId
     },
-    group() {
-      return this.$store.state.group.current;
+    group () {
+      return this.$store.state.group.current
     },
-    currentUser() {
-      return this.$store.state.CURRENTUSER;
+    currentUser () {
+      return this.$store.state.CURRENTUSER
     },
-    groupOwner() {
-      return (this.group.founder || { user: {} }).user;
+    groupOwner () {
+      return (this.group.founder || { user: {} }).user
     },
-    groupUserCount() {
-      return ~~this.group.users_count;
+    groupUserCount () {
+      return ~~this.group.users_count
     },
-    groupPostsCount() {
-      return ~~this.group.posts_count;
+    groupPostsCount () {
+      return ~~this.group.posts_count
     },
-    summary() {
-      const summary = this.group.summary || "";
-      return summary;
+    summary () {
+      const summary = this.group.summary || ''
+      return summary
     },
-    groupAvatar() {
-      const avatar = this.group.avatar || {};
-      return avatar.url || null;
+    groupAvatar () {
+      const avatar = this.group.avatar || {}
+      return avatar.url || null
     },
-    groupBackGround() {
+    groupBackGround () {
       return {
-        "background-image": this.groupAvatar ? `url("${this.groupAvatar}")` : ""
-      };
+        'background-image': this.groupAvatar ? `url("${this.groupAvatar}")` : '',
+      }
     },
-    location() {
-      const location = this.group.location;
-      if (location) return location;
-      const map = ["水星", "金星", "火星", "土星", "地球"];
-      const rand = Math.floor(Math.random() * map.length);
-      return map[rand];
+    location () {
+      const location = this.group.location
+      if (location) return location
+      const map = ['水星', '金星', '火星', '土星', '地球']
+      const rand = Math.floor(Math.random() * map.length)
+      return map[rand]
     },
 
     // banner 相关
-    paddingTop() {
+    paddingTop () {
       return {
         paddingTop:
           ((this.bannerHeight + 80 * Math.atan(this.dY / 200)) /
             (this.bannerHeight * 2)) *
             100 +
-          "%"
-      };
+          '%',
+      }
     },
 
-    joined() {
-      return this.group.joined || false;
+    joined () {
+      return this.group.joined || false
     },
-    role() {
-      if (!this.joined) return false;
-      return this.joined.role;
+    role () {
+      if (!this.joined) return false
+      return this.joined.role
     },
-    permissions() {
-      return this.group.permissions.split(",");
+    permissions () {
+      return this.group.permissions.split(',')
     },
-    isOwner() {
-      return this.groupOwner.id === this.currentUser.id;
+    isOwner () {
+      return this.groupOwner.id === this.currentUser.id
     },
-    isGroupManager() {
-      const { role = "" } = this.group.joined || {};
-      return ["founder", "administrator"].includes(role);
-    }
+    isGroupManager () {
+      const { role = '' } = this.group.joined || {}
+      return ['founder', 'administrator'].includes(role)
+    },
   },
   watch: {
-    $route(to, from) {
-      if (from.name === "groupDetail") return;
-      this.showSlide = from.meta.sidebar;
+    $route (to, from) {
+      if (from.name === 'groupDetail') return
+      this.showSlide = from.meta.sidebar
     },
-    screen() {
-      this.getFeeds();
-    }
+    screen () {
+      this.getFeeds()
+    },
   },
-  mounted() {
-    this.typeFilter = this.$refs.typeFilter;
-    this.bannerHeight = this.$refs.banner.getBoundingClientRect().height;
+  mounted () {
+    this.typeFilter = this.$refs.typeFilter
+    this.bannerHeight = this.$refs.banner.getBoundingClientRect().height
   },
-  activated() {
+  activated () {
     if (this.groupId !== this.group.id) {
-      this.loading = true;
-      this.pinneds = [];
-      this.posts = [];
-      this.updateData();
+      this.loading = true
+      this.pinneds = []
+      this.posts = []
+      this.updateData()
     }
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener('scroll', this.onScroll)
   },
-  deactivated() {
-    this.showFilter = false;
-    window.removeEventListener("scroll", this.onScroll);
+  deactivated () {
+    this.showFilter = false
+    window.removeEventListener('scroll', this.onScroll)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.onScroll);
+  destroyed () {
+    window.removeEventListener('scroll', this.onScroll)
   },
 
   methods: {
-    beforeJoined() {
-      if (this.joined || this.loading) return;
-      this.loading = true;
+    beforeJoined () {
+      if (this.joined || this.loading) return
+      this.loading = true
       this.$store
-        .dispatch("group/joinGroup", {
+        .dispatch('group/joinGroup', {
           groupId: this.groupId,
-          needPaid: this.needPaid
+          needPaid: this.needPaid,
         })
         .then(data => {
-          this.loading = false;
-          this.$Message.success(data);
-          this.updateData();
+          this.loading = false
+          this.$Message.success(data)
+          this.updateData()
         })
         .catch(() => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
-    hidenFilter() {
-      this.showFilter = false;
+    hidenFilter () {
+      this.showFilter = false
     },
-    getFeeds(more = false) {
-      if (this.fetchFeeding) return;
-      this.fetchFeeding = true;
-      const offset = more ? this.pinneds.length + this.posts.length : 0;
+    getFeeds (more = false) {
+      if (this.fetchFeeding) return
+      this.fetchFeeding = true
+      const offset = more ? this.pinneds.length + this.posts.length : 0
       getGroudFeedsByType(this.groupId, this.screen, 10, offset).then(
         ({ pinneds = [], posts = [] }) => {
-          this.posts = more ? [...this.posts, ...posts] : posts;
-          this.pinneds = more ? [...this.pinneds, ...pinneds] : pinneds;
+          this.posts = more ? [...this.posts, ...posts] : posts
+          this.pinneds = more ? [...this.pinneds, ...pinneds] : pinneds
 
-          this.fetchFeeding = false;
-          this.noMoreData = posts.length < 3;
+          this.fetchFeeding = false
+          this.noMoreData = posts.length < 3
         }
-      );
+      )
     },
-    async updateData() {
-      this.dY = 0;
-      this.updating = true;
-      this.getFeeds();
-      await this.$store.dispatch("group/getGroupById", {
-        groupId: this.groupId
-      });
-      this.updating = this.loading = false;
+    async updateData () {
+      this.dY = 0
+      this.updating = true
+      this.getFeeds()
+      await this.$store.dispatch('group/getGroupById', {
+        groupId: this.groupId,
+      })
+      this.updating = this.loading = false
     },
-    onScroll: _.debounce(function() {
+    onScroll: _.debounce(function () {
       this.scrollTop = Math.max(
         0,
         document.body.scrollTop,
         document.documentElement.scrollTop
-      );
+      )
     }, 1000 / 60),
-    startDrag(e) {
-      e = e.changedTouches ? e.changedTouches[0] : e;
+    startDrag (e) {
+      e = e.changedTouches ? e.changedTouches[0] : e
       if (this.scrollTop <= 0 && !this.updating) {
-        this.startY = e.pageY;
-        this.dragging = true;
+        this.startY = e.pageY
+        this.dragging = true
       }
     },
-    onDrag(e) {
-      const $e = e.changedTouches ? e.changedTouches[0] : e;
+    onDrag (e) {
+      const $e = e.changedTouches ? e.changedTouches[0] : e
       if (this.dragging && $e.pageY - this.startY > 0 && window.scrollY <= 0) {
         // 阻止 原生滚动 事件
-        e.preventDefault();
-        this.dY = $e.pageY - this.startY;
+        e.preventDefault()
+        this.dY = $e.pageY - this.startY
       }
     },
-    stopDrag() {
-      this.dragging = false;
-      this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0);
+    stopDrag () {
+      this.dragging = false
+      this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0)
     },
-    onSearchClick() {
+    onSearchClick () {
       this.$router.push({
-        name: "groupSearchPost",
-        params: { groupId: this.groupId }
-      });
+        name: 'groupSearchPost',
+        params: { groupId: this.groupId },
+      })
     },
-    onMoreClick() {
-      this.showSlide = !this.showSlide;
+    onMoreClick () {
+      this.showSlide = !this.showSlide
     },
-    onCreatePostClick() {
-      if (!this.joined)
+    onCreatePostClick () {
+      if (!this.joined) {
         return this.$bus.$emit(
-          "actionSheet",
+          'actionSheet',
           [],
-          "知道了",
-          "需要先加入才可发帖"
-        );
+          '知道了',
+          '需要先加入才可发帖'
+        )
+      }
       if (!this.permissions.includes(this.role)) {
-        const roleText = this.permissions.includes("administrator")
-          ? "圈主和管理员"
-          : "圈主";
-        const text = `"${this.group.name}"仅${roleText}拥有发帖权限`;
-        return this.$bus.$emit("actionSheet", [], "知道了", text);
+        const roleText = this.permissions.includes('administrator')
+          ? '圈主和管理员'
+          : '圈主'
+        const text = `"${this.group.name}"仅${roleText}拥有发帖权限`
+        return this.$bus.$emit('actionSheet', [], '知道了', text)
       }
 
       this.$router.push({
-        name: "groupCreatePost",
-        query: { group: this.groupId }
-      });
+        name: 'groupCreatePost',
+        query: { group: this.groupId },
+      })
     },
-    onExit() {
+    onExit () {
       const actions = [
         {
-          text: "退出圈子",
+          text: '退出圈子',
           method: () => {
-            this.exitGroup();
+            this.exitGroup()
           },
-          style: { color: "red" }
-        }
-      ];
-      this.$bus.$emit("actionSheet", actions, "取消", "确定要退出圈子吗?");
+          style: { color: 'red' },
+        },
+      ]
+      this.$bus.$emit('actionSheet', actions, '取消', '确定要退出圈子吗?')
     },
-    async exitGroup() {
-      await this.$store.dispatch("group/exitGroup", { groupId: this.groupId });
-      this.$Message.success("退出圈子成功");
-      this.$router.replace({ name: "groupHome" });
+    async exitGroup () {
+      await this.$store.dispatch('group/exitGroup', { groupId: this.groupId })
+      this.$Message.success('退出圈子成功')
+      this.$router.replace({ name: 'groupHome' })
     },
-    onTransfer() {
-      this.$router.push({ name: "groupTransfer" });
+    onTransfer () {
+      this.$router.push({ name: 'groupTransfer' })
     },
-    onReport() {
-      this.$bus.$emit("report", {
-        type: "group",
+    onReport () {
+      this.$bus.$emit('report', {
+        type: 'group',
         payload: this.groupId,
         username: this.groupOwner.name,
-        reference: this.group.name
-      });
-    }
-  }
-};
+        reference: this.group.name,
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

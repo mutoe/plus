@@ -34,8 +34,8 @@
 
 <script>
 export default {
-  name: "QuestionSwitchBar"
-};
+  name: 'QuestionSwitchBar',
+}
 </script>
 
 <style lang="less" scoped>

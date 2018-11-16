@@ -1,5 +1,5 @@
-import api from "./api";
-import { limit } from "./index";
+import api from './api'
+import { limit } from './index'
 
 /**
  * 定义圈子对象
@@ -28,13 +28,13 @@ import { limit } from "./index";
  * @author jsonleex <jsonlseex@163.com>
  * @returns {Promise<number>}
  */
-export function getGroupTotalNumber() {
+export function getGroupTotalNumber () {
   return api
-    .get("/plus-group/groups/count")
+    .get('/plus-group/groups/count')
     .then(({ data: { count = 0 } }) => count)
     .catch(() => {
-      return 0;
-    });
+      return 0
+    })
 }
 
 /**
@@ -45,9 +45,9 @@ export function getGroupTotalNumber() {
  * @param {Object} data
  * @returns
  */
-export function postGroup(categoryId, data) {
-  const url = `/plus-group/categories/${categoryId}/groups`;
-  return api.post(url, data, { validateStatus: s => s === 200 });
+export function postGroup (categoryId, data) {
+  const url = `/plus-group/categories/${categoryId}/groups`
+  return api.post(url, data, { validateStatus: s => s === 200 })
 }
 
 /**
@@ -55,8 +55,8 @@ export function postGroup(categoryId, data) {
  * @export
  * @returns
  */
-export function getGroupCates() {
-  return api.get("/plus-group/categories", { validateStatus: s => s === 200 });
+export function getGroupCates () {
+  return api.get('/plus-group/categories', { validateStatus: s => s === 200 })
 }
 
 /**
@@ -69,9 +69,9 @@ export function getGroupCates() {
  * @param {string} params.type
  * @returns {Promise<GroupObject[]>}
  */
-export function getMyGroups(params) {
-  const url = "/plus-group/user-groups";
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getMyGroups (params) {
+  const url = '/plus-group/user-groups'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -79,16 +79,16 @@ export function getMyGroups(params) {
  * @author jsonleex <jsonlseex@163.com>
  * @returns {Promise<Array>}
  */
-export function getRecGroups() {
+export function getRecGroups () {
   return api
-    .get("/plus-group/recommend/groups", {
-      params: { type: "random" },
-      validateStatus: s => s === 200
+    .get('/plus-group/recommend/groups', {
+      params: { type: 'random' },
+      validateStatus: s => s === 200,
     })
     .then(({ data = [] }) => {
-      return Array.isArray(data) ? data : [];
+      return Array.isArray(data) ? data : []
     })
-    .catch(err => (err, []));
+    .catch(() => [])
 }
 
 /**
@@ -98,9 +98,9 @@ export function getRecGroups() {
  * @param {number} groupId
  * @returns
  */
-export function joinGroup(groupId) {
-  const url = `/plus-group/groups/${groupId}`;
-  return api.put(url, {}, { validateStatus: s => s === 201 });
+export function joinGroup (groupId) {
+  const url = `/plus-group/groups/${groupId}`
+  return api.put(url, {}, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -110,9 +110,9 @@ export function joinGroup(groupId) {
  * @param {number} groupId
  * @returns
  */
-export function joinGroupWithPaid(groupId, password) {
-  const url = `/plus-group/currency-groups/${groupId}`;
-  return api.put(url, { password }, { validateStatus: s => s === 201 });
+export function joinGroupWithPaid (groupId, password) {
+  const url = `/plus-group/currency-groups/${groupId}`
+  return api.put(url, { password }, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -121,11 +121,11 @@ export function joinGroupWithPaid(groupId, password) {
  * @param  {number} UID
  * @returns
  */
-export function getGroupsByUser(UID, limit = 15, offset = 0) {
-  return api.get("/plus-group/groups/users", {
+export function getGroupsByUser (UID, limit = 15, offset = 0) {
+  return api.get('/plus-group/groups/users', {
     params: { user_id: UID, limit, offset },
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -140,9 +140,9 @@ export function getGroupsByUser(UID, limit = 15, offset = 0) {
  * @param {string} [params.id] 以逗号分隔的 id 字符串
  * @returns {Promise<GroupObject>}
  */
-export function getGroups(params) {
-  const url = `/plus-group/groups`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getGroups (params) {
+  const url = `/plus-group/groups`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -155,9 +155,9 @@ export function getGroups(params) {
  * @param {string} [params.type]
  * @returns {Promise<GroupObject[]>}
  */
-export function getRecommendGroups(params) {
-  const url = "/plus-group/recommend/groups";
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getRecommendGroups (params) {
+  const url = '/plus-group/recommend/groups'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -166,12 +166,12 @@ export function getRecommendGroups(params) {
  * @param  {number} postId
  * @param  {Boolean} status
  */
-export function collectGroupPost(postId, status) {
+export function collectGroupPost (postId, status) {
   const url = status
     ? `/plus-group/group-posts/${postId}/uncollect`
-    : `/plus-group/group-posts/${postId}/collections`;
-  const method = status ? "delete" : "post";
-  return api({ method, url, validateStatus: s => s === 201 || s === 204 });
+    : `/plus-group/group-posts/${postId}/collections`
+  const method = status ? 'delete' : 'post'
+  return api({ method, url, validateStatus: s => s === 201 || s === 204 })
 }
 
 /**
@@ -181,9 +181,9 @@ export function collectGroupPost(postId, status) {
  * @param {number} postId
  * @returns
  */
-export function collectionPost(postId) {
-  const url = `/plus-group/group-posts/${postId}/collections`;
-  return api.post(url, { validateStatus: s => s === 201 });
+export function collectionPost (postId) {
+  const url = `/plus-group/group-posts/${postId}/collections`
+  return api.post(url, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -193,9 +193,9 @@ export function collectionPost(postId) {
  * @param {number} postId
  * @returns
  */
-export function uncollectPost(postId) {
-  const url = `/plus-group/group-posts/${postId}/uncollect`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function uncollectPost (postId) {
+  const url = `/plus-group/group-posts/${postId}/uncollect`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -205,10 +205,10 @@ export function uncollectPost(postId) {
  * @param {number} groupId
  * @returns {Promise<GroupObject>}
  */
-export function getGroupInfoById(groupId) {
+export function getGroupInfoById (groupId) {
   return api.get(`/plus-group/groups/${groupId}`, {
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -219,17 +219,17 @@ export function getGroupInfoById(groupId) {
  * @param {number} [offset=0]
  * @returns {Promise<{pinneds: Array, posts: Array}>}
  */
-export function getGroudFeedsByType(
+export function getGroudFeedsByType (
   groupId,
-  type = "latest_post",
+  type = 'latest_post',
   limit = 15,
   offset = 0
 ) {
-  const params = { type, offset, limit };
+  const params = { type, offset, limit }
   return api
     .get(`/plus-group/groups/${groupId}/posts`, { params })
     .then(({ data }) => data)
-    .catch(err => (err, { pinneds: [], posts: [] }));
+    .catch(() => ({ pinneds: [], posts: [] }))
 }
 
 /**
@@ -240,9 +240,9 @@ export function getGroudFeedsByType(
  * @param {Object} params
  * @returns {Promise}
  */
-export function applyTopPost(postId, params) {
-  const url = `/plus-group/currency-pinned/posts/${postId}`;
-  return api.post(url, params, { validateStatus: s => s === 201 });
+export function applyTopPost (postId, params) {
+  const url = `/plus-group/currency-pinned/posts/${postId}`
+  return api.post(url, params, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -254,9 +254,9 @@ export function applyTopPost(postId, params) {
  * @param {number} data.amount 打赏金额
  * @returns
  */
-export function rewardPost(postId, data) {
-  const url = `/plus-group/group-posts/${postId}/new-rewards`;
-  return api.post(url, data, { validateStatus: s => s === 201 });
+export function rewardPost (postId, data) {
+  const url = `/plus-group/group-posts/${postId}/new-rewards`
+  return api.post(url, data, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -267,9 +267,9 @@ export function rewardPost(postId, data) {
  * @param {number} postId
  * @returns
  */
-export function getGroupPost(groupId, postId) {
-  const url = `/plus-group/groups/${groupId}/posts/${postId}`;
-  return api.get(url, { validateStatus: s => s === 200 });
+export function getGroupPost (groupId, postId) {
+  const url = `/plus-group/groups/${groupId}/posts/${postId}`
+  return api.get(url, { validateStatus: s => s === 200 })
 }
 
 /**
@@ -286,10 +286,10 @@ export function getGroupPost(groupId, postId) {
  * @param {number} [data.feed_from]
  * @returns {Promise<GroupPostObject[]>}
  */
-export function createGroupPost(groupId, data) {
-  const url = `/plus-group/groups/${groupId}/posts`;
-  Object.assign(data, { feed_from: 2 });
-  return api.post(url, data, { validateStatus: s => s === 201 });
+export function createGroupPost (groupId, data) {
+  const url = `/plus-group/groups/${groupId}/posts`
+  Object.assign(data, { feed_from: 2 })
+  return api.post(url, data, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -300,15 +300,15 @@ export function createGroupPost(groupId, data) {
  * @param {number} postId
  * @returns {Promise}
  */
-export function deletePost(groupId, postId) {
-  const url = `/plus-group/groups/${groupId}/posts/${postId}`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function deletePost (groupId, postId) {
+  const url = `/plus-group/groups/${groupId}/posts/${postId}`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
-export function likeGroupPost(postId, status) {
-  const url = `/plus-group/group-posts/${postId}/likes`;
-  const method = status ? "delete" : "post";
-  return api({ method, url, validateStatus: s => s === 201 || s === 204 });
+export function likeGroupPost (postId, status) {
+  const url = `/plus-group/group-posts/${postId}/likes`
+  const method = status ? 'delete' : 'post'
+  return api({ method, url, validateStatus: s => s === 201 || s === 204 })
 }
 
 /**
@@ -319,9 +319,9 @@ export function likeGroupPost(postId, status) {
  * @param    {number}            after [description]
  * @returns
  */
-export function getPostAudits({ after = 0, group = 0 }) {
-  const params = { after, limit, group };
-  return api.get("/plus-group/pinned/posts", { params });
+export function getPostAudits ({ after = 0, group = 0 }) {
+  const params = { after, limit, group }
+  return api.get('/plus-group/pinned/posts', { params })
 }
 
 /**
@@ -332,9 +332,9 @@ export function getPostAudits({ after = 0, group = 0 }) {
  * @param {params} params
  * @returns
  */
-export function getPostComments(postId, params) {
-  const url = `/plus-group/group-posts/${postId}/comments`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getPostComments (postId, params) {
+  const url = `/plus-group/group-posts/${postId}/comments`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -347,16 +347,16 @@ export function getPostComments(postId, params) {
  * @param {number} [payload.reply_user] 回复的用户id
  * @returns {Promise<{comment}>}
  */
-export function postComment(postId, payload) {
-  const url = `/plus-group/group-posts/${postId}/comments`;
+export function postComment (postId, payload) {
+  const url = `/plus-group/group-posts/${postId}/comments`
   return api
     .post(url, payload, { validateStatus: s => s === 201 })
-    .then(({ data = { comment: {} } }) => data.comment);
+    .then(({ data = { comment: {} } }) => data.comment)
 }
 
-export function getPostCommentAudits({ after = 0, post = 0 }) {
-  const params = { after, limit, post };
-  return api.get("/plus-group/pinned/comments", { params });
+export function getPostCommentAudits ({ after = 0, post = 0 }) {
+  const params = { after, limit, post }
+  return api.get('/plus-group/pinned/comments', { params })
 }
 
 /**
@@ -371,10 +371,10 @@ export function getPostCommentAudits({ after = 0, post = 0 }) {
  * @param {number} payload.day
  * @returns
  */
-export function applyTopPostComment({ postId, commentId }, payload) {
-  const url = `/plus-group/currency-pinned/comments/${commentId}`;
-  Object.assign(payload, { post_id: postId });
-  return api.post(url, payload, { validateStatus: s => s === 201 });
+export function applyTopPostComment ({ postId, commentId }, payload) {
+  const url = `/plus-group/currency-pinned/comments/${commentId}`
+  Object.assign(payload, { post_id: postId })
+  return api.post(url, payload, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -385,9 +385,9 @@ export function applyTopPostComment({ postId, commentId }, payload) {
  * @param {number} commentId
  * @returns
  */
-export function deletePostComment(postId, commentId) {
-  const url = `/plus-group/group-posts/${postId}/comments/${commentId}`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function deletePostComment (postId, commentId) {
+  const url = `/plus-group/group-posts/${postId}/comments/${commentId}`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -397,11 +397,11 @@ export function deletePostComment(postId, commentId) {
  * @param {Object} params
  * @returns {Promise<GroupObject[]>}
  */
-export function searchGroups(params) {
-  return api.get("/plus-group/groups", {
+export function searchGroups (params) {
+  return api.get('/plus-group/groups', {
     params,
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -415,11 +415,11 @@ export function searchGroups(params) {
  * @param {number} params.offset
  * @returns {Promise<GroupPostObject[]>}
  */
-export function searchPosts(params) {
-  return api.get("/plus-group/group-posts", {
+export function searchPosts (params) {
+  return api.get('/plus-group/group-posts', {
     params,
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -428,10 +428,10 @@ export function searchPosts(params) {
  * @export
  * @returns {Promise<Object>}
  */
-export function getProtocol() {
-  return api.get("/plus-group/groups/protocol", {
-    validateStatus: s => s === 200
-  });
+export function getProtocol () {
+  return api.get('/plus-group/groups/protocol', {
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -446,9 +446,9 @@ export function getProtocol() {
  * @param {string} [params.type]
  * @returns {Promise<UserObject[]>}
  */
-export function getMembers(groupId, params) {
-  const url = `/plus-group/groups/${groupId}/members`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getMembers (groupId, params) {
+  const url = `/plus-group/groups/${groupId}/members`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -458,9 +458,9 @@ export function getMembers(groupId, params) {
  * @param {number} groupId
  * @returns {Promise<null>}
  */
-export function exitGroup(groupId) {
-  const url = `/plus-group/groups/${groupId}/exit`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function exitGroup (groupId) {
+  const url = `/plus-group/groups/${groupId}/exit`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -472,9 +472,9 @@ export function exitGroup(groupId) {
  * @param {number} params.target 被转让用户id
  * @returns
  */
-export function transferGroup(groupId, params) {
-  const url = `/plus-group/groups/${groupId}/owner`;
-  return api.patch(url, params, { validateStatus: s => s === 201 });
+export function transferGroup (groupId, params) {
+  const url = `/plus-group/groups/${groupId}/owner`
+  return api.patch(url, params, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -486,9 +486,9 @@ export function transferGroup(groupId, params) {
  * @param {string[]} params.permissions
  * @returns
  */
-export function changePermissions(groupId, params) {
-  const url = `/plus-group/groups/${groupId}/permissions`;
-  return api.patch(url, params, { validateStatus: s => s === 204 });
+export function changePermissions (groupId, params) {
+  const url = `/plus-group/groups/${groupId}/permissions`
+  return api.patch(url, params, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -500,9 +500,9 @@ export function changePermissions(groupId, params) {
  * @param {number} params.day
  * @returns
  */
-export function pinnedPost(postId, params) {
-  const url = `/plus-group/pinned/posts/${postId}/create`;
-  return api.post(url, params, { validateStatus: s => s === 201 });
+export function pinnedPost (postId, params) {
+  const url = `/plus-group/pinned/posts/${postId}/create`
+  return api.post(url, params, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -512,9 +512,9 @@ export function pinnedPost(postId, params) {
  * @param {number} postId
  * @returns
  */
-export function unpinnedPost(postId) {
-  const url = `/plus-group/pinned/posts/${postId}/cancel`;
-  return api.patch(url, {}, { validateStatus: s => s === 201 });
+export function unpinnedPost (postId) {
+  const url = `/plus-group/pinned/posts/${postId}/cancel`
+  return api.patch(url, {}, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -525,9 +525,9 @@ export function unpinnedPost(postId) {
  * @param {number} memberId
  * @returns
  */
-export function addToBlackList(groupId, memberId) {
-  const url = `/plus-group/groups/${groupId}/blacklist/${memberId}`;
-  return api.put(url, {}, { validateStatus: s => s === 201 });
+export function addToBlackList (groupId, memberId) {
+  const url = `/plus-group/groups/${groupId}/blacklist/${memberId}`
+  return api.put(url, {}, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -538,9 +538,9 @@ export function addToBlackList(groupId, memberId) {
  * @param {number} memberId
  * @returns
  */
-export function moveoutBlackList(groupId, memberId) {
-  const url = `/plus-group/groups/${groupId}/blacklist/${memberId}`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function moveoutBlackList (groupId, memberId) {
+  const url = `/plus-group/groups/${groupId}/blacklist/${memberId}`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -552,9 +552,9 @@ export function moveoutBlackList(groupId, memberId) {
  * @param {string} reason 举报理由
  * @returns
  */
-export function reportPost(postId, reason) {
-  const url = `/plus-group/reports/posts/${postId}`;
-  return api.post(url, { content: reason }, { validateStatus: s => s === 201 });
+export function reportPost (postId, reason) {
+  const url = `/plus-group/reports/posts/${postId}`
+  return api.post(url, { content: reason }, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -566,7 +566,7 @@ export function reportPost(postId, reason) {
  * @param {string} reason
  * @returns
  */
-export function reportPostComment(commentId, reason) {
-  const url = `/plus-group/reports/comments/${commentId}`;
-  return api.post(url, { content: reason }, { validateStatus: s => s === 201 });
+export function reportPostComment (commentId, reason) {
+  const url = `/plus-group/reports/comments/${commentId}`
+  return api.post(url, { content: reason }, { validateStatus: s => s === 201 })
 }

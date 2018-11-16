@@ -14,27 +14,27 @@
 
 <script>
 export default {
-  name: "GroupUserItem",
+  name: 'GroupUserItem',
   props: {
-    member: { type: Object, required: true }
+    member: { type: Object, required: true },
   },
   computed: {
-    user() {
-      return this.member.user || {};
-    }
+    user () {
+      return this.member.user || {}
+    },
   },
   methods: {
-    onUserClick() {
+    onUserClick () {
       this.$router.push({
-        name: "userDetail",
-        params: { userId: this.user.id }
-      });
+        name: 'userDetail',
+        params: { userId: this.user.id },
+      })
     },
-    handleMore() {
-      this.$emit("more");
-    }
-  }
-};
+    handleMore () {
+      this.$emit('more')
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

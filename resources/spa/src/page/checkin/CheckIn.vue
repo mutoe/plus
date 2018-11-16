@@ -61,69 +61,58 @@
 
 <script>
 export default {
-  name: "CheckIn",
-  data() {
+  name: 'CheckIn',
+  data () {
     return {
       show: false,
       scrollTop: 0,
       rank_users: [],
       checked_in: true,
       attach_balance: 0,
-      last_checkin_count: 0
-    };
+      last_checkin_count: 0,
+    }
   },
-  created() {
-    this.$bus.$on("check-in", () => {
-      this.updateDate();
-      this.show = true;
-      this.scrollTop = document.scrollingElement.scrollTop;
-      document.body.classList.add("m-pop-open");
-      document.body.style.top = -this.scrollTop + "px";
-    });
+  created () {
+    this.$bus.$on('check-in', () => {
+      this.updateDate()
+      this.show = true
+      this.scrollTop = document.scrollingElement.scrollTop
+      document.body.classList.add('m-pop-open')
+      document.body.style.top = -this.scrollTop + 'px'
+    })
   },
   methods: {
-    cancel() {
-      this.show = false;
-      document.body.style.top = "";
-      document.body.classList.remove("m-pop-open");
-      document.scrollingElement.scrollTop = this.scrollTop;
+    cancel () {
+      this.show = false
+      document.body.style.top = ''
+      document.body.classList.remove('m-pop-open')
+      document.scrollingElement.scrollTop = this.scrollTop
     },
-    updateDate() {
+    updateDate () {
       this.$http
         .get(`/user/checkin`)
-        .then(
-          ({
-            data: {
-              checked_in,
-              attach_balance,
-              rank_users = [],
-              // checkin_count = 0,
-              last_checkin_count = 0
-            } = {}
-          }) => {
-            this.checked_in = checked_in;
-            this.attach_balance = ~~attach_balance;
-            this.last_checkin_count = last_checkin_count;
-            rank_users && rank_users.length && (this.rank_users = rank_users);
-          }
-        );
-    },
-    fetchCheckIn() {
-      if (this.checked_in) return;
-      this.$http
-        .put("/user/checkin/currency", {
-          validateStatus: s => s === 204
+        .then(({ data = {} }) => {
+          const users = data.rank_users || []
+          this.checked_in = data.checked_in
+          this.attach_balance = ~~data.attach_balance
+          this.last_checkin_count = data.last_checkin_count || 0
+          users.length && (this.rank_users = users)
         })
+    },
+    fetchCheckIn () {
+      if (this.checked_in) return
+      this.$http
+        .put('/user/checkin/currency', { validateStatus: s => s === 204 })
         .then(() => {
-          this.checked_in = true;
-          this.updateDate();
+          this.checked_in = true
+          this.updateDate()
         })
         .catch(() => {
-          this.$Message.error("签到失败, 请稍后重试");
-        });
-    }
-  }
-};
+          this.$Message.error('签到失败, 请稍后重试')
+        })
+    },
+  },
+}
 </script>
 
 <style>

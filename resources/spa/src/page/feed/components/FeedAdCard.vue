@@ -36,20 +36,20 @@
  * 模拟动态卡片广告
  */
 
-import { timeOffset } from "@/filters";
+import { timeOffset } from '@/filters'
 
 export default {
-  name: "FeedCard",
+  name: 'FeedCard',
   props: {
-    ad: { type: Object, required: true }
+    ad: { type: Object, required: true },
   },
   computed: {
-    time() {
-      const { time } = this.ad.data || {};
-      return +new Date(time) - timeOffset;
-    }
-  }
-};
+    time () {
+      const { time } = this.ad.data || {}
+      return +new Date(time) - timeOffset
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

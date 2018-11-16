@@ -18,17 +18,17 @@
 </template>
 
 <script>
-import NewsCard from "./NewsCard.vue";
+import NewsCard from './NewsCard.vue'
 
 export default {
-  name: "AdCard",
+  name: 'AdCard',
   extends: NewsCard,
   props: {
     ad: { type: Object, required: true },
-    news: { type: Object, default: () => ({}) }
+    news: { type: Object, default: () => ({}) },
   },
   methods: {
-    formatData() {} // please keep it exist because it extended NewsCard.vue and mounted this method.
-  }
-};
+    formatData () {}, // please keep it exist because it extended NewsCard.vue and mounted this method.
+  },
+}
 </script>

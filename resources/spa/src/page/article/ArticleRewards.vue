@@ -28,48 +28,48 @@
 
 <script>
 export default {
-  name: "ArticleRewards",
-  data() {
+  name: 'ArticleRewards',
+  data () {
     return {
       rewards: [],
       typeMap: {
-        feed: "动态",
-        news: "资讯",
-        post: "帖子",
-        answer: "回答"
-      }
-    };
+        feed: '动态',
+        news: '资讯',
+        post: '帖子',
+        answer: '回答',
+      },
+    }
   },
   computed: {
-    type() {
-      return this.$route.meta.type;
+    type () {
+      return this.$route.meta.type
     },
-    article() {
-      return this.$route.params.article;
+    article () {
+      return this.$route.params.article
     },
-    url() {
+    url () {
       // 动态 GET /feeds/{feed}/rewards
       // 资讯 GET /news/{news}/rewards
       // 帖子 GET /plus-group/group-posts/:post/rewards
 
       switch (this.type) {
-        case "feed":
-          return `/feeds/${this.article}/rewards`;
-        case "news":
-          return `/news/${this.article}/rewards`;
-        case "post":
-          return `/plus-group/group-posts/${this.article}/rewards`;
-        case "answer":
-          return `/question-answers/${this.article}/rewarders`;
+        case 'feed':
+          return `/feeds/${this.article}/rewards`
+        case 'news':
+          return `/news/${this.article}/rewards`
+        case 'post':
+          return `/plus-group/group-posts/${this.article}/rewards`
+        case 'answer':
+          return `/question-answers/${this.article}/rewarders`
       }
-    }
+    },
   },
 
-  mounted() {
-    this.$refs.loadmore.beforeRefresh();
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh(callback) {
+    onRefresh () {
       /**
        * 刷新列表
        *
@@ -80,37 +80,28 @@ export default {
             order_type    string      默认 date, amount 打赏金额 date 打赏时间
        */
       this.$http
-        .get(this.url, {
-          params: {
-            limit: 15
-          }
-        })
+        .get(this.url, { params: { limit: 15 } })
         .then(({ data = [] }) => {
-          this.rewards = data;
-          callback(data.length < 15);
+          this.rewards = data
+          this.$refs.loadmore.afterRefresh(data.length < 15)
         })
         .catch(() => {
-          callback(true);
-        });
+          this.$refs.loadmore.afterRefresh(true)
+        })
     },
-    onLoadMore(callback) {
+    onLoadMore () {
       this.$http
-        .get(this.url, {
-          params: {
-            limit: 15,
-            offset: this.rewards.length
-          }
-        })
+        .get(this.url, { params: { limit: 15, offset: this.rewards.length } })
         .then(({ data = [] }) => {
-          this.rewards = [...this.rewards, ...data];
-          callback(data.length < 15);
+          this.rewards = [...this.rewards, ...data]
+          this.$refs.loadmore.afterLoadmore(data.length < 15)
         })
         .catch(() => {
-          callback(true);
-        });
-    }
-  }
-};
+          this.$refs.loadmore.afterLoadmore(true)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -29,9 +29,7 @@
             v-show="account.length > 0"
             class="m-style-svg m-svg-def"
             @click="account = ''">
-            <use
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              xlink:href="#icon-clean"/>
+            <use xlink:href="#icon-clean"/>
           </svg>
         </div>
         <div class="m-form-row m-main">
@@ -50,15 +48,10 @@
               v-model="password"
               type="password"
               placeholder="输入6位以上登录密码"
-              @focus="onFocus"
-            >
+              @focus="onFocus" >
           </div>
-          <svg
-            class="m-style-svg m-svg-def"
-            @click="eye=!eye">
-            <use
-              :xlink:href="`#eye-${eye?&quot;open&quot;:&quot;close&quot;}`"
-              xmlns:xlink="http://www.w3.org/1999/xlink"/>
+          <svg class="m-style-svg m-svg-def" @click="eye=!eye">
+            <use :xlink:href="`#eye-${eye?'open':'close'}`"/>
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -67,9 +60,7 @@
             <span v-if="err">{{ (err | plusMessageFirst) }}</span>
           </transition>
         </div>
-        <div
-          class="m-form-row"
-          style="border: 0">
+        <div class="m-form-row" style="border: 0">
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
@@ -84,99 +75,95 @@
 </template>
 
 <script>
-function strLength(str) {
-  let totalLength = 0;
-  let i = 0;
-  let charCode;
+function strLength (str) {
+  let totalLength = 0
+  let i = 0
+  let charCode
   for (; i < str.length; i++) {
-    charCode = str.charCodeAt(i);
+    charCode = str.charCodeAt(i)
     if (charCode < 0x007f) {
-      totalLength = totalLength + 1;
+      totalLength = totalLength + 1
     } else if (charCode >= 0x0080 && charCode <= 0x07ff) {
-      totalLength += 2;
+      totalLength += 2
     } else if (charCode >= 0x0800 && charCode <= 0xffff) {
-      totalLength += 3;
+      totalLength += 3
     }
   }
-  return totalLength;
+  return totalLength
 }
 
 export default {
-  name: "WechatBindUser",
+  name: 'WechatBindUser',
   data: () => ({
-    err: "",
+    err: '',
     eye: false,
-    account: "",
-    password: "",
+    account: '',
+    password: '',
     loading: false,
-    accessToken: ""
+    accessToken: '',
   }),
   computed: {
-    disabled() {
-      const { account, password } = this.$data;
+    disabled () {
+      const { account, password } = this.$data
       return !(
-        [account, password].every(i => i !== "") && strLength(account) > 3
-      );
-    }
+        [account, password].every(i => i !== '') && strLength(account) > 3
+      )
+    },
   },
-  created() {
-    this.accessToken = this.$lstore.getData("H5_WECHAT_MP_ASTOKEN");
+  created () {
+    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
   },
   methods: {
-    onFocus() {
-      this.err = "";
+    onFocus () {
+      this.err = ''
     },
-    bindUser() {
-      this.err = "";
-      if (this.loading) {
-        return;
-      }
+    bindUser () {
+      this.err = ''
+      if (this.loading) return
+
       const {
         account: login,
         password,
-        accessToken: access_token
-      } = this.$data;
+        accessToken,
+      } = this.$data
       if (!login) {
-        this.err = { error: "账号不能为空" };
-        return;
+        this.err = { error: '账号不能为空' }
+        return
       }
 
       if (!password) {
-        this.err = { error: "密码不能为空" };
-        return;
+        this.err = { error: '密码不能为空' }
+        return
       }
 
-      if (!access_token) {
-        this.err = { error: "未获取到微信授权" };
-        return;
+      if (!accessToken) {
+        this.err = { error: '未获取到微信授权' }
+        return
       }
 
       let param = {
         login,
-        access_token,
-        password
-      };
-      this.loading = true;
+        access_token: accessToken,
+        password,
+      }
+      this.loading = true
       this.$http
-        .put("socialite/wechat", param, {
-          validateStatus: s => s === 201
-        })
-        .then(({ data: { token = "", user = {} } = {} }) => {
-          this.$store.commit("SAVE_CURRENTUSER", { ...user, token });
+        .put('socialite/wechat', param, { validateStatus: s => s === 201 })
+        .then(({ data: { token = '', user = {} } = {} }) => {
+          this.$store.commit('SAVE_CURRENTUSER', { ...user, token })
           this.$nextTick(() => {
-            this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
-            this.$store.dispatch("GET_UNREAD_COUNT");
-            this.$store.dispatch("GET_NEW_UNREAD_COUNT");
-            this.$store.commit("SAVE_USER", user);
-            this.$lstore.removeData("H5_WECHAT_MP_OPENID");
-            this.$lstore.removeData("H5_WECHAT_MP_ASTOKEN");
-          });
-          this.loading = false;
+            this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
+            this.$store.dispatch('GET_UNREAD_COUNT')
+            this.$store.dispatch('GET_NEW_UNREAD_COUNT')
+            this.$store.commit('SAVE_USER', user)
+            this.$lstore.removeData('H5_WECHAT_MP_OPENID')
+            this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
+          })
         })
-        .catch(() => {
-          this.loading = false;
-        });
-    }
-  }
-};
+        .finally(() => {
+          this.loading = false
+        })
+    },
+  },
+}
 </script>

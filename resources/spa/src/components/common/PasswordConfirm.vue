@@ -36,46 +36,46 @@
 
 <script>
 export default {
-  name: "PasswordConfirm",
-  data() {
+  name: 'PasswordConfirm',
+  data () {
     return {
       visible: false,
-      password: ""
-    };
+      password: '',
+    }
   },
   computed: {
-    disabled() {
-      return this.password.length < 6;
+    disabled () {
+      return this.password.length < 6
     },
-    needValidate() {
-      const config = this.$store.state.CONFIG;
-      return config["pay-validate-user-password"] || false;
-    }
+    needValidate () {
+      const config = this.$store.state.CONFIG
+      return config['pay-validate-user-password'] || false
+    },
   },
   methods: {
-    show() {
-      if (!this.needValidate) return this.$emit("submit");
-      this.visible = true;
+    show () {
+      if (!this.needValidate) return this.$emit('submit')
+      this.visible = true
       this.$nextTick(() => {
-        this.$refs.content.focus();
-      });
+        this.$refs.content.focus()
+      })
     },
-    cancel() {
-      this.$emit("cancel");
-      this.visible = false;
-      this.password = "";
+    cancel () {
+      this.$emit('cancel')
+      this.visible = false
+      this.password = ''
     },
-    submit() {
-      this.$emit("submit", this.password);
-      this.visible = false;
-      this.password = "";
+    submit () {
+      this.$emit('submit', this.password)
+      this.visible = false
+      this.password = ''
     },
-    onForgotClick() {
-      this.$router.push({ path: "/forgot" });
-      this.cancel();
-    }
-  }
-};
+    onForgotClick () {
+      this.$router.push({ path: '/forgot' })
+      this.cancel()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

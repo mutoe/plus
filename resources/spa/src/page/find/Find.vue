@@ -71,56 +71,56 @@
 </template>
 
 <script>
-import { getCurrentPosition } from "@/api/bootstrappers.js";
+import { getCurrentPosition } from '@/api/bootstrappers.js'
 
 export default {
-  name: "Find",
-  data() {
+  name: 'Find',
+  data () {
     return {
-      loading: false
-    };
+      loading: false,
+    }
   },
   computed: {
-    POSITION() {
-      return this.$store.state.POSITION || { label: "" };
+    POSITION () {
+      return this.$store.state.POSITION || { label: '' }
     },
-    location() {
-      const { label = "" } = this.POSITION;
+    location () {
+      const { label = '' } = this.POSITION
       // label.length > 5
       //   ? `${label.slice(0, 2)}…${label.slice(-2)}`
       //   :
-      return label || "选择城市";
-    }
+      return label || '选择城市'
+    },
   },
-  created() {
-    this.getCurrentPosition();
+  created () {
+    this.getCurrentPosition()
   },
   methods: {
-    goBack() {
-      this.$router.push("/discover");
+    goBack () {
+      this.$router.push('/discover')
     },
-    showSearchUser() {
-      this.$router.push("/search/user");
+    showSearchUser () {
+      this.$router.push('/search/user')
     },
-    switchLocation() {
-      this.$router.push("/location");
+    switchLocation () {
+      this.$router.push('/location')
     },
-    getCurrentPosition() {
-      this.$lstore.hasData("H5_CURRENT_POSITION") ||
-        ((this.loading = true),
-        getCurrentPosition().then(
-          data => {
-            this.$store.commit("SAVE_H5_POSITION", data);
-            this.loading = false;
-          },
-          err => {
-            this.loading = false;
-            this.$Message.error(err.message);
-          }
-        ));
-    }
-  }
-};
+    getCurrentPosition () {
+      if (this.$lstore.hasData('H5_CURRENT_POSITION')) return
+      this.loading = true
+      getCurrentPosition()
+        .then(data => {
+          this.$store.commit('SAVE_H5_POSITION', data)
+        })
+        .catch(err => {
+          this.$Message.error(err.message)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

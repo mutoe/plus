@@ -23,38 +23,38 @@
  * 提取资讯评论置顶申请的状态控制组件
  */
 
-import AuditStatusBase from "./AuditStatusBase.vue";
+import AuditStatusBase from './AuditStatusBase.vue'
 
 export default {
-  name: "NewsCommentAuditStatus",
+  name: 'NewsCommentAuditStatus',
   extends: AuditStatusBase,
   methods: {
-    accept() {
-      const { target: postId = 0 } = this.audit;
+    accept () {
+      const { target: postId = 0 } = this.audit
       this.$http
         .patch(`/plus-group/currency-pinned/posts/${postId}/accept`, {
-          validateStatus: s => s === 201
+          validateStatus: s => s === 201,
         })
         .then(({ data }) => {
-          this.audit.expires_at = 1;
-          this.audit.status = 1;
-          this.$Message.success(data);
-        });
+          this.audit.expires_at = 1
+          this.audit.status = 1
+          this.$Message.success(data)
+        })
     },
-    reject() {
-      const { target: postId = 0 } = this.audit;
+    reject () {
+      const { target: postId = 0 } = this.audit
       this.$http
         .patch(`/plus-group/currency-pinned/posts/${postId}/reject`, {
-          validateStatus: s => s === 201
+          validateStatus: s => s === 201,
         })
         .then(({ data }) => {
-          this.audit.expires_at = 1;
-          this.audit.status = 2;
-          this.$Message.success(data);
-        });
-    }
-  }
-};
+          this.audit.expires_at = 1
+          this.audit.status = 2
+          this.$Message.success(data)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less">

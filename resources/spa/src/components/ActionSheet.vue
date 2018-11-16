@@ -43,18 +43,18 @@
  */
 
 export default {
-  name: "ActionSheet",
-  data() {
+  name: 'ActionSheet',
+  data () {
     return {
       lists: [],
-      tips: "",
-      title: "提示",
+      tips: '',
+      title: '提示',
       show: false,
       scrollTop: 0,
-      cancelBtn: "取消"
-    };
+      cancelBtn: '取消',
+    }
   },
-  created: function() {
+  created: function () {
     /**
      * Call actionSheet
      * @author jsonleex <jsonlseex@163.com>
@@ -64,39 +64,39 @@ export default {
      * @param {string} [title] 提示标题 默认为"提示"
      */
     this.$bus.$on(
-      "actionSheet",
-      (btnLists, cancelTxt, tips = null, title = "") => {
-        this.tips = tips;
-        title && (this.title = title);
-        this.call(btnLists, cancelTxt);
+      'actionSheet',
+      (btnLists, cancelTxt, tips = null, title = '') => {
+        this.tips = tips
+        title && (this.title = title)
+        this.call(btnLists, cancelTxt)
       }
-    );
+    )
   },
   methods: {
-    call(btnLists, cancelTxt) {
-      this.cancelBtn = cancelTxt || this.cancelBtn;
+    call (btnLists, cancelTxt) {
+      this.cancelBtn = cancelTxt || this.cancelBtn
       if (btnLists.length > 0) {
         this.lists = btnLists.map(btn => {
           btn.method &&
             (btn.methods = (btn, index) => {
-              btn.method(btn, index);
-              this.show = false;
-              this.scrollable = true;
-            });
-          return btn;
-        });
+              btn.method(btn, index)
+              this.show = false
+              this.scrollable = true
+            })
+          return btn
+        })
       }
-      this.show = true;
-      this.scrollable = false;
+      this.show = true
+      this.scrollable = false
     },
-    cancel() {
-      this.lists = [];
-      this.tips = null;
-      this.show = false;
-      this.scrollable = true;
-    }
-  }
-};
+    cancel () {
+      this.lists = []
+      this.tips = null
+      this.show = false
+      this.scrollable = true
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -132,155 +132,154 @@
 </template>
 
 <script>
-import markdownIt from "markdown-it";
-import plusImagePlugin from "markdown-it-plus-image";
-import FeedDetail from "@/page/feed/FeedDetail.vue";
-import DetailAd from "@/components/advertisement/DetailAd.vue";
-import wechatShare from "@/util/wechatShare.js";
-import { followUserByStatus } from "@/api/user.js";
-import { limit } from "@/api";
-import * as api from "@/api/group.js";
+import markdownIt from 'markdown-it'
+import plusImagePlugin from 'markdown-it-plus-image'
+import FeedDetail from '@/page/feed/FeedDetail.vue'
+import DetailAd from '@/components/advertisement/DetailAd.vue'
+import wechatShare from '@/util/wechatShare.js'
+import { followUserByStatus } from '@/api/user.js'
+import { limit } from '@/api'
+import * as api from '@/api/group.js'
 
 export default {
-  name: "GroupPostDetail",
+  name: 'GroupPostDetail',
   components: {
-    DetailAd
+    DetailAd,
   },
   mixins: [FeedDetail],
   data: () => ({
     feed: {
-      likes: []
-    }
+      likes: [],
+    },
   }),
   computed: {
-    video_file() {
-      return false;
+    video_file () {
+      return false
     },
-    cover_file() {
-      return false;
+    cover_file () {
+      return false
     },
-    postId() {
-      return this.$route.params.postId;
+    postId () {
+      return this.$route.params.postId
     },
-    groupId() {
-      return this.$route.params.groupId;
+    groupId () {
+      return this.$route.params.groupId
     },
-    group() {
-      return this.feed.group || {};
+    group () {
+      return this.feed.group || {}
     },
-    likes() {
-      return this.feed.likes || [];
+    likes () {
+      return this.feed.likes || []
     },
     liked: {
-      get() {
-        return !!this.feed.liked;
+      get () {
+        return !!this.feed.liked
       },
-      set(val) {
-        this.feed.liked = val;
-      }
+      set (val) {
+        this.feed.liked = val
+      },
     },
     likeCount: {
-      get() {
-        return this.feed.likes_count || 0;
+      get () {
+        return this.feed.likes_count || 0
       },
-      set(val) {
-        this.feed.likes_count = ~~val;
-      }
+      set (val) {
+        this.feed.likes_count = ~~val
+      },
     },
     commentCount: {
-      get() {
-        return this.feed.comments_count || 0;
+      get () {
+        return this.feed.comments_count || 0
       },
-      set(val) {
-        val > 0 && (this.feed.comments_count = val);
-      }
+      set (val) {
+        val > 0 && (this.feed.comments_count = val)
+      },
     },
-    images() {
-      return this.feed.images || [];
+    images () {
+      return this.feed.images || []
     },
-    firstImage() {
-      let images = this.images;
+    firstImage () {
+      let images = this.images
       if (!images.length) {
-        return "";
+        return ''
       }
-      const file = images[0] || {};
-      return this.$http.defaults.baseURL + "/files/" + file.id + "?w=300&h=300";
+      const file = images[0] || {}
+      return this.$http.defaults.baseURL + '/files/' + file.id + '?w=300&h=300'
     },
-    feedContent() {
-      const { body = "" } = this.feed;
-      return body;
+    feedContent () {
+      const { body = '' } = this.feed
+      return body
     },
-    reward() {
+    reward () {
       return (
         {
           amount: this.feed.reward_amount,
-          count: this.feed.reward_number
+          count: this.feed.reward_number,
         } || {}
-      );
+      )
     },
     has_collect: {
-      get() {
-        return this.feed.collected;
+      get () {
+        return this.feed.collected
       },
-      set(val) {
-        this.feed.collected = val;
-      }
+      set (val) {
+        this.feed.collected = val
+      },
     },
-    isGroupManager() {
-      const { role = "" } = this.group.joined || {};
-      return ["founder", "administrator"].includes(role);
+    isGroupManager () {
+      const { role = '' } = this.group.joined || {}
+      return ['founder', 'administrator'].includes(role)
     },
     relation: {
-      get() {
+      get () {
         const relations = {
           unFollow: {
-            text: "关注",
-            status: "unFollow",
-            icon: `#icon-unFollow`
+            text: '关注',
+            status: 'unFollow',
+            icon: `#icon-unFollow`,
           },
           follow: {
-            text: "已关注",
-            status: "follow",
-            icon: `#icon-follow`
+            text: '已关注',
+            status: 'follow',
+            icon: `#icon-follow`,
           },
           eachFollow: {
-            text: "互相关注",
-            status: "eachFollow",
-            icon: `#icon-eachFollow`
-          }
-        };
-        const { follower, following } = this.user;
-        return relations[
-          follower && following
-            ? "eachFollow"
-            : follower
-              ? "follow"
-              : "unFollow"
-        ];
+            text: '互相关注',
+            status: 'eachFollow',
+            icon: `#icon-eachFollow`,
+          },
+        }
+        const { follower, following } = this.user
+        const relation = follower && following
+          ? 'eachFollow'
+          : follower
+            ? 'follow'
+            : 'unFollow'
+        return relations[relation]
       },
 
-      set(val) {
-        this.user.follower = val;
-      }
-    }
+      set (val) {
+        this.user.follower = val
+      },
+    },
   },
-  created() {
-    this.fetchFeed();
+  created () {
+    this.fetchFeed()
   },
-  beforeMount() {
+  beforeMount () {
     if (this.isIosWechat) {
-      this.reload(this.$router);
+      this.reload(this.$router)
     }
   },
-  activated() {
+  activated () {
     if (this.postId) {
       if (this.postId !== this.oldID) {
-        this.components = [];
-        this.fetchFeed();
+        this.components = []
+        this.fetchFeed()
       } else {
         setTimeout(() => {
-          this.loading = false;
-        }, 200);
+          this.loading = false
+        }, 200)
       }
     }
   },
@@ -292,43 +291,43 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    handleCollection() {
+    handleCollection () {
       api.collectGroupPost(this.feed.id, this.has_collect).then(() => {
-        this.$Message.success("操作成功");
-        this.has_collect = !this.has_collect;
-      });
+        this.$Message.success('操作成功')
+        this.has_collect = !this.has_collect
+      })
     },
-    formatBody(body) {
+    formatBody (body) {
       return markdownIt({
-        html: true
+        html: true,
       })
         .use(plusImagePlugin, `${this.$http.defaults.baseURL}/files/`)
-        .render(body);
+        .render(body)
     },
-    fetchFeed() {
-      if (this.fetching) return;
-      this.fetching = true;
+    fetchFeed () {
+      if (this.fetching) return
+      this.fetching = true
 
       const shareUrl =
         window.location.origin +
         process.env.BASE_URL.substr(0, process.env.BASE_URL.length - 1) +
-        this.$route.fullPath;
+        this.$route.fullPath
       const signUrl =
-        this.$store.state.BROWSER.OS === "IOS" ? window.initUrl : shareUrl;
+        this.$store.state.BROWSER.OS === 'IOS' ? window.initUrl : shareUrl
 
       this.$store
-        .dispatch("group/getPostDetail", {
+        .dispatch('group/getPostDetail', {
           groupId: this.groupId,
-          postId: this.postId
+          postId: this.postId,
         })
         .then(data => {
-          this.feed = { ...data };
-          this.user = this.feed.user;
-          this.oldID = this.postId;
-          this.fetching = false;
-          this.fetchFeedComments();
-          this.fetchRewards();
-          this.fetchLikes();
+          this.feed = { ...data }
+          this.user = this.feed.user
+          this.oldID = this.postId
+          this.fetching = false
+          this.fetchFeedComments()
+          this.fetchRewards()
+          this.fetchLikes()
 
           this.isWechat &&
             wechatShare(signUrl, {
@@ -338,316 +337,315 @@ export default {
               imgUrl:
                 data.images.length > 0
                   ? `${this.$http.defaults.baseURL}/files/${
-                      data.images[0].file
-                    }`
-                  : ""
-            });
+                    data.images[0].file
+                  }`
+                  : '',
+            })
 
-          this.$refs.loadmore.afterRefresh();
+          this.$refs.loadmore.afterRefresh()
         })
         .catch(() => {
-          this.goBack();
-        });
+          this.goBack()
+        })
     },
-    fetchRewards() {
+    fetchRewards () {
       this.$http
         .get(`/plus-group/group-posts/${this.postId}/rewards`, {
-          params: { limit: 10 }
+          params: { limit: 10 },
         })
         .then(({ data = [] }) => {
-          this.rewardList = data;
-        });
+          this.rewardList = data
+        })
     },
-    fetchFeedComments(after = 0) {
-      if (this.fetchComing) return;
-      this.fetchComing = true;
+    fetchFeedComments (after = 0) {
+      if (this.fetchComing) return
+      this.fetchComing = true
+
       api
         .getPostComments(this.postId, { after })
         .then(({ data: { pinneds = [], comments = [] } }) => {
           if (!after) {
-            this.pinnedCom = pinneds;
+            this.pinnedCom = pinneds
             // 过滤第一页中的置顶评论
-            const pinnedIds = pinneds.map(p => p.id);
-            this.comments = comments.filter(c => pinnedIds.indexOf(c.id) < 0);
+            const pinnedIds = pinneds.map(p => p.id)
+            this.comments = comments.filter(c => pinnedIds.indexOf(c.id) < 0)
           } else {
-            this.comments = [...this.comments, ...comments];
+            this.comments = [...this.comments, ...comments]
           }
 
           if (comments.length) {
-            this.maxComId = comments[comments.length - 1].id;
+            this.maxComId = comments[comments.length - 1].id
           }
 
-          this.noMoreCom = comments.length !== limit;
-          this.$nextTick(() => {
-            this.loading = false;
-            this.fetchComing = false;
-          });
+          this.noMoreCom = comments.length !== limit
         })
-        .catch(() => {
-          this.loading = false;
-          this.fetchComing = false;
-        });
+        .finally(() => {
+          this.$nextTick(() => {
+            this.loading = false
+            this.fetchComing = false
+          })
+        })
     },
-    fetchLikes() {
+    fetchLikes () {
       this.$http
         .get(
           `/plus-group/group-posts/${this.postId}/likes`,
           {
-            params: { limit: 8 }
+            params: { limit: 8 },
           },
           {
-            validateStatus: s => s === 200
+            validateStatus: s => s === 200,
           }
         )
         .then(({ data = [] }) => {
           // this.feed.likes = data;
-          this.feed = { ...this.feed, ...{ likes: data } };
-        });
+          this.feed = { ...this.feed, ...{ likes: data } }
+        })
     },
-    likeFeed() {
+    likeFeed () {
       api
         .likeGroupPost(this.postId, this.liked)
         .then(() => {
-          !this.liked
-            ? ((this.liked = true),
-              (this.likeCount += 1),
-              this.feed.likes.length < 5 &&
-                (this.feed.likes = [
-                  ...this.feed.likes,
-                  {
-                    user: this.CURRENTUSER,
-                    id: new Date().getTime(),
-                    user_id: this.CURRENTUSER.id
-                  }
-                ]))
-            : ((this.liked = false),
-              (this.likeCount -= 1),
-              (this.feed.likes = this.feed.likes.filter(like => {
-                return like.user_id !== this.CURRENTUSER.id;
-              })));
-
-          this.fetching = false;
+          if (this.liked) {
+            this.liked = false
+            this.likeCount -= 1
+            this.feed.likes = this.feed.likes.filter(like => {
+              return like.user_id !== this.CURRENTUSER.id
+            })
+          } else {
+            this.liked = true
+            this.likeCount += 1
+            if (this.feed.likes.length < 5) {
+              this.feed.likes.push({
+                user: this.CURRENTUSER,
+                id: new Date().getTime(),
+                user_id: this.CURRENTUSER.id,
+              })
+            }
+          }
         })
-        .catch(() => {
-          this.fetching = false;
-        });
+        .finally(() => {
+          this.fetching = false
+        })
     },
-    moreAction() {
-      const actions = [];
+    moreAction () {
+      const actions = []
       if (this.has_collect) {
         actions.push({
-          text: "取消收藏",
+          text: '取消收藏',
           method: () => {
             api.uncollectPost(this.postId).then(() => {
-              this.$Message.success("取消收藏");
-              this.has_collect = false;
-            });
-          }
-        });
+              this.$Message.success('取消收藏')
+              this.has_collect = false
+            })
+          },
+        })
       } else {
         actions.push({
-          text: "收藏",
+          text: '收藏',
           method: () => {
             api.collectionPost(this.postId).then(() => {
-              this.$Message.success("已加入我的收藏");
-              this.has_collect = true;
-            });
-          }
-        });
+              this.$Message.success('已加入我的收藏')
+              this.has_collect = true
+            })
+          },
+        })
       }
 
       if (this.isGroupManager) {
-        if (!this.feed.pinned)
+        if (!this.feed.pinned) {
           actions.push({
-            text: "置顶帖子",
+            text: '置顶帖子',
             method: () => {
-              this.$bus.$emit("applyTop", {
-                type: "post-manager",
+              this.$bus.$emit('applyTop', {
+                type: 'post-manager',
                 api: api.pinnedPost,
                 payload: this.feed.id,
                 callback: () => {
-                  this.$Message.success("置顶成功！");
-                  this.fetchFeed();
-                }
-              });
-            }
-          });
-        else
+                  this.$Message.success('置顶成功！')
+                  this.fetchFeed()
+                },
+              })
+            },
+          })
+        } else {
           actions.push({
-            text: "撤销置顶",
+            text: '撤销置顶',
             method: () => {
               const actions = [
                 {
-                  text: "撤销置顶",
+                  text: '撤销置顶',
                   method: () => {
                     this.$store
-                      .dispatch("group/unpinnedPost", {
-                        postId: this.feed.id
+                      .dispatch('group/unpinnedPost', {
+                        postId: this.feed.id,
                       })
                       .then(() => {
-                        this.$Message.success("撤销置顶成功！");
-                        this.fetchFeed();
-                      });
-                  }
-                }
-              ];
+                        this.$Message.success('撤销置顶成功！')
+                        this.fetchFeed()
+                      })
+                  },
+                },
+              ]
               setTimeout(() => {
                 this.$bus.$emit(
-                  "actionSheet",
+                  'actionSheet',
                   actions,
-                  "取消",
-                  "确认撤销置顶?"
-                );
-              }, 200);
-            }
-          });
-      } else if (this.isMine && !this.feed.pinned)
+                  '取消',
+                  '确认撤销置顶?'
+                )
+              }, 200)
+            },
+          })
+        }
+      } else if (this.isMine && !this.feed.pinned) {
         actions.push({
-          text: "申请帖子置顶",
+          text: '申请帖子置顶',
           method: () => {
-            this.$bus.$emit("applyTop", {
-              type: "post",
+            this.$bus.$emit('applyTop', {
+              type: 'post',
               api: api.applyTopPost,
-              payload: this.postId
-            });
-          }
-        });
+              payload: this.postId,
+            })
+          },
+        })
+      }
       if (this.isMine || this.isGroupManager) {
         actions.push({
-          text: "删除帖子",
+          text: '删除帖子',
           method: () => {
             setTimeout(() => {
               const actions = [
                 {
-                  text: "删除",
-                  style: { color: "#f4504d" },
+                  text: '删除',
+                  style: { color: '#f4504d' },
                   method: () => {
                     this.$store
-                      .dispatch("group/deletePost", {
+                      .dispatch('group/deletePost', {
                         groupId: this.groupId,
-                        postId: this.postId
+                        postId: this.postId,
                       })
                       .then(() => {
-                        this.$Message.success("删除帖子成功");
-                        this.goBack();
-                      });
-                  }
-                }
-              ];
-              this.$bus.$emit("actionSheet", actions, "取消", "确认删除?");
-            }, 200);
-          }
-        });
+                        this.$Message.success('删除帖子成功')
+                        this.goBack()
+                      })
+                  },
+                },
+              ]
+              this.$bus.$emit('actionSheet', actions, '取消', '确认删除?')
+            }, 200)
+          },
+        })
       }
       if (!this.isMine) {
         actions.push({
-          text: "举报",
+          text: '举报',
           method: () => {
-            this.$bus.$emit("report", {
-              type: "post",
+            this.$bus.$emit('report', {
+              type: 'post',
               payload: this.feed.id,
               username: this.user.name,
-              reference: this.title
-            });
-          }
-        });
+              reference: this.title,
+            })
+          },
+        })
       }
 
-      this.$bus.$emit("actionSheet", actions, "取消");
+      this.$bus.$emit('actionSheet', actions, '取消')
     },
     // TODO: refactor 'followUserByStatus' api to vuex.action
-    followUserByStatus(status) {
-      if (!status || this.fetchFollow) return;
-      this.fetchFollow = true;
+    followUserByStatus (status) {
+      if (!status || this.fetchFollow) return
+      this.fetchFollow = true
 
       followUserByStatus({
         id: this.user.id,
-        status
+        status,
       }).then(follower => {
-        this.relation = follower;
-        this.fetchFollow = false;
-      });
+        this.relation = follower
+        this.fetchFollow = false
+      })
     },
-    replyComment(uid, uname, commentId) {
+    replyComment (uid, uname, commentId) {
       // 是否是自己的评论
       if (uid === this.CURRENTUSER.id) {
         // 是否是自己文章的评论
-        const isOwner = uid === this.user.id;
+        const isOwner = uid === this.user.id
         const actionSheet = [
           {
-            text: isOwner ? "评论置顶" : "申请评论置顶",
+            text: isOwner ? '评论置顶' : '申请评论置顶',
             method: () => {
-              this.$bus.$emit("applyTop", {
+              this.$bus.$emit('applyTop', {
                 isOwner,
-                type: "postComment",
+                type: 'postComment',
                 api: api.applyTopPostComment,
                 payload: { postId: Number(this.postId), commentId },
-                callback: this.fetchFeedComments
-              });
-            }
+                callback: this.fetchFeedComments,
+              })
+            },
           },
-          { text: "删除评论", method: () => this.deleteComment(commentId) }
-        ];
-        this.$bus.$emit("actionSheet", actionSheet, "取消");
+          { text: '删除评论', method: () => this.deleteComment(commentId) },
+        ]
+        this.$bus.$emit('actionSheet', actionSheet, '取消')
       } else {
-        this.$bus.$emit("commentInput", {
+        this.$bus.$emit('commentInput', {
           placeholder: `回复： ${uname}`,
           onOk: text => {
-            this.sendComment({ reply_user: uid, body: text });
-          }
-        });
+            this.sendComment({ reply_user: uid, body: text })
+          },
+        })
       }
     },
-    sendComment({ reply_user: replyUser, body }) {
-      const params = {};
+    sendComment ({ reply_user: replyUser, body }) {
+      const params = {}
       if (body && body.length > 0) {
-        params.body = body;
-        replyUser && (params["reply_user"] = replyUser);
+        params.body = body
+        replyUser && (params['reply_user'] = replyUser)
         this.$http
           .post(`/plus-group/group-posts/${this.postId}/comments`, params, {
-            validateStatus: s => s === 201
+            validateStatus: s => s === 201,
           })
           .then(({ data: { comment } = { comment: {} } }) => {
-            this.$Message.success("评论成功");
-            this.comments.unshift(comment);
-            this.$bus.$emit("commentInput:close", true);
+            this.$Message.success('评论成功')
+            this.comments.unshift(comment)
+            this.$bus.$emit('commentInput:close', true)
           })
           .catch(() => {
-            this.$Message.error("评论失败");
-            this.$bus.$emit("commentInput:close", true);
-          });
+            this.$Message.error('评论失败')
+            this.$bus.$emit('commentInput:close', true)
+          })
       } else {
-        this.$Message.error("评论内容不能为空");
+        this.$Message.error('评论内容不能为空')
       }
     },
-    rewardFeed() {
+    rewardFeed () {
       const callback = amount => {
-        this.fetchRewards();
-        this.feed.reward_number += 1;
-        this.feed.reward_amount += amount;
-      };
-      this.$bus.$emit("reward", {
-        type: "groupPost",
+        this.fetchRewards()
+        this.feed.reward_number += 1
+        this.feed.reward_amount += amount
+      }
+      this.$bus.$emit('reward', {
+        type: 'groupPost',
         api: api.rewardPost,
         payload: this.postId,
-        callback
-      });
+        callback,
+      })
     },
-    deleteComment(commentId) {
+    deleteComment (commentId) {
       this.$store
-        .dispatch("group/deletePostComment", { postId: this.postId, commentId })
+        .dispatch('group/deletePostComment', { postId: this.postId, commentId })
         .then(() => {
-          this.fetchFeedComments();
-          this.commentCount -= 1;
-          this.$Message.success("删除评论成功");
-        });
+          this.fetchFeedComments()
+          this.commentCount -= 1
+          this.$Message.success('删除评论成功')
+        })
     },
-    getAvatar(avatar) {
-      avatar = avatar || {};
-      return avatar.url || null;
-    }
-  }
-};
+    getAvatar (avatar) {
+      avatar = avatar || {}
+      return avatar.url || null
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

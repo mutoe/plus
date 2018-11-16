@@ -173,107 +173,107 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import chooseCate from "@/page/chooseCate.vue";
-import PasswordConfirm from "@/components/common/PasswordConfirm.vue";
-import TextareaInput from "@/components/common/TextareaInput.vue";
-import sendImage from "@/util/SendImage.js";
-import * as api from "@/api/news.js";
+import { mapState } from 'vuex'
+import chooseCate from '@/page/chooseCate.vue'
+import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
+import TextareaInput from '@/components/common/TextareaInput.vue'
+import sendImage from '@/util/SendImage.js'
+import * as api from '@/api/news.js'
 
 export default {
-  name: "PostNews",
+  name: 'PostNews',
   components: {
     chooseCate,
     PasswordConfirm,
-    TextareaInput
+    TextareaInput,
   },
-  data() {
+  data () {
     return {
       scrollHeight: 0,
       step: 1,
       news: {
-        title: "",
-        subject: "",
-        content: "",
-        image: "",
-        from: "",
-        author: "",
-        text_content: ""
+        title: '',
+        subject: '',
+        content: '',
+        image: '',
+        from: '',
+        author: '',
+        text_content: '',
       },
       tags: [],
       category: {},
       poster: {},
       animated: {
-        enterClass: "animated slideInRight",
-        leaveClass: "animated slideOutLeft"
-      }
-    };
+        enterClass: 'animated slideInRight',
+        leaveClass: 'animated slideOutLeft',
+      },
+    }
   },
   computed: {
     ...mapState({
-      newsPay: state => state.CONFIG["news:contribute"].pay,
-      newCurrency: state => state.CONFIG["news:pay_conyribute"],
-      newsVerified: state => state.CONFIG["news:contribute"].verified,
-      verified: state => state.CURRENTUSER.verified
+      newsPay: state => state.CONFIG['news:contribute'].pay,
+      newCurrency: state => state.CONFIG['news:pay_conyribute'],
+      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      verified: state => state.CURRENTUSER.verified,
     }),
-    currentCurrency() {
-      const user = this.$store.state.CURRENTUSER;
-      return user.currency.sum || 0;
+    currentCurrency () {
+      const user = this.$store.state.CURRENTUSER
+      return user.currency.sum || 0
     },
-    canPostNews() {
-      return !this.newsVerified || (this.newsVerified && this.verified);
+    canPostNews () {
+      return !this.newsVerified || (this.newsVerified && this.verified)
     },
     contentText: {
-      get() {
-        return this.news.content;
+      get () {
+        return this.news.content
       },
-      set(val) {
-        val !== this.news.content && (this.news.content = val);
-      }
+      set (val) {
+        val !== this.news.content && (this.news.content = val)
+      },
     },
-    shadowText() {
-      return "blank" + this.contentText;
+    shadowText () {
+      return 'blank' + this.contentText
     },
-    title() {
+    title () {
       switch (this.step) {
         case 1:
-          return "编辑文章";
+          return '编辑文章'
         case 2:
-          return "完善文章信息";
+          return '完善文章信息'
         case 3:
-          return "上传封面";
+          return '上传封面'
         default:
-          return "编辑文章";
+          return '编辑文章'
       }
     },
-    disabled() {
+    disabled () {
       switch (this.step) {
         case 1:
-          return !(this.news.title && this.news.content);
+          return !(this.news.title && this.news.content)
         case 2:
-          return !(this.category.id > 0 && this.tags.length > 0);
+          return !(this.category.id > 0 && this.tags.length > 0)
         case 3:
-          return !(this.news.image > 0);
+          return !(this.news.image > 0)
       }
-    }
+    },
   },
-  created() {
+  created () {
     if (!this.canPostNews) {
-      this.$Message.error("请先进行身份认证");
-      this.$router.go(-1);
+      this.$Message.error('请先进行身份认证')
+      this.$router.go(-1)
     }
   },
   methods: {
-    focusArea() {},
-    moveCurPos() {},
-    deleteHandler() {},
-    switchCate() {
-      this.$bus.$emit("choose-cate", cate => {
-        this.category = cate;
-      });
+    focusArea () {},
+    moveCurPos () {},
+    deleteHandler () {},
+    switchCate () {
+      this.$bus.$emit('choose-cate', cate => {
+        this.category = cate
+      })
     },
-    switchTags() {
-      const chooseTags = this.tags.map(t => t.id);
+    switchTags () {
+      const chooseTags = this.tags.map(t => t.id)
       /**
        * 打开选择标签页面 (钩子 -> "choose-tags")
        * @author jsonleex <jsonlseex@163.com>
@@ -281,41 +281,41 @@ export default {
        *                   nextStep     {Function}     点击下一步的回调, 注入已选择的 tags
        *                   chooseTags   {Object}       初始选择值, 只需传 [tag.id], eg: [1, 2, 3,...]
        */
-      this.$bus.$emit("choose-tags", {
+      this.$bus.$emit('choose-tags', {
         nextStep: tags => {
-          this.tags = tags;
+          this.tags = tags
         },
-        chooseTags
-      });
+        chooseTags,
+      })
     },
-    addPoster() {
-      if (this.poster.loading) return;
-      this.$refs.imagefile.click();
+    addPoster () {
+      if (this.poster.loading) return
+      this.$refs.imagefile.click()
     },
-    selectPhoto() {
-      const files = this.$refs.imagefile.files;
+    selectPhoto () {
+      const files = this.$refs.imagefile.files
       if (files && files.length > 0) {
         const posterObj = {
           loading: true,
           file: files[0],
           type: files[0].mimeType,
-          src: window.URL.createObjectURL(files[0])
-        };
+          src: window.URL.createObjectURL(files[0]),
+        }
         this.poster = Object.assign(
           {
-            id: "",
-            src: "",
-            type: "",
+            id: '',
+            src: '',
+            type: '',
             file: null,
             error: false,
-            loading: false
+            loading: false,
           },
           posterObj
-        );
+        )
       }
     },
-    loadedPoster(poster) {
-      const file = poster.file;
+    loadedPoster (poster) {
+      const file = poster.file
       file &&
         sendImage(file)
           .then(id => {
@@ -323,100 +323,98 @@ export default {
               id,
               file: null,
               loading: !1,
-              error: !1
-            });
+              error: !1,
+            })
           })
           .catch(() => {
-            poster.error = !0;
-            poster.loading = false;
-          });
+            poster.error = !0
+            poster.loading = false
+          })
     },
-    posterError() {
-      this.$Message.error("封面图上传失败, 请重试");
+    posterError () {
+      this.$Message.error('封面图上传失败, 请重试')
     },
-    handlePostNews(password) {
-      const { title, content } = this.news;
+    handlePostNews (password) {
+      const { title, content } = this.news
       const param = {
         title,
         content,
-        tags: this.tags.map(t => t.id).join(","),
-        password
-      };
-      this.news.form && (param.form = this.news.form);
-      this.poster.id > 0 && (param.image = this.poster.id);
-      this.news.author && (param.author = this.news.author);
-      this.news.subject && (param.subject = this.news.subject);
+        tags: this.tags.map(t => t.id).join(','),
+        password,
+      }
+      this.news.form && (param.form = this.news.form)
+      this.poster.id > 0 && (param.image = this.poster.id)
+      this.news.author && (param.author = this.news.author)
+      this.news.subject && (param.subject = this.news.subject)
 
       api
         .postNews(this.category.id, param)
         .then(({ data }) => {
-          this.$Message.success(data);
-          this.goBack();
+          this.$Message.success(data)
+          this.goBack()
         })
         .catch(err => {
-          this.$Message.error(err.response.data);
-        });
+          this.$Message.error(err.response.data)
+        })
     },
-    showPasswordConfirm() {
+    showPasswordConfirm () {
       if (this.currentCurrency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`);
-        this.cancel();
-        return this.$router.push({ name: "currencyRecharge" });
+        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.cancel()
+        return this.$router.push({ name: 'currencyRecharge' })
       }
-      this.$refs.password.show();
+      this.$refs.password.show()
     },
-    handleOk() {
-      const { title, content } = this.news;
-      if (!(title && content))
-        return this.$Message.error("请输入标题和正文"), (this.step = 1);
-      if (!this.category.id)
-        return this.$Message.error("请选择投稿栏目"), (this.step = 2);
-      if (this.tags.length === 0) {
-        return this.$Message.error("请选择标签"), (this.step = 2);
-      }
+    handleOk () {
+      const { title, content } = this.news
+      if (!(title && content)) return (this.step = 1) && this.$Message.error('请输入标题和正文')
+      if (!this.category.id) return (this.step = 2) && this.$Message.error('请选择投稿栏目')
+      if (this.tags.length === 0) return (this.step = 2) && this.$Message.error('请选择标签')
 
       this.newsPay
-        ? this.$bus.$emit("payfor", {
-            title: "投稿支付",
-            amount: this.newCurrency,
-            content: `本次投稿你需要支付${this.newCurrency}${
-              this.currencyUnit
-            },是否继续投稿？`,
-            confirmText: "确认投稿",
-            cancelText: "暂不考虑",
-            onOk: () => {
-              this.showPasswordConfirm();
-            }
-          })
-        : this.handlePostNews();
+        ? this.$bus.$emit('payfor', {
+          title: '投稿支付',
+          amount: this.newCurrency,
+          content: `本次投稿你需要支付${this.newCurrency}${
+            this.currencyUnit
+          },是否继续投稿？`,
+          confirmText: '确认投稿',
+          cancelText: '暂不考虑',
+          onOk: () => {
+            this.showPasswordConfirm()
+          },
+        })
+        : this.handlePostNews()
     },
-    preStep() {
-      this.step > 1 &&
-        ((this.animated = {
-          enterClass: "animated slideInLeft",
-          leaveClass: "animated slideOutRight"
-        }),
-        (this.step -= 1));
+    preStep () {
+      if (this.step <= 1) {
+        this.animated = {
+          enterClass: 'animated slideInLeft',
+          leaveClass: 'animated slideOutRight',
+        }
+        this.step -= 1
+      }
     },
-    nextStep() {
-      if (this.disabled) return;
-      this.step < 3 &&
-        ((this.animated = {
-          enterClass: "animated slideInRight",
-          leaveClass: "animated slideOutLeft"
-        }),
-        (this.step += 1));
+    nextStep () {
+      if (this.disabled) return
+      if (this.step < 3) {
+        this.animated = {
+          enterClass: 'animated slideInRight',
+          leaveClass: 'animated slideOutLeft',
+        }
+        this.step += 1
+      }
     },
-    cancel() {
+    cancel () {
       this.$bus.$emit(
-        "actionSheet",
-        [{ text: "确定", method: this.goBack }],
-        "取消",
-        "你还有未发布的内容，是否放弃发布？"
-      );
-    }
-  }
-};
+        'actionSheet',
+        [{ text: '确定', method: this.goBack }],
+        '取消',
+        '你还有未发布的内容，是否放弃发布？'
+      )
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

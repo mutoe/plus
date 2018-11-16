@@ -43,98 +43,98 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { limit } from "@/api";
-import { getNewsCommentPinneds } from "@/api/news.js";
-import AuditStatusNewsComment from "../../components/AuditStatusNewsComment.vue";
-import AuditContent from "../../components/AuditContent.vue";
+import { mapState } from 'vuex'
+import { limit } from '@/api'
+import { getNewsCommentPinneds } from '@/api/news.js'
+import AuditStatusNewsComment from '../../components/AuditStatusNewsComment.vue'
+import AuditContent from '../../components/AuditContent.vue'
 
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 
 export default {
-  name: "NewsCommentAudit",
+  name: 'NewsCommentAudit',
   components: {
     AuditContent,
-    AuditStatusNewsComment
+    AuditStatusNewsComment,
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     ...mapState({
-      audits: state => state.MESSAGE.MY_NEWS_COMMENT_AUDIT
-    })
+      audits: state => state.MESSAGE.MY_NEWS_COMMENT_AUDIT,
+    }),
   },
   methods: {
-    goToDetail(id) {
-      this.$router.push(`/news/${id}`);
+    goToDetail (id) {
+      this.$router.push(`/news/${id}`)
     },
-    onRefresh() {
+    onRefresh () {
       this.$http
-        .get("/news/comments/pinneds", {
-          validateStatus: s => s === 200
+        .get('/news/comments/pinneds', {
+          validateStatus: s => s === 200,
         })
         .then(({ data }) => {
           if (data.length > 0) {
-            this.$store.commit("SAVE_NEWS_COMMENT_AUDITS", {
-              type: "new",
-              data
-            });
+            this.$store.commit('SAVE_NEWS_COMMENT_AUDITS', {
+              type: 'new',
+              data,
+            })
           }
-          this.$refs.loadmore.afterRefresh(data.length < limit);
-        });
+          this.$refs.loadmore.afterRefresh(data.length < limit)
+        })
     },
-    onLoadMore() {
-      const { id = 0 } = this.audits.slice(-1)[0] || {};
+    onLoadMore () {
+      const { id = 0 } = this.audits.slice(-1)[0] || {}
       if (id === 0) {
-        this.$refs.loadmore.afterLoadMore(true);
-        return false;
+        this.$refs.loadmore.afterLoadMore(true)
+        return false
       }
       getNewsCommentPinneds(id).then(({ data }) => {
-        this.$refs.loadmore.afterLoadMore(data.length < limit);
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
         if (data.length > 0) {
-          this.$store.commit("SAVE_NEWS_COMMENT_AUDITS", {
-            type: "more",
-            data
-          });
+          this.$store.commit('SAVE_NEWS_COMMENT_AUDITS', {
+            type: 'more',
+            data,
+          })
         }
-      });
+      })
     },
-    getAuditContent(audit) {
-      const { news = {}, comment = {} } = audit || {};
+    getAuditContent (audit) {
+      const { news = {}, comment = {} } = audit || {}
       return {
         image: this.getFirstImage(news),
         commentBody: this.getCommentBody(comment),
         content: this.getFeedContent(news),
         commentableDel: audit.news === null,
         commentDel: audit.comment === null,
-        type: "news",
-        contentId: audit.news ? news.id : 0
-      };
+        type: 'news',
+        contentId: audit.news ? news.id : 0,
+      }
     },
     // 获取评论内容
-    getCommentBody(comment) {
-      const { body } = comment || {};
-      return body;
+    getCommentBody (comment) {
+      const { body } = comment || {}
+      return body
     },
-    //获取动态内容
-    getFeedContent(news) {
-      const { title } = news || {};
-      return title;
+    // 获取动态内容
+    getFeedContent (news) {
+      const { title } = news || {}
+      return title
     },
     // 获取动态第一个图片
-    getFirstImage(news) {
-      const { image } = news || {};
+    getFirstImage (news) {
+      const { image } = news || {}
       if (image !== null) {
         return {
           file: image.id,
-          size: image.size
-        };
+          size: image.size,
+        }
       }
-      return false;
-    }
-  }
-};
+      return false
+    },
+  },
+}
 </script>
 
 <style lang="less" src="../../style.less">

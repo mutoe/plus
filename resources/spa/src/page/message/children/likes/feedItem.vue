@@ -50,14 +50,14 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "FeedsItem",
+  name: 'FeedsItem',
   props: {
-    like: { type: Object, default: () => {} }
+    like: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     /**
@@ -67,30 +67,30 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    getImage() {
-      const { like } = this;
-      const { length } = like.likeable.images;
+    getImage () {
+      const { like } = this
+      const { length } = like.likeable.images
       if (length > 0) {
-        const { 0: img = {} } = like.likeable.images;
-        return `${this.$http.defaults.baseURL}/files/${img.id}`;
+        const { 0: img = {} } = like.likeable.images
+        return `${this.$http.defaults.baseURL}/files/${img.id}`
       }
 
-      return false;
+      return false
     },
-    getVideo() {
-      const { like } = this.$props;
-      const video = like.likeable.video;
+    getVideo () {
+      const { like } = this.$props
+      const video = like.likeable.video
       if (video !== null) {
         return {
           video: `${this.$http.defaults.baseURL}/files/${video.video_id}`,
-          cover: `${this.$http.defaults.baseURL}/files/${video.cover_id}`
-        };
+          cover: `${this.$http.defaults.baseURL}/files/${video.cover_id}`,
+        }
       }
-      return false;
+      return false
     },
-    user() {
-      return this.like.user || {};
-    }
+    user () {
+      return this.like.user || {}
+    },
   },
   methods: {
     /**
@@ -100,12 +100,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        likeable: { id = 0 }
-      } = this.like;
-      this.$router.push(`/feeds/${id}`);
-    }
-  }
-};
+        likeable: { id = 0 },
+      } = this.like
+      this.$router.push(`/feeds/${id}`)
+    },
+  },
+}
 </script>

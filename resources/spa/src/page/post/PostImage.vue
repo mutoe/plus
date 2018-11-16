@@ -43,108 +43,108 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import ImageList from "./components/ImageList.vue";
-import TextareaInput from "@/components/common/TextareaInput.vue";
+import { mapGetters } from 'vuex'
+import ImageList from './components/ImageList.vue'
+import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
-  name: "PostImage",
+  name: 'PostImage',
   components: {
     ImageList,
-    TextareaInput
+    TextareaInput,
   },
-  data() {
+  data () {
     return {
       pinned: false,
 
       curpos: 0,
       loading: false,
-      contentText: "",
-      scrollHeight: 0
-    };
-  },
-  computed: {
-    ...mapGetters(["composePhoto"]),
-    disabled() {
-      const imageAllCompleted = !this.composePhoto.some(
-        img => Object.keys(img).length === 0
-      );
-      return !(imageAllCompleted && this.composePhoto.length > 0);
-    },
-    paycontrol() {
-      return this.$store.state.CONFIG.feed.paycontrol;
+      contentText: '',
+      scrollHeight: 0,
     }
   },
+  computed: {
+    ...mapGetters(['composePhoto']),
+    disabled () {
+      const imageAllCompleted = !this.composePhoto.some(
+        img => Object.keys(img).length === 0
+      )
+      return !(imageAllCompleted && this.composePhoto.length > 0)
+    },
+    paycontrol () {
+      return this.$store.state.CONFIG.feed.paycontrol
+    },
+  },
   methods: {
-    beforeGoBack() {
+    beforeGoBack () {
       this.contentText.length > 0
         ? this.$bus.$emit(
-            "actionSheet",
-            [
-              {
-                text: "确定",
-                method: () => {
-                  this.goBack();
-                }
-              }
-            ],
-            "取消",
-            "你还有没有发布的内容,是否放弃发布?"
-          )
-        : this.goBack();
+          'actionSheet',
+          [
+            {
+              text: '确定',
+              method: () => {
+                this.goBack()
+              },
+            },
+          ],
+          '取消',
+          '你还有没有发布的内容,是否放弃发布?'
+        )
+        : this.goBack()
     },
-    sendmessage() {
+    sendmessage () {
       if (!this.disabled) {
-        this.loading = true;
+        this.loading = true
         // 检测是否存在上传失败的图片
         if (this.composePhoto.some(item => Object.keys(item).length === 0)) {
-          this.$Message.error("存在上传失败的图片，请确认");
-          this.loading = false;
-          return;
+          this.$Message.error('存在上传失败的图片，请确认')
+          this.loading = false
+          return
         }
         if (this.pinned) {
           if (!this.composePhoto.some(item => item.amount > 0)) {
             this.$bus.$emit(
-              "actionSheet",
+              'actionSheet',
               [
                 {
-                  text: "应配置至少一张图片收费",
-                  method: () => {}
-                }
+                  text: '应配置至少一张图片收费',
+                  method: () => {},
+                },
               ],
-              "取消"
-            );
-            this.loading = false;
-            return;
+              '取消'
+            )
+            this.loading = false
+            return
           }
         }
         this.$http
           .post(
-            "feeds",
+            'feeds',
             {
               feed_content: this.contentText,
               images: this.composePhoto,
               feed_from: 2,
               feed_mark:
-                new Date().valueOf() + "" + this.$store.state.CURRENTUSER.id
+                new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id,
             },
             {
-              validateStatus: s => s === 201
+              validateStatus: s => s === 201,
             }
           )
           .then(() => {
-            this.$router.replace("/feeds?type=new&refresh=1");
+            this.$router.replace('/feeds?type=new&refresh=1')
           })
           .catch(err => {
-            this.$Message.error(err.response.data);
+            this.$Message.error(err.response.data)
           })
           .finally(() => {
-            this.loading = false;
-          });
+            this.loading = false
+          })
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

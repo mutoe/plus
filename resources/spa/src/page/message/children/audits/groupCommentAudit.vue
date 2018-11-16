@@ -33,31 +33,31 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { getPostCommentAudits } from "@/api/group.js";
-import { limit } from "@/api";
-import AuditStatusGroupPostComment from "../../components/AuditStatusGroupPostComment.vue";
-import AuditContent from "../../components/AuditContent.vue";
+import { mapState } from 'vuex'
+import { getPostCommentAudits } from '@/api/group.js'
+import { limit } from '@/api'
+import AuditStatusGroupPostComment from '../../components/AuditStatusGroupPostComment.vue'
+import AuditContent from '../../components/AuditContent.vue'
 
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 
 export default {
-  name: "PostCommentAudit",
+  name: 'PostCommentAudit',
   components: {
     AuditContent,
-    AuditStatusGroupPostComment
+    AuditStatusGroupPostComment,
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     ...mapState({
-      audits: state => state.MESSAGE.MY_POST_COMMENT_AUDIT
-    })
+      audits: state => state.MESSAGE.MY_POST_COMMENT_AUDIT,
+    }),
   },
   methods: {
-    getAuditContent(audit) {
-      const { post = {}, comment = {} } = audit || {};
+    getAuditContent (audit) {
+      const { post = {}, comment = {} } = audit || {}
       return {
         image: this.getFirstImage(post),
         commentBody: this.getCommentBody(comment),
@@ -65,70 +65,70 @@ export default {
         content: this.getPostTitle(post),
         commentableDel: audit.post === null,
         commentDel: audit.comment === null,
-        type: "group-post",
+        type: 'group-post',
         contentId: audit.post ? post.id : 0,
-        extraId: this.getExtraId(post)
-      };
+        extraId: this.getExtraId(post),
+      }
     },
     // 获取圈子id
-    getExtraId(post) {
-      return post.group_id;
+    getExtraId (post) {
+      return post.group_id
     },
     // 获取评论内容
-    getCommentBody(comment) {
-      const { body } = comment || {};
-      return body;
+    getCommentBody (comment) {
+      const { body } = comment || {}
+      return body
     },
-    //获取动态内容
-    getPostTitle(post) {
-      const { title } = post || {};
-      return title;
+    // 获取动态内容
+    getPostTitle (post) {
+      const { title } = post || {}
+      return title
     },
     // 获取动态第一个图片
-    getFirstImage(post) {
-      const { images } = post || {};
-      const { length } = images || [];
+    getFirstImage (post) {
+      const { images } = post || {}
+      const { length } = images || []
       if (length > 0) {
-        const [img] = images;
+        const [img] = images
 
-        return img;
+        return img
       }
 
-      return false;
+      return false
     },
     // goToDetail(id) {
     //   this.$router.push(`/news/${id}`);
     // },
-    onRefresh() {
+    onRefresh () {
       getPostCommentAudits({}).then(({ data }) => {
         if (data.length > 0) {
-          this.$store.commit("SAVE_POST_COMMENT_AUDITS", {
-            type: "new",
-            data
-          });
+          this.$store.commit('SAVE_POST_COMMENT_AUDITS', {
+            type: 'new',
+            data,
+          })
         }
-        this.$refs.loadmore.afterRefresh(data.length < limit);
-      });
+        this.$refs.loadmore.afterRefresh(data.length < limit)
+      })
     },
-    onLoadMore() {
-      const { id = 0 } = this.audits.slice(-1)[0] || {};
+    onLoadMore () {
+      const { id = 0 } = this.audits.slice(-1)[0] || {}
       if (id === 0) {
-        this.$refs.loadmore.afterLoadMore(true);
-        return false;
+        this.$refs.loadmore.afterLoadMore(true)
+        return false
       }
 
       getPostCommentAudits({ after: id }).then(({ data }) => {
-        this.$refs.loadmore.afterLoadMore(data.length < limit);
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
         if (data.length > 0) {
-          this.$store.commit("SAVE_POST_COMMENT_AUDITS", {
-            type: "more",
-            data
-          });
+          this.$store.commit('SAVE_POST_COMMENT_AUDITS', {
+            type: 'more',
+            data,
+          })
         }
-      });
-    }
-  }
-};
+      })
+    },
+  },
+}
 </script>
 <style lang="less" src="../../style.less">
 </style>

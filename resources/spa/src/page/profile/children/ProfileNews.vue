@@ -46,89 +46,89 @@
   </div>
 </template>
 <script>
-import { getMyNews } from "@/api/news.js";
-import NewsCard from "@/page/news/components/NewsCard.vue";
+import { getMyNews } from '@/api/news.js'
+import NewsCard from '@/page/news/components/NewsCard.vue'
 
 export default {
   components: {
-    NewsCard
+    NewsCard,
   },
-  data() {
-    const released = new Map();
-    const auditing = new Map();
-    const rejected = new Map();
+  data () {
+    const released = new Map()
+    const auditing = new Map()
+    const rejected = new Map()
     return {
       released,
       auditing,
       rejected,
-      ChangeTracker: 1
-    };
+      ChangeTracker: 1,
+    }
   },
   computed: {
-    newsList() {
+    newsList () {
       return (
         this.type &&
         this.ChangeTracker &&
         Array.from(this.$data[this.type].values())
-      );
+      )
     },
-    type() {
-      return this.$route.params.type;
+    type () {
+      return this.$route.params.type
     },
-    after() {
-      const last = this.newsList.slice(-1)[0];
-      return last ? last.id : 0;
+    after () {
+      const last = this.newsList.slice(-1)[0]
+      return last ? last.id : 0
     },
-    typeParam() {
-      if (this.type === "released") {
-        return 0;
+    typeParam () {
+      if (this.type === 'released') {
+        return 0
       }
-      if (this.type === "rejected") {
-        return 3;
+      if (this.type === 'rejected') {
+        return 3
       }
-      return 1;
+      return 1
     },
-    params() {
-      const { typeParam: type, after } = this;
+    params () {
+      const { typeParam: type, after } = this
       return {
         type,
         after,
-        limit: 15
-      };
-    }
+        limit: 15,
+      }
+    },
   },
   watch: {
-    type(val) {
-      this.isCurrentView && val && this.$refs.loadmore.beforeRefresh();
-    }
+    type (val) {
+      this.isCurrentView && val && this.$refs.loadmore.beforeRefresh()
+    },
   },
-  activated() {
-    this.isCurrentView = true;
+  activated () {
+    this.isCurrentView = true
   },
-  deactivated() {
-    this.isCurrentView = false;
+  deactivated () {
+    this.isCurrentView = false
   },
   methods: {
-    formatNews(newsList) {
+    formatNews (newsList) {
       newsList.forEach(news => {
-        this.$data[this.type].set(news.id, news);
-        this.ChangeTracker += 1;
-      });
+        this.$data[this.type].set(news.id, news)
+        this.ChangeTracker += 1
+      })
     },
-    onRefresh() {
+    onRefresh () {
       getMyNews({ ...this.params }).then(({ data }) => {
-        this.formatNews(data);
-        this.$refs.loadmore.afterRefresh(data.length < this.params.limit);
-      });
+        this.formatNews(data)
+        this.$refs.loadmore.afterRefresh(data.length < this.params.limit)
+      })
     },
-    onLoadMore() {
+    onLoadMore () {
       getMyNews({ ...this.params }).then(({ data = [] }) => {
-        this.formatNews(data);
-        this.$refs.loadmore.afterLoadMore(data.length < this.params.limit);
-      });
-    }
-  }
-};
+        this.formatNews(data)
+        this.$refs.loadmore.afterLoadMore(data.length < this.params.limit)
+      })
+    },
+  },
+}
 </script>
 <style lang="less">
 .p-profile-news {

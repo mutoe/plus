@@ -38,55 +38,55 @@
 </template>
 
 <script>
-import _ from "lodash";
-import { mapState } from "vuex";
-import { limit } from "@/api";
-import { getPostAudits } from "@/api/group.js";
-import AuditStatusGroupPost from "../../components/AuditStatusGroupPost.vue";
+import _ from 'lodash'
+import { mapState } from 'vuex'
+import { limit } from '@/api'
+import { getPostAudits } from '@/api/group.js'
+import AuditStatusGroupPost from '../../components/AuditStatusGroupPost.vue'
 
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 
 export default {
-  name: "GroupPostAudit",
+  name: 'GroupPostAudit',
   components: {
-    AuditStatusGroupPost
+    AuditStatusGroupPost,
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     ...mapState({
-      audits: state => state.MESSAGE.MY_POST_AUDIT
-    })
+      audits: state => state.MESSAGE.MY_POST_AUDIT,
+    }),
   },
   methods: {
-    goToDetail(id) {
-      this.$router.push(`/groups//${id}`);
+    goToDetail (id) {
+      this.$router.push(`/groups//${id}`)
     },
-    onRefresh() {
+    onRefresh () {
       getPostAudits({}).then(({ data }) => {
         if (data.length > 0) {
-          this.$store.commit("SAVE_GROUP_POST_AUDITS", { type: "new", data });
+          this.$store.commit('SAVE_GROUP_POST_AUDITS', { type: 'new', data })
         }
-        this.$refs.loadmore.afterRefresh(data.length < limit);
-      });
+        this.$refs.loadmore.afterRefresh(data.length < limit)
+      })
     },
-    onLoadMore() {
-      const { id = 0 } = _.head(this.audits) || {};
+    onLoadMore () {
+      const { id = 0 } = _.head(this.audits) || {}
       if (id === 0) {
-        this.$refs.loadmore.afterLoadMore(true);
-        return false;
+        this.$refs.loadmore.afterLoadMore(true)
+        return false
       }
 
       getPostAudits({ after: id }).then(({ data }) => {
-        this.$refs.loadmore.afterLoadMore(data.length < limit);
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
         if (data.length > 0) {
-          this.$store.commit("SAVE_GROUP_POST_AUDITS", { type: "more", data });
+          this.$store.commit('SAVE_GROUP_POST_AUDITS', { type: 'more', data })
         }
-      });
-    }
-  }
-};
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" src="../../style.less">

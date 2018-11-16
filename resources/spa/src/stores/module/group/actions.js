@@ -1,5 +1,5 @@
-import * as api from "@/api/group";
-import { TYPES } from "./index";
+import * as api from '@/api/group'
+import { TYPES } from './index'
 
 export default {
   /**
@@ -8,10 +8,10 @@ export default {
    * @param {*} payload
    * @returns
    */
-  async createGroup(store, payload) {
-    const { category, formData } = payload;
-    const { data } = await api.postGroup(category, formData);
-    return data;
+  async createGroup (store, payload) {
+    const { category, formData } = payload
+    const { data } = await api.postGroup(category, formData)
+    return data
   },
 
   /**
@@ -20,9 +20,9 @@ export default {
    * @param {Object} payload
    * @returns {api.GroupPostObject[]}
    */
-  async searchPosts(store, payload) {
-    const { data } = await api.searchPosts(payload);
-    return data;
+  async searchPosts (store, payload) {
+    const { data } = await api.searchPosts(payload)
+    return data
   },
 
   /**
@@ -31,9 +31,9 @@ export default {
    * @param {Object} payload
    * @returns {api.GroupObject[]}
    */
-  async searchGroups(store, payload) {
-    const { data } = await api.searchGroups(payload);
-    return data;
+  async searchGroups (store, payload) {
+    const { data } = await api.searchGroups(payload)
+    return data
   },
 
   /**
@@ -41,10 +41,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns {api.GroupPostObject}
    */
-  async createPost(store, payload) {
-    const { groupId, ...params } = payload;
-    const { data } = await api.createGroupPost(groupId, params);
-    return data;
+  async createPost (store, payload) {
+    const { groupId, ...params } = payload
+    const { data } = await api.createGroupPost(groupId, params)
+    return data
   },
 
   /**
@@ -52,9 +52,9 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns {api.GroupObject[]}
    */
-  async getMyGroups(store, payload) {
-    const { data } = await api.getMyGroups(payload);
-    return data;
+  async getMyGroups (store, payload) {
+    const { data } = await api.getMyGroups(payload)
+    return data
   },
 
   /**
@@ -62,10 +62,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns {string}
    */
-  async getProtocol({ state }) {
-    const { data } = await api.getProtocol();
-    state.protocol = data.protocol;
-    return data.protocol || "";
+  async getProtocol ({ state }) {
+    const { data } = await api.getProtocol()
+    state.protocol = data.protocol
+    return data.protocol || ''
   },
 
   /**
@@ -73,10 +73,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns {api.GroupMemberObject}
    */
-  async getMembers(store, payload) {
-    const { groupId, ...params } = payload;
-    const { data } = await api.getMembers(groupId, params);
-    return data;
+  async getMembers (store, payload) {
+    const { groupId, ...params } = payload
+    const { data } = await api.getMembers(groupId, params)
+    return data
   },
 
   /**
@@ -85,11 +85,11 @@ export default {
    * @param {*} payload
    * @returns {api.GroupObject}
    */
-  async getGroupById({ commit }, payload) {
-    const { groupId } = payload;
-    const { data } = await api.getGroupInfoById(groupId);
-    commit(TYPES.SAVE_GROUP, data);
-    return data;
+  async getGroupById ({ commit }, payload) {
+    const { groupId } = payload
+    const { data } = await api.getGroupInfoById(groupId)
+    commit(TYPES.SAVE_GROUP, data)
+    return data
   },
 
   /**
@@ -97,10 +97,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async exitGroup(store, payload) {
-    const { groupId } = payload;
-    await api.exitGroup(groupId);
-    return true;
+  async exitGroup (store, payload) {
+    const { groupId } = payload
+    await api.exitGroup(groupId)
+    return true
   },
 
   /**
@@ -108,10 +108,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns {Promise<string>} message
    */
-  async transferGroup(store, payload) {
-    const { target, groupId } = payload;
-    const { data } = await api.transferGroup(groupId, { target });
-    return data;
+  async transferGroup (store, payload) {
+    const { target, groupId } = payload
+    const { data } = await api.transferGroup(groupId, { target })
+    return data
   },
 
   /**
@@ -119,10 +119,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async changePermissions(store, payload) {
-    const { permissions, groupId } = payload;
-    await api.changePermissions(groupId, { permissions });
-    return true;
+  async changePermissions (store, payload) {
+    const { permissions, groupId } = payload
+    await api.changePermissions(groupId, { permissions })
+    return true
   },
 
   /**
@@ -130,19 +130,19 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async joinGroup(store, payload) {
-    const { groupId, needPaid = false, password } = payload;
+  async joinGroup (store, payload) {
+    const { groupId, needPaid = false, password } = payload
     const { data } = needPaid
       ? await api.joinGroupWithPaid(groupId, password)
-      : await api.joinGroup(groupId);
-    return data;
+      : await api.joinGroup(groupId)
+    return data
   },
 
   // 获取圈子分类数据
-  async getGroupTypes({ commit }) {
-    const { data = [] } = await api.getGroupCates();
-    commit(TYPES.SAVE_GROUP_CATES, data);
-    return data;
+  async getGroupTypes ({ commit }) {
+    const { data = [] } = await api.getGroupCates()
+    commit(TYPES.SAVE_GROUP_CATES, data)
+    return data
   },
 
   /**
@@ -152,17 +152,17 @@ export default {
    * @param {*} payload
    * @returns
    */
-  async getGroups(store, payload) {
-    const { type, limit, offset = 0, categoryId } = payload;
+  async getGroups (store, payload) {
+    const { type, limit, offset = 0, categoryId } = payload
 
-    const { data } = ["recommend", "random"].includes(type)
+    const { data } = ['recommend', 'random'].includes(type)
       ? await api.getRecommendGroups({
-          type: type === "random" ? "random" : undefined,
-          limit,
-          offset
-        })
-      : await api.getGroups({ category_id: categoryId, limit, offset });
-    return data;
+        type: type === 'random' ? 'random' : undefined,
+        limit,
+        offset,
+      })
+      : await api.getGroups({ category_id: categoryId, limit, offset })
+    return data
   },
 
   /**
@@ -170,10 +170,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async unpinnedPost(store, payload) {
-    const { postId } = payload;
-    const { data } = await api.unpinnedPost(postId);
-    return data;
+  async unpinnedPost (store, payload) {
+    const { postId } = payload
+    const { data } = await api.unpinnedPost(postId)
+    return data
   },
 
   /**
@@ -181,10 +181,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async getPostDetail(store, payload) {
-    const { postId, groupId } = payload;
-    const { data } = await api.getGroupPost(groupId, postId);
-    return data;
+  async getPostDetail (store, payload) {
+    const { postId, groupId } = payload
+    const { data } = await api.getGroupPost(groupId, postId)
+    return data
   },
 
   /**
@@ -192,10 +192,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async deletePost(store, payload) {
-    const { groupId, postId } = payload;
-    const { data } = await api.deletePost(groupId, postId);
-    return data;
+  async deletePost (store, payload) {
+    const { groupId, postId } = payload
+    const { data } = await api.deletePost(groupId, postId)
+    return data
   },
 
   /**
@@ -203,10 +203,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async deletePostComment(store, payload) {
-    const { postId, commentId } = payload;
-    const { data } = await api.deletePostComment(postId, commentId);
-    return data;
+  async deletePostComment (store, payload) {
+    const { postId, commentId } = payload
+    const { data } = await api.deletePostComment(postId, commentId)
+    return data
   },
 
   /**
@@ -214,10 +214,10 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async addToBlackList(store, payload) {
-    const { groupId, memberId } = payload;
-    await api.addToBlackList(groupId, memberId);
-    return true;
+  async addToBlackList (store, payload) {
+    const { groupId, memberId } = payload
+    await api.addToBlackList(groupId, memberId)
+    return true
   },
 
   /**
@@ -225,9 +225,9 @@ export default {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async moveoutBlackList(store, payload) {
-    const { groupId, memberId } = payload;
-    await api.moveoutBlackList(groupId, memberId);
-    return true;
-  }
-};
+  async moveoutBlackList (store, payload) {
+    const { groupId, memberId } = payload
+    await api.moveoutBlackList(groupId, memberId)
+    return true
+  },
+}

@@ -15,21 +15,21 @@
 </template>
 
 <script>
-import * as bootApi from "@/api/bootstrappers.js";
+import * as bootApi from '@/api/bootstrappers.js'
 
 /**
  * 广告位类型映射表
  */
 const adMap = {
-  feed: "feed:single",
-  news: "news:single",
-  "group:home": "group:index:top",
-  "group:post": "group:single",
-  currency: "currency"
-};
+  feed: 'feed:single',
+  news: 'news:single',
+  'group:home': 'group:index:top',
+  'group:post': 'group:single',
+  currency: 'currency',
+}
 
 export default {
-  name: "DetailAd",
+  name: 'DetailAd',
   props: {
     /**
      * 广告类型
@@ -40,31 +40,31 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: val => Object.keys(adMap).includes(val)
-    }
+      validator: val => Object.keys(adMap).includes(val),
+    },
   },
-  data() {
+  data () {
     return {
-      list: [] // 图片列表
-    };
+      list: [], // 图片列表
+    }
   },
   computed: {
-    adTypeId() {
-      const adType = this.$store.getters.getAdTypeBySpace(adMap[this.type]);
-      return adType.id;
-    }
+    adTypeId () {
+      const adType = this.$store.getters.getAdTypeBySpace(adMap[this.type])
+      return adType.id
+    },
   },
-  mounted() {
-    this.fetchList();
+  mounted () {
+    this.fetchList()
   },
   methods: {
-    fetchList() {
+    fetchList () {
       bootApi.getAdsById(this.adTypeId).then(({ data }) => {
-        this.list = data.sort((a, b) => a.sort < b.sort);
-      });
-    }
-  }
-};
+        this.list = data.sort((a, b) => a.sort < b.sort)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

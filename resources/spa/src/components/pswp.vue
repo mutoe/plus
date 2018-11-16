@@ -55,69 +55,69 @@
   </div>
 </template>
 <script>
-import "./style/pswp/pswp.min.less";
+import './style/pswp/pswp.min.less'
 
-import PhotoSwipe from "photoswipe";
-import PhotoSwipeUI from "photoswipe/dist/photoswipe-ui-default.js";
+import PhotoSwipe from 'photoswipe'
+import PhotoSwipeUI from 'photoswipe/dist/photoswipe-ui-default.js'
 
 export default {
-  name: "Pswp",
-  data() {
+  name: 'Pswp',
+  data () {
     return {
       photoswipe: null,
-      component: null
-    };
+      component: null,
+    }
   },
-  created() {
-    this.$bus.$on("mvGallery", ({ component, index, images }) => {
-      if (!component) return;
-      this.component = component;
-      this.openPhotoSwipe(index, images);
-    });
+  created () {
+    this.$bus.$on('mvGallery', ({ component, index, images }) => {
+      if (!component) return
+      this.component = component
+      this.openPhotoSwipe(index, images)
+    })
   },
   methods: {
-    payForImg(currItem) {
-      const { paid_node, amount, index } = currItem;
-      this.$bus.$emit("payfor", {
+    payForImg (currItem) {
+      const { paid_node: node, amount, index } = currItem
+      this.$bus.$emit('payfor', {
         onSuccess: data => {
-          this.$Message.success(data);
-          this.component.feed.images[index].paid = true;
-          this.photoswipe.currItem.paid = true;
-          this.updateImage(index, true);
+          this.$Message.success(data)
+          this.component.feed.images[index].paid = true
+          this.photoswipe.currItem.paid = true
+          this.updateImage(index, true)
         },
-        nodeType: "图片",
-        node: paid_node,
-        amount: amount
-      });
+        nodeType: '图片',
+        node,
+        amount: amount,
+      })
     },
-    checkImage() {
-      if (!this.photoswipe) return;
-      const currItem = this.photoswipe.currItem;
-      const { paid_node, paid, index, type } = currItem;
-      paid_node > 0 &&
-        type === "read" &&
+    checkImage () {
+      if (!this.photoswipe) return
+      const currItem = this.photoswipe.currItem
+      const { paid_node: node, paid, index, type } = currItem
+      node > 0 &&
+        type === 'read' &&
         (paid
           ? !currItem.updated && this.updateImage(index)
-          : this.payForImg(currItem));
+          : this.payForImg(currItem))
     },
-    updateImage(index) {
-      if (!this.photoswipe) return;
-      const items = this.photoswipe.items || [];
-      const currItem = items[index];
+    updateImage (index) {
+      if (!this.photoswipe) return
+      const items = this.photoswipe.items || []
+      const currItem = items[index]
       if (currItem) {
         this.$http
           .get(`/files/${currItem.file}?json=1`)
           .then(({ data: { url } }) => {
-            url &&
-              ((this.photoswipe.currItem.src = url),
-              (this.photoswipe.currItem.updated = true),
-              this.photoswipe.invalidateCurrItems(),
-              this.photoswipe.updateSize(),
-              (currItem.el.style.backgroundImage = `url(${url})`));
-          });
+            if (!url) return
+            this.photoswipe.currItem.src = url
+            this.photoswipe.currItem.updated = true
+            this.photoswipe.invalidateCurrItems()
+            this.photoswipe.updateSize()
+            currItem.el.style.backgroundImage = `url(${url})`
+          })
       }
     },
-    openPhotoSwipe: function(index, images) {
+    openPhotoSwipe: function (index, images) {
       const options = {
         index,
         loop: false,
@@ -130,17 +130,17 @@ export default {
 
         maxSpreadZoom: 4,
         errorMsg:
-          '<div class="pswp__error-msg"><a href="%url%" target="_blank">图片加载失败</a></div>'
-      };
-      this.photoswipe = new PhotoSwipe(this.$el, PhotoSwipeUI, images, options);
-      this.photoswipe.listen("close", () => {
-        this.$bus.$off("updatePhoto");
-      });
-      this.photoswipe.listen("beforeChange", () => {
-        this.checkImage();
-      });
-      this.photoswipe.init();
-    }
-  }
-};
+          '<div class="pswp__error-msg"><a href="%url%" target="_blank">图片加载失败</a></div>',
+      }
+      this.photoswipe = new PhotoSwipe(this.$el, PhotoSwipeUI, images, options)
+      this.photoswipe.listen('close', () => {
+        this.$bus.$off('updatePhoto')
+      })
+      this.photoswipe.listen('beforeChange', () => {
+        this.checkImage()
+      })
+      this.photoswipe.init()
+    },
+  },
+}
 </script>

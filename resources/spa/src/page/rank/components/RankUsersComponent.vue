@@ -23,21 +23,21 @@
 </template>
 
 <script>
-const prefixCls = "rank-list-item";
+const prefixCls = 'rank-list-item'
 export default {
-  name: "RankUsersComponent",
+  name: 'RankUsersComponent',
   props: {
     api: { type: String, required: true },
     listUrl: { type: String, required: true },
     title: { type: String, required: true },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
   },
 
-  data() {
+  data () {
     return {
       prefixCls,
-      users: []
-    };
+      users: [],
+    }
   },
 
   computed: {
@@ -48,8 +48,8 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   Boolean
      */
-    show() {
-      return this.users.length > 0;
+    show () {
+      return this.users.length > 0
     },
     /**
      * 获取前个要被展示的用户
@@ -58,34 +58,34 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   Array
      */
-    getShow() {
-      return this.users.slice(0, 5);
-    }
+    getShow () {
+      return this.users.slice(0, 5)
+    },
   },
-  activated() {
-    this.getUsers();
+  activated () {
+    this.getUsers()
   },
 
   methods: {
-    to(path) {
+    to (path) {
       if (path) {
-        this.$router.push({ path });
+        this.$router.push({ path })
       }
     },
 
-    getUsers() {
+    getUsers () {
       this.$http
         .get(this.api, {
-          validateStatus: status => status === 200
+          validateStatus: status => status === 200,
         })
         .then(({ data = [] }) => {
-          this.users = [...data];
-          this.$store.commit("SAVE_RANK_DATA", { name: this.name, data });
-          this.$store.commit("SAVE_USER", data);
-        });
-    }
-  }
-};
+          this.users = [...data]
+          this.$store.commit('SAVE_RANK_DATA', { name: this.name, data })
+          this.$store.commit('SAVE_USER', data)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

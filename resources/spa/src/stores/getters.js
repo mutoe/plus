@@ -1,6 +1,6 @@
 export default {
   getUserById: ({ USERS }) => id => {
-    return USERS[`user_${id}`] || {};
+    return USERS[`user_${id}`] || {}
   },
 
   /**
@@ -9,6 +9,6 @@ export default {
    * @returns {Object}
    */
   getAdTypeBySpace: ({ ADVERTISEMENT }) => type => {
-    return ADVERTISEMENT.filter(ad => ad.space === type).pop() || {};
-  }
-};
+    return ADVERTISEMENT.filter(ad => ad.space === type).pop() || {}
+  },
+}

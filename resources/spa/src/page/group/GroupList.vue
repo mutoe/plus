@@ -54,98 +54,99 @@
 </template>
 
 <script>
-import GroupItem from "./components/GroupItem.vue";
+import GroupItem from './components/GroupItem.vue'
 
 export default {
-  name: "GroupList",
+  name: 'GroupList',
   components: {
-    GroupItem
+    GroupItem,
   },
-  data() {
+  data () {
     return {
       GROUPS: new Map(),
-      GROUPChangeTracker: 1
-    };
+      GROUPChangeTracker: 1,
+    }
   },
   computed: {
-    categories() {
-      return this.$store.state.group.categories;
+    categories () {
+      return this.$store.state.group.categories
     },
     recommend: {
-      get() {
-        return this.$route.query.type || false;
+      get () {
+        return this.$route.query.type || false
       },
-      set(val) {
-        this.$route.query.type = val ? "recommend" : "";
-      }
+      set (val) {
+        this.$route.query.type = val ? 'recommend' : ''
+      },
     },
-    category() {
-      return this.$route.query.category;
+    category () {
+      return this.$route.query.category
     },
-    currentUserID() {
-      return this.$store.state.CURRENTUSER.id;
+    currentUserID () {
+      return this.$store.state.CURRENTUSER.id
     },
-    currentType() {
-      return this.recommend ? -1 : this.category;
+    currentType () {
+      return this.recommend ? -1 : this.category
     },
-    groups() {
+    groups () {
       return this.currentType &&
         this.GROUPChangeTracker &&
         this.GROUPS.has(this.currentType)
         ? Array.from(this.GROUPS.get(this.currentType).values())
-        : [];
-    }
+        : []
+    },
   },
   watch: {
-    currentType(val) {
-      val && this.$refs.loadmore.beforeRefresh();
-    }
+    currentType (val) {
+      val && this.$refs.loadmore.beforeRefresh()
+    },
   },
-  created() {
-    if (!this.$route.query.type && !this.$route.query.category)
+  created () {
+    if (!this.$route.query.type && !this.$route.query.category) {
       this.$router.replace(
-        Object.assign({}, this.$route, { query: { type: "recommend" } })
-      );
-    this.$store.dispatch("group/getGroupTypes");
+        Object.assign({}, this.$route, { query: { type: 'recommend' } })
+      )
+    }
+    this.$store.dispatch('group/getGroupTypes')
   },
-  mounted() {
-    this.$refs.loadmore.beforeRefresh();
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    formateGroups(groups) {
+    formateGroups (groups) {
       const map = this.GROUPS.has(this.currentType)
         ? this.GROUPS.get(this.currentType)
-        : new Map();
+        : new Map()
       groups.forEach(group => {
-        map.set(group.id, group);
-      });
-      this.GROUPS.set(this.currentType, map);
-      this.GROUPChangeTracker += 1;
+        map.set(group.id, group)
+      })
+      this.GROUPS.set(this.currentType, map)
+      this.GROUPChangeTracker += 1
     },
-    switchCate(cate) {
-      this.recommend = false;
-      this.$route.query.category = cate.id;
+    switchCate (cate) {
+      this.recommend = false
+      this.$route.query.category = cate.id
     },
-    async onRefresh() {
-      const params = {};
-      if (this.recommend) params.type = "recommend";
-      else params.categoryId = this.category;
+    async onRefresh () {
+      const params = {}
+      if (this.recommend) params.type = 'recommend'
+      else params.categoryId = this.category
 
-      const data = await this.$store.dispatch("group/getGroups", params);
-      this.formateGroups(data);
-      this.$refs.loadmore.afterRefresh(data.length < 15);
+      const data = await this.$store.dispatch('group/getGroups', params)
+      this.formateGroups(data)
+      this.$refs.loadmore.afterRefresh(data.length < 15)
     },
-    async onLoadMore() {
-      const params = { offset: this.groups.length };
-      if (this.recommend) params.type = "recommend";
-      else params.categoryId = this.category;
+    async onLoadMore () {
+      const params = { offset: this.groups.length }
+      if (this.recommend) params.type = 'recommend'
+      else params.categoryId = this.category
 
-      const data = await this.$store.dispatch("group/getGroups", params);
-      this.formateGroups(data);
-      this.$refs.loadmore.afterLoadMore(data.length < 15);
-    }
-  }
-};
+      const data = await this.$store.dispatch('group/getGroups', params)
+      this.formateGroups(data)
+      this.$refs.loadmore.afterLoadMore(data.length < 15)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

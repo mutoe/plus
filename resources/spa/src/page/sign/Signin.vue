@@ -103,59 +103,59 @@
 </template>
 
 <script>
-import { signinByAccount } from "@/api/user.js";
-import { signinByWechat } from "@/util/wechat.js";
+import { signinByAccount } from '@/api/user.js'
+import { signinByWechat } from '@/util/wechat.js'
 
 export default {
-  name: "Signin",
-  data() {
+  name: 'Signin',
+  data () {
     return {
-      err: "",
+      err: '',
       eye: false,
-      account: "",
-      password: "",
-      loading: false
-    };
+      account: '',
+      password: '',
+      loading: false,
+    }
   },
   computed: {
-    disabled() {
+    disabled () {
       return (
         this.account.length === 0 || this.password.length < 6 || this.loading
-      );
+      )
     },
-    isWechat() {
-      return this.$store.state.BROWSER.isWechat;
-    }
+    isWechat () {
+      return this.$store.state.BROWSER.isWechat
+    },
   },
   methods: {
     signinByWechat,
-    signinByAccount() {
-      this.err = "";
+    signinByAccount () {
+      this.err = ''
       if (this.account.length === 0) {
-        this.err = "账户不正确";
-        return false;
+        this.err = '账户不正确'
+        return false
       }
 
       if (this.password.length < 6) {
-        this.err = "密码不正确";
-        return false;
+        this.err = '密码不正确'
+        return false
       }
 
-      this.loading = true;
+      this.loading = true
 
       signinByAccount({
         login: this.account,
-        password: this.password
+        password: this.password,
       }).then(state => {
-        this.loading = false;
+        this.loading = false
         state &&
           this.$nextTick(() => {
-            this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
-          });
-      });
-    }
-  }
-};
+            this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
+          })
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

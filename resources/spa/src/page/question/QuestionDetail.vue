@@ -121,20 +121,20 @@
 </template>
 
 <script>
-import { render } from "@/util/markdown";
-import * as api from "@/api/question/questions";
-import { listByDefault, listByTime } from "@/api/question/answer";
-import QuestionAnswerItem from "./QuestionAnswerItem";
+import { render } from '@/util/markdown'
+import * as api from '@/api/question/questions'
+import { listByDefault, listByTime } from '@/api/question/answer'
+import QuestionAnswerItem from './QuestionAnswerItem'
 
 export default {
-  name: "QuestionDetail",
+  name: 'QuestionDetail',
   components: {
-    QuestionAnswerItem
+    QuestionAnswerItem,
   },
   data: () => ({
     question: {},
     answersTimeOrder: false,
-    answers: []
+    answers: [],
   }),
   computed: {
     /**
@@ -143,9 +143,9 @@ export default {
      * @return {Object}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    logedUser() {
-      const { CURRENTUSER: user } = this.$store.state;
-      return user;
+    logedUser () {
+      const { CURRENTUSER: user } = this.$store.state
+      return user
     },
 
     /**
@@ -154,7 +154,7 @@ export default {
      * @return {boolean}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    editer() {
+    editer () {
       // 请不要删除，目前暂时不需要管理员可修改问题。
       // 后续需要增加的功能。
       // const { roles = [] } = this.logedUser;
@@ -165,146 +165,146 @@ export default {
       //   }
       // }
 
-      return false;
+      return false
     },
-    topics() {
-      return this.question.topics || [];
+    topics () {
+      return this.question.topics || []
     },
-    htmlBody() {
-      const { body = "" } = this.question;
-      return render(body);
+    htmlBody () {
+      const { body = '' } = this.question
+      return render(body)
     },
-    answerRequestMethod() {
-      return this.answersTimeOrder ? listByTime : listByDefault;
+    answerRequestMethod () {
+      return this.answersTimeOrder ? listByTime : listByDefault
     },
-    invitations() {
-      return this.question.invitations || [];
+    invitations () {
+      return this.question.invitations || []
     },
-    adoptionAnswers() {
-      return this.question.adoption_answers || [];
+    adoptionAnswers () {
+      return this.question.adoption_answers || []
     },
-    invitationAnswers() {
-      return this.question.invitation_answers || [];
-    }
+    invitationAnswers () {
+      return this.question.invitation_answers || []
+    },
   },
   watch: {
-    answersTimeOrder(newRoute, oldRoute) {
+    answersTimeOrder (newRoute, oldRoute) {
       if (newRoute.path === oldRoute.path) {
-        this.answers = [];
-        this.$refs.loadmore.beforeRefresh();
+        this.answers = []
+        this.$refs.loadmore.beforeRefresh()
       }
-    }
+    },
   },
-  mounted() {
-    this.$refs.loadmore.beforeRefresh();
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    refreshAnswer() {
+    refreshAnswer () {
       this.answerRequestMethod(this.$route.params.id)
         .then(({ data }) => {
-          this.$refs.loadmore.afterRefresh(data.length < 15);
-          this.answers = data;
+          this.$refs.loadmore.afterRefresh(data.length < 15)
+          this.answers = data
           // mixin adoption answers
-          this.answers.unshift(...this.adoptionAnswers);
+          this.answers.unshift(...this.adoptionAnswers)
           // mixin invitation answers
-          this.answers.unshift(...this.invitationAnswers);
+          this.answers.unshift(...this.invitationAnswers)
         })
         .catch(err => {
-          this.$refs.loadmore.afterRefresh();
-          return Promise.reject(err);
-        });
+          this.$refs.loadmore.afterRefresh()
+          return Promise.reject(err)
+        })
     },
-    handleRefreshAnswers() {
+    handleRefreshAnswers () {
       api
         .show(this.$route.params.id)
         .then(({ data }) => {
-          this.question = data;
-          this.refreshAnswer();
+          this.question = data
+          this.refreshAnswer()
         })
         .catch(err => {
-          this.$refs.loadmore.afterRefresh();
-          return Promise.reject(err);
-        });
+          this.$refs.loadmore.afterRefresh()
+          return Promise.reject(err)
+        })
     },
-    handleLoadMoreAnswers() {
-      if (!this.answers.length) return;
+    handleLoadMoreAnswers () {
+      if (!this.answers.length) return
       this.answerRequestMethod(this.$route.params.id, this.answers.length)
         .then(({ data }) => {
-          this.$refs.loadmore.afterLoadMore(data.length < 15);
-          this.answers = [...this.answers, ...data];
+          this.$refs.loadmore.afterLoadMore(data.length < 15)
+          this.answers = [...this.answers, ...data]
         })
         .catch(({ response: { data } = {} }) => {
-          this.$refs.loadmore.afterLoadMore(true);
-          this.$Message.error(data);
-        });
+          this.$refs.loadmore.afterLoadMore(true)
+          this.$Message.error(data)
+        })
     },
-    handleWatch() {
+    handleWatch () {
       api
         .watch(this.$route.params.id)
         .then(() => {
-          this.question.watched = true;
-          this.question.watchers_count += 1;
+          this.question.watched = true
+          this.question.watchers_count += 1
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-        });
+          this.$Message.error(data)
+        })
     },
-    handleUnwatch() {
+    handleUnwatch () {
       api
         .unwatch(this.$route.params.id)
         .then(() => {
-          this.question.watched = false;
-          this.question.watchers_count -= 1;
+          this.question.watched = false
+          this.question.watchers_count -= 1
         })
         .catch(({ response: { data } = {} }) => {
-          this.$Message.error(data);
-        });
+          this.$Message.error(data)
+        })
     },
-    addAnswer() {
-      this.$router.push({ path: `/question/${this.question.id}/answers/add` });
+    addAnswer () {
+      this.$router.push({ path: `/question/${this.question.id}/answers/add` })
     },
-    gotoMyAnswer() {
+    gotoMyAnswer () {
       const {
-        my_answer: { id = "" }
-      } = this.question;
+        my_answer: { id = '' },
+      } = this.question
       this.$router.push({
-        path: `/questions/${this.question.id}/answers/${id}`
-      });
+        path: `/questions/${this.question.id}/answers/${id}`,
+      })
     },
-    showOrderPopup() {
+    showOrderPopup () {
       const actions = [
         {
-          text: "默认排序",
+          text: '默认排序',
           method: () => {
-            this.answersTimeOrder = false;
-          }
+            this.answersTimeOrder = false
+          },
         },
         {
-          text: "按时间排序",
+          text: '按时间排序',
           method: () => {
-            this.answersTimeOrder = true;
-          }
-        }
-      ];
-      this.$bus.$emit("actionSheet", actions, "取消");
+            this.answersTimeOrder = true
+          },
+        },
+      ]
+      this.$bus.$emit('actionSheet', actions, '取消')
     },
-    onMoreClick() {
-      const actions = [];
+    onMoreClick () {
+      const actions = []
       actions.push({
-        text: "举报",
+        text: '举报',
         method: () => {
-          this.$bus.$emit("report", {
-            type: "question",
+          this.$bus.$emit('report', {
+            type: 'question',
             payload: this.question.id,
             username: this.question.user.name,
-            reference: this.question.subject
-          });
-        }
-      });
-      this.$bus.$emit("actionSheet", actions);
-    }
-  }
-};
+            reference: this.question.subject,
+          })
+        },
+      })
+      this.$bus.$emit('actionSheet', actions)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

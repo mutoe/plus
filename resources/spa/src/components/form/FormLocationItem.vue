@@ -17,32 +17,32 @@
 </template>
 
 <script>
-import Location from "@/page/Location.vue";
+import Location from '@/page/Location.vue'
 
 export default {
-  name: "FormLocationItem",
+  name: 'FormLocationItem',
   components: { Location },
   props: {
     value: { type: null, default: () => {} },
-    label: { type: String, default: "位置" },
-    readonly: { type: Boolean, default: false }
+    label: { type: String, default: '位置' },
+    readonly: { type: Boolean, default: false },
   },
-  data() {
+  data () {
     return {
-      showPosition: false
-    };
+      showPosition: false,
+    }
   },
   methods: {
-    switchPosition() {
-      if (this.readonly) return;
-      this.showPosition = true;
+    switchPosition () {
+      if (this.readonly) return
+      this.showPosition = true
     },
-    close(val) {
-      this.showPosition = false;
-      this.$emit("input", val);
-    }
-  }
-};
+    close (val) {
+      this.showPosition = false
+      this.$emit('input', val)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

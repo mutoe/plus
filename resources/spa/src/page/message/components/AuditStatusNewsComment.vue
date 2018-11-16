@@ -28,48 +28,48 @@
  * 提取资讯评论置顶申请的状态控制组件
  */
 
-import AuditStatusBase from "./AuditStatusBase.vue";
+import AuditStatusBase from './AuditStatusBase.vue'
 
 export default {
-  name: "NewsCommentAuditStatus",
+  name: 'NewsCommentAuditStatus',
   extends: AuditStatusBase,
   methods: {
-    accept() {
+    accept () {
       const {
         raw: commentId = 0,
         target: newsId = 0,
-        id: pinnedId = 0
-      } = this.audit;
+        id: pinnedId = 0,
+      } = this.audit
       this.$http
         .patch(
           `/news/${newsId}/comments/${commentId}/currency-pinneds/${pinnedId}`,
           { validateStatus: s => s === 201 }
         )
         .then(({ data }) => {
-          this.audit.state = 1;
-          this.audit.expires_at = 1;
-          this.$Message.success(data);
-        });
+          this.audit.state = 1
+          this.audit.expires_at = 1
+          this.$Message.success(data)
+        })
     },
-    reject() {
+    reject () {
       const {
         id: pinnedId = 0,
         raw: commentId = 0,
-        target: newsId = 0
-      } = this.audit;
+        target: newsId = 0,
+      } = this.audit
       this.$http
         .patch(
           `/news/${newsId}/comments/${commentId}/currency-pinneds/${pinnedId}/reject`,
           { validateStatus: s => s === 204 }
         )
         .then(() => {
-          this.audit.state = 2;
-          this.audit.expires_at = 1;
-          this.$Message.success("已拒绝置顶");
-        });
-    }
-  }
-};
+          this.audit.state = 2
+          this.audit.expires_at = 1
+          this.$Message.success('已拒绝置顶')
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less">

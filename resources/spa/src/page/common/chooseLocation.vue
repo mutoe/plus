@@ -57,31 +57,31 @@
 </template>
 
 <script>
-import _ from "lodash";
-import HeadTop from "@/components/HeadTop";
+import _ from 'lodash'
+import HeadTop from '@/components/HeadTop'
 
-let sources = [];
+let sources = []
 
 export default {
-  name: "ChooseLocation",
+  name: 'ChooseLocation',
   components: {
-    HeadTop
+    HeadTop,
   },
-  data() {
+  data () {
     return {
-      keyword: "",
+      keyword: '',
       showHot: true,
       loading: false,
 
       dataList: [],
-      redirect: "" // 选择地址后 跳转的路径
-    };
+      redirect: '', // 选择地址后 跳转的路径
+    }
   },
   computed: {
-    location() {
-      const location = this.$store.state.LOCATION || {};
-      if (JSON.stringify(location) === "{}") {
-        this.$store.dispatch("GET_LOCATION");
+    location () {
+      const location = this.$store.state.LOCATION || {}
+      if (JSON.stringify(location) === '{}') {
+        this.$store.dispatch('GET_LOCATION')
       } else {
         /* eslint-disable */
         this.loading = false;

@@ -1,4 +1,4 @@
-import api from "../api";
+import api from '../api'
 
 /**
  * Query questions list.
@@ -11,11 +11,11 @@ import api from "../api";
  * @param {string} params.subject search keyword
  * @returns
  */
-export function queryList(params = {}) {
-  return api.get("/questions", {
+export function queryList (params = {}) {
+  return api.get('/questions', {
     params,
-    validateStatus: status => status === 200
-  });
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -27,8 +27,8 @@ export function queryList(params = {}) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function list(type, offset = 0, limit = 15) {
-  return queryList({ type, limit, offset });
+export function list (type, offset = 0, limit = 15) {
+  return queryList({ type, limit, offset })
 }
 
 /**
@@ -38,10 +38,10 @@ export function list(type, offset = 0, limit = 15) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function show(id) {
+export function show (id) {
   return api.get(`/questions/${id}`, {
-    validateStatus: status => status === 200
-  });
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -51,14 +51,14 @@ export function show(id) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function watch(id) {
+export function watch (id) {
   return api.put(
     `/user/question-watches/${id}`,
     {},
     {
-      validateStatus: status => status === 204
+      validateStatus: status => status === 204,
     }
-  );
+  )
 }
 
 /**
@@ -68,10 +68,10 @@ export function watch(id) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function unwatch(id) {
+export function unwatch (id) {
   return api.delete(`/user/question-watches/${id}`, {
-    validateStatus: status => status === 204
-  });
+    validateStatus: status => status === 204,
+  })
 }
 
 /**
@@ -83,7 +83,7 @@ export function unwatch(id) {
  * @param {string} reason
  * @returns
  */
-export function reportQuestion(questionId, reason) {
-  const url = `/questions/${questionId}/reports`;
-  return api.post(url, { reason }, { validateStatus: s => s === 201 });
+export function reportQuestion (questionId, reason) {
+  const url = `/questions/${questionId}/reports`
+  return api.post(url, { reason }, { validateStatus: s => s === 201 })
 }

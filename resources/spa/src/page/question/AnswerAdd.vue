@@ -26,34 +26,34 @@
 
 <script>
 export default {
-  name: "AnswerAdd",
-  data() {
+  name: 'AnswerAdd',
+  data () {
     return {
-      content: "",
-      anonymity: false
-    };
+      content: '',
+      anonymity: false,
+    }
   },
   computed: {
-    questionId() {
-      return this.$route.params.questionId || 0;
+    questionId () {
+      return this.$route.params.questionId || 0
     },
-    disabled() {
-      return !this.content;
-    }
+    disabled () {
+      return !this.content
+    },
   },
   methods: {
-    async onPost() {
-      if (this.disabled) return;
+    async onPost () {
+      if (this.disabled) return
       const payload = {
         questionId: this.questionId,
-        content: this.content.replace(/\n/g, "\n\n"),
-        anonymity: this.anonymity ? 1 : 0
-      };
-      await this.$store.dispatch("question/postAnswer", payload);
-      this.goBack();
-    }
-  }
-};
+        content: this.content.replace(/\n/g, '\n\n'),
+        anonymity: this.anonymity ? 1 : 0,
+      }
+      await this.$store.dispatch('question/postAnswer', payload)
+      this.goBack()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

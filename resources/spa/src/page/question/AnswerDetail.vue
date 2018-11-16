@@ -120,23 +120,23 @@
 </template>
 
 <script>
-import _ from "lodash";
-import { mapState } from "vuex";
-import markdownIt from "markdown-it";
-import plusImagePlugin from "markdown-it-plus-image";
-import ArticleCard from "@/page/article/ArticleCard.vue";
-import CommentItem from "@/page/article/ArticleComment.vue";
-import { limit } from "@/api";
-import * as api from "@/api/question/answer";
-import * as userApi from "@/api/user";
+import _ from 'lodash'
+import { mapState } from 'vuex'
+import markdownIt from 'markdown-it'
+import plusImagePlugin from 'markdown-it-plus-image'
+import ArticleCard from '@/page/article/ArticleCard.vue'
+import CommentItem from '@/page/article/ArticleComment.vue'
+import { limit } from '@/api'
+import * as api from '@/api/question/answer'
+import * as userApi from '@/api/user'
 
 export default {
-  name: "AnswerDetail",
+  name: 'AnswerDetail',
   components: {
     ArticleCard,
-    CommentItem
+    CommentItem,
   },
-  data() {
+  data () {
     return {
       loading: false,
       fetching: false,
@@ -148,291 +148,293 @@ export default {
       rewardList: [],
       reward: {
         count: 0,
-        amount: 0
+        amount: 0,
       },
 
       fetchComing: false,
       fetchFollow: false,
       noMoreCom: false,
-      maxComId: 0
-    };
-  },
-  computed: {
-    ...mapState(["CURRENTUSER"]),
-    questionId() {
-      return this.$route.params.questionId;
-    },
-    answerId() {
-      return this.$route.params.answerId;
-    },
-    user() {
-      return this.answer.user || {};
-    },
-    time() {
-      return this.answer.created_at || "";
-    },
-    liked: {
-      get() {
-        return !!this.answer.liked;
-      },
-      set(val) {
-        this.answer.liked = val;
-      }
-    },
-    likes() {
-      return this.answer.likes || [];
-    },
-    collected: {
-      get() {
-        return this.answer.collected;
-      },
-      set(val) {
-        this.answer.collected = val;
-      }
-    },
-    likeCount: {
-      get() {
-        return this.answer.likes_count || 0;
-      },
-      set(val) {
-        this.answer.likes_count = ~~val;
-      }
-    },
-    viewsCount() {
-      return this.answer.views_count || 0;
-    },
-    commentCount: {
-      get() {
-        return this.answer.comments_count || 0;
-      },
-      set(val) {
-        val > 0, (this.answer.comments_count = ~~val);
-      }
-    },
-    content() {
-      const { body = "" } = this.answer;
-      return body;
-    },
-    isMine() {
-      return this.user.id === this.CURRENTUSER.id;
-    },
-    isWechat() {
-      return this.$store.state.BROWSER.isWechat;
+      maxComId: 0,
     }
   },
-  created() {
-    this.fetchAnswer();
+  computed: {
+    ...mapState(['CURRENTUSER']),
+    questionId () {
+      return this.$route.params.questionId
+    },
+    answerId () {
+      return this.$route.params.answerId
+    },
+    user () {
+      return this.answer.user || {}
+    },
+    time () {
+      return this.answer.created_at || ''
+    },
+    liked: {
+      get () {
+        return !!this.answer.liked
+      },
+      set (val) {
+        this.answer.liked = val
+      },
+    },
+    likes () {
+      return this.answer.likes || []
+    },
+    collected: {
+      get () {
+        return this.answer.collected
+      },
+      set (val) {
+        this.answer.collected = val
+      },
+    },
+    likeCount: {
+      get () {
+        return this.answer.likes_count || 0
+      },
+      set (val) {
+        this.answer.likes_count = ~~val
+      },
+    },
+    viewsCount () {
+      return this.answer.views_count || 0
+    },
+    commentCount: {
+      get () {
+        return this.answer.comments_count || 0
+      },
+      set (val) {
+        this.answer.comments_count = ~~val
+      },
+    },
+    content () {
+      const { body = '' } = this.answer
+      return body
+    },
+    isMine () {
+      return this.user.id === this.CURRENTUSER.id
+    },
+    isWechat () {
+      return this.$store.state.BROWSER.isWechat
+    },
+  },
+  created () {
+    this.fetchAnswer()
   },
   methods: {
-    getAvatar(avatar) {
-      avatar = avatar || {};
-      return avatar.url || null;
+    getAvatar (avatar) {
+      avatar = avatar || {}
+      return avatar.url || null
     },
-    formatBody(body) {
+    formatBody (body) {
       return markdownIt({
-        html: true
+        html: true,
       })
         .use(plusImagePlugin, `${this.$http.defaults.baseURL}/files/`)
-        .render(body);
+        .render(body)
     },
-    likeAnswer() {
-      if (this.fetching) return;
-      this.fetching = true;
+    likeAnswer () {
+      if (this.fetching) return
+      this.fetching = true
       if (this.liked) {
         api
           .unlike(this.answerId)
           .then(() => {
-            this.liked = false;
-            this.likeCount -= 1;
+            this.liked = false
+            this.likeCount -= 1
             this.answer.likes = this.answer.likes.filter(like => {
-              return like.user_id !== this.CURRENTUSER.id;
-            });
+              return like.user_id !== this.CURRENTUSER.id
+            })
           })
           .finally(() => {
-            this.fetching = false;
-          });
+            this.fetching = false
+          })
       } else {
         api
           .like(this.answerId)
           .then(() => {
-            this.liked = true;
-            this.likeCount += 1;
+            this.liked = true
+            this.likeCount += 1
             if (this.answer.likes.length < 5) {
               this.answer.likes.push({
                 user: this.CURRENTUSER,
                 id: +new Date(),
-                user_id: this.CURRENTUSER.id
-              });
+                user_id: this.CURRENTUSER.id,
+              })
             }
           })
           .finally(() => {
-            this.fetching = false;
-          });
+            this.fetching = false
+          })
       }
     },
-    shareAnswer() {
-      if (this.isWechat) this.$Message.success("请点击右上角微信分享😳");
-      else this.$Message.success("请使用浏览器的分享功能😳");
+    shareAnswer () {
+      if (this.isWechat) this.$Message.success('请点击右上角微信分享😳')
+      else this.$Message.success('请使用浏览器的分享功能😳')
     },
-    commentAnswer() {
-      this.$bus.$emit("commentInput", {
+    commentAnswer () {
+      this.$bus.$emit('commentInput', {
         onOk: text => {
-          this.sendComment({ body: text });
-        }
-      });
+          this.sendComment({ body: text })
+        },
+      })
     },
-    rewardAnswer() {
+    rewardAnswer () {
       const callback = amount => {
-        this.fetchRewards();
-        this.reward.count += 1;
-        this.reward.amount += amount;
-      };
-      this.$bus.$emit("reward", {
-        type: "answer",
+        this.fetchRewards()
+        this.reward.count += 1
+        this.reward.amount += amount
+      }
+      this.$bus.$emit('reward', {
+        type: 'answer',
         api: api.rewardAnswer,
         payload: this.answerId,
-        callback
-      });
+        callback,
+      })
     },
-    moreAction() {
-      const actions = [];
-      if (!this.collected)
+    moreAction () {
+      const actions = []
+      if (!this.collected) {
         actions.push({
-          text: "收藏",
+          text: '收藏',
           method: () => {
             api.collect(this.answerId).then(() => {
-              this.collected = true;
-              this.$Message.success("收藏成功");
-            });
-          }
-        });
-      else
+              this.collected = true
+              this.$Message.success('收藏成功')
+            })
+          },
+        })
+      } else {
         actions.push({
-          text: "取消收藏",
+          text: '取消收藏',
           method: () => {
             api.unCollect(this.answerId).then(() => {
-              this.collected = false;
-              this.$Message.success("取消收藏");
-            });
-          }
-        });
-      if (!this.isMine)
+              this.collected = false
+              this.$Message.success('取消收藏')
+            })
+          },
+        })
+      }
+      if (!this.isMine) {
         actions.push({
-          text: "举报",
+          text: '举报',
           method: () => {
-            this.$bus.$emit("report", {
-              type: "answer",
+            this.$bus.$emit('report', {
+              type: 'answer',
               payload: this.answerId,
               username: this.answer.user.name,
-              reference: this.answer.body
-            });
-          }
-        });
-      this.$bus.$emit("actionSheet", actions);
+              reference: this.answer.body,
+            })
+          },
+        })
+      }
+      this.$bus.$emit('actionSheet', actions)
     },
-    fetchRewards() {
+    fetchRewards () {
       api.getRewards(this.answerId, { limit: 10 }).then(({ data }) => {
-        this.rewardList = data;
-      });
+        this.rewardList = data
+      })
     },
-    fetchAnswer() {
-      if (this.loading) return;
-      this.loading = true;
+    fetchAnswer () {
+      if (this.loading) return
+      this.loading = true
 
       api.getAnswer(this.answerId).then(({ data }) => {
-        this.answer = data;
-        this.reward.count = data.rewarder_count;
-        this.reward.amount = data.rewards_amount;
-        this.rewardList = data.rewarders;
-        this.fetchAnswerComments();
-        this.loading = false;
-      });
+        this.answer = data
+        this.reward.count = data.rewarder_count
+        this.reward.amount = data.rewards_amount
+        this.rewardList = data.rewarders
+        this.fetchAnswerComments()
+        this.loading = false
+      })
     },
-    fetchAnswerComments(after = 0) {
-      if (this.fetchComing) return;
-      this.fetchComing = true;
+    fetchAnswerComments (after = 0) {
+      if (this.fetchComing) return
+      this.fetchComing = true
       api
         .getAnswerComments(this.answerId, { limit, after })
         .then(({ data: comments = [] }) => {
           if (comments && comments.length) {
-            this.comments = after ? [...this.comments, ...comments] : comments;
-            this.maxComId = comments[comments.length - 1].id;
+            this.comments = after ? [...this.comments, ...comments] : comments
+            this.maxComId = comments[comments.length - 1].id
           }
-          this.noMoreCom = comments.length < 15;
+          this.noMoreCom = comments.length < 15
         })
         .finally(() => {
           this.$nextTick(() => {
-            this.fetchComing = false;
-            this.loading = false;
-          });
-        });
+            this.fetchComing = false
+            this.loading = false
+          })
+        })
     },
-    replyComment(uid, uname, commentId) {
+    replyComment (uid, uname, commentId) {
       uid === this.CURRENTUSER.id
         ? this.$bus.$emit(
-            "actionSheet",
-            [
-              {
-                text: "删除评论",
-                method: () => {
-                  this.deleteAnswerComment(commentId);
-                }
-              }
-            ],
-            "取消"
-          )
-        : this.$bus.$emit("commentInput", {
-            placeholder: `回复： ${uname}`,
-            onOk: text => {
-              this.sendComment({ reply_user: uid, body: text });
-            }
-          });
+          'actionSheet',
+          [
+            {
+              text: '删除评论',
+              method: () => {
+                this.deleteAnswerComment(commentId)
+              },
+            },
+          ],
+          '取消'
+        )
+        : this.$bus.$emit('commentInput', {
+          placeholder: `回复： ${uname}`,
+          onOk: text => {
+            this.sendComment({ reply_user: uid, body: text })
+          },
+        })
     },
-    sendComment({ reply_user: replyUser, body }) {
+    sendComment ({ reply_user: replyUser, body }) {
       // 评论答案
       // POST /question-answers/:answer/comments
-      const params = {};
+      const params = {}
       if (body && body.length > 0) {
-        params.body = body;
-        replyUser && (params["reply_user"] = replyUser);
+        params.body = body
+        replyUser && (params['reply_user'] = replyUser)
         this.$http
           .post(`/question-answers/${this.answerId}/comments`, params, {
-            validateStatus: s => s === 201
+            validateStatus: s => s === 201,
           })
           .then(({ data: { comment } = { comment: {} } }) => {
-            this.$Message.success("评论成功");
-            this.comments.unshift(comment);
-            this.commentCount += 1;
-            this.$bus.$emit("commentInput:close", true);
+            this.$Message.success('评论成功')
+            this.comments.unshift(comment)
+            this.commentCount += 1
+            this.$bus.$emit('commentInput:close', true)
           })
           .catch(() => {
-            this.$Message.error("评论失败");
-            this.$bus.$emit("commentInput:close", true);
-          });
+            this.$Message.error('评论失败')
+            this.$bus.$emit('commentInput:close', true)
+          })
       } else {
-        this.$Message.error("评论内容不能为空");
+        this.$Message.error('评论内容不能为空')
       }
     },
-    deleteAnswerComment(commentId) {
+    deleteAnswerComment (commentId) {
       api.deleteAnswerComment(this.answerId, commentId).then(() => {
-        this.$Message.success("删除评论成功");
-        _.remove(this.comments, c => c.id === commentId);
-        this.commentCount -= 1;
-        this.$bus.$emit("commentInput:close", true);
-      });
+        this.$Message.success('删除评论成功')
+        _.remove(this.comments, c => c.id === commentId)
+        this.commentCount -= 1
+        this.$bus.$emit('commentInput:close', true)
+      })
     },
-    followUser(status) {
-      if (this.fetchFollow) return;
-      this.fetchFollow = true;
-      status = status ? "unFollow" : "follow";
+    followUser (status) {
+      if (this.fetchFollow) return
+      this.fetchFollow = true
+      status = status ? 'unFollow' : 'follow'
 
       userApi.followUserByStatus({ id: this.user.id, status }).then(() => {
-        this.fetchFollow = false;
-        this.user.follower = !this.user.follower;
-      });
-    }
-  }
-};
+        this.fetchFollow = false
+        this.user.follower = !this.user.follower
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

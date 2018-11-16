@@ -55,58 +55,58 @@
 </template>
 
 <script>
-import _ from "lodash";
-import SearchBar from "@/components/common/SearchBar.vue";
-import NavTab from "@/components/common/NavTab.vue";
-import GroupItem from "./components/GroupItem.vue";
-import GroupFeedCard from "@/components/FeedCard/GroupFeedCard.vue";
+import _ from 'lodash'
+import SearchBar from '@/components/common/SearchBar.vue'
+import NavTab from '@/components/common/NavTab.vue'
+import GroupItem from './components/GroupItem.vue'
+import GroupFeedCard from '@/components/FeedCard/GroupFeedCard.vue'
 
 export default {
-  name: "SearchPost",
+  name: 'SearchPost',
   components: {
     SearchBar,
     NavTab,
     GroupItem,
-    GroupFeedCard
+    GroupFeedCard,
   },
-  data() {
+  data () {
     return {
-      keywordOrigin: "",
+      keywordOrigin: '',
       list: [],
       recommendList: [],
       loading: false,
       noResult: false,
       nav: {
-        groups: "圈子",
-        posts: "帖子"
-      }
-    };
+        groups: '圈子',
+        posts: '帖子',
+      },
+    }
   },
   computed: {
-    type() {
-      return this.$route.query.type || "groups";
+    type () {
+      return this.$route.query.type || 'groups'
     },
-    keyword() {
-      return this.keywordOrigin.trim();
+    keyword () {
+      return this.keywordOrigin.trim()
     },
-    groupId() {
-      return this.$route.params.groupId;
-    }
+    groupId () {
+      return this.$route.params.groupId
+    },
   },
   watch: {
-    keyword() {
-      this.onSearchInput();
+    keyword () {
+      this.onSearchInput()
     },
-    type() {
-      this.list = [];
-      this.onSearchInput();
-    }
+    type () {
+      this.list = []
+      this.onSearchInput()
+    },
   },
-  created() {
+  created () {
     // 如果不带参 默认搜索圈子
-    if (!this.$route.query.type) this.$route.query.type = "groups";
+    if (!this.$route.query.type) this.$route.query.type = 'groups'
     // 如果搜索圈子, 没有数据时显示推荐的列表
-    if (this.type === "groups") this.fetchRecommendGroups();
+    if (this.type === 'groups') this.fetchRecommendGroups()
   },
   methods: {
     /**
@@ -114,48 +114,49 @@ export default {
      * 不要使用箭头函数，会导致 this 作用域丢失
      * @author mutoe <mutoe@foxmail.com>
      */
-    onSearchInput: _.debounce(async function() {
-      if (!this.keyword) return;
-      this.loading = true;
-      const data = await this.search();
-      this.loading = false;
-      this.list = data;
-      this.noResult = !this.list.length;
-      this.$refs.loadmore.afterRefresh(data.length < 15);
+    onSearchInput: _.debounce(async function () {
+      if (!this.keyword) return
+      this.loading = true
+      const data = await this.search()
+      this.loading = false
+      this.list = data
+      this.noResult = !this.list.length
+      this.$refs.loadmore.afterRefresh(data.length < 15)
     }, 600),
 
-    async onLoadMore() {
-      if (!this.keyword) return;
-      this.loading = true;
-      const data = await this.search(this.list.length);
-      this.loading = false;
-      this.list = [...this.list, ...data];
-      this.$refs.loadmore.afterLoadMore(data.length < 15);
+    async onLoadMore () {
+      if (!this.keyword) return
+      this.loading = true
+      const data = await this.search(this.list.length)
+      this.loading = false
+      this.list = [...this.list, ...data]
+      this.$refs.loadmore.afterLoadMore(data.length < 15)
     },
 
-    search(offset) {
-      if (this.type === "groups")
-        return this.$store.dispatch("group/searchGroups", {
+    search (offset) {
+      if (this.type === 'groups') {
+        return this.$store.dispatch('group/searchGroups', {
           keyword: this.keyword,
-          offset
-        });
-      else
-        return this.$store.dispatch("group/searchPosts", {
+          offset,
+        })
+      } else {
+        return this.$store.dispatch('group/searchPosts', {
           keyword: this.keyword,
           group_id: this.groupId,
-          offset
-        });
+          offset,
+        })
+      }
     },
 
-    async fetchRecommendGroups() {
-      const data = await this.$store.dispatch("group/getGroups", {
-        type: "recommend"
-      });
-      this.recommendList = data;
-      this.$refs.loadmore.afterRefresh(true);
-    }
-  }
-};
+    async fetchRecommendGroups () {
+      const data = await this.$store.dispatch('group/getGroups', {
+        type: 'recommend',
+      })
+      this.recommendList = data
+      this.$refs.loadmore.afterRefresh(true)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

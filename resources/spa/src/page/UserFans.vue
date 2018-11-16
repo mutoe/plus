@@ -37,89 +37,90 @@
           v-for="user in users"
           v-if="user.id"
           :user="user"
-          :key="`user-item-${user.id}`"
-        />
+          :key="`user-item-${user.id}`" />
       </jo-load-more>
     </main>
   </div>
 </template>
 
 <script>
-import UserItem from "@/components/UserItem";
-import { getUserFansByType } from "@/api/user.js";
+import UserItem from '@/components/UserItem'
+import { getUserFansByType } from '@/api/user.js'
 
-const typeMap = ["followers", "followings"];
+const typeMap = ['followers', 'followings']
 export default {
-  name: "UserFans",
+  name: 'UserFans',
   components: {
-    UserItem
+    UserItem,
   },
-  data() {
+  data () {
     return {
       followers: [],
       followings: [],
       preUID: 0,
-      USERSChangeTracker: 1
-    };
+      USERSChangeTracker: 1,
+    }
   },
   computed: {
-    userID() {
-      return ~~this.$route.params.userID;
+    userID () {
+      return ~~this.$route.params.userID
     },
-    type() {
-      return this.$route.params.type;
+    type () {
+      return this.$route.params.type
     },
-    param() {
+    param () {
       return {
         limit: 15,
         type: this.type,
-        uid: this.userID
-      };
+        uid: this.userID,
+      }
     },
     users: {
-      get() {
-        return this.type && this.$data[this.type];
+      get () {
+        return this.type && this.$data[this.type]
       },
-      set(val) {
-        this.$data[this.type] = val;
-      }
-    }
+      set (val) {
+        this.$data[this.type] = val
+      },
+    },
   },
   watch: {
-    type(val) {
-      typeMap.includes(val) && this.$refs.loadmore.beforeRefresh();
+    type (val) {
+      typeMap.includes(val) && this.$refs.loadmore.beforeRefresh()
     },
-    users(val) {
-      val &&
-        val.length > 0 &&
+    users (val) {
+      if (val && val.length > 0) {
         val.forEach(user => {
-          this.$store.commit("SAVE_USER", user);
-        });
-    }
+          this.$store.commit('SAVE_USER', user)
+        })
+      }
+    },
   },
-  activated() {
+  activated () {
     // 判断是否清空上一次的数据
-    this.userID === this.preUID ||
-      ((this.followers = []), (this.followings = []));
+    if (this.userID !== this.preUID) {
+      this.followers = []
+      this.followings = []
+    }
 
-    this.$refs.loadmore.beforeRefresh();
-    this.preUID = this.userID;
+    this.$refs.loadmore.beforeRefresh()
+    this.preUID = this.userID
   },
   methods: {
-    onRefresh(callback) {
+    onRefresh () {
       getUserFansByType(this.param).then(data => {
-        this.users = data;
-        callback(data.length < this.param.limit);
-      });
+        this.users = data
+        this.$refs.loadmore.afterRefresh(data.length < this.param.limit)
+      })
     },
-    onLoadMore(callback) {
+    onLoadMore (callback) {
       getUserFansByType({ ...this.param, offset: this.users.length }).then(
         data => {
-          this.users = [...this.users, ...data];
-          callback(data.length < this.param.limit);
+          this.users = [...this.users, ...data]
+          this.$refs.loadmore.afterLoadMore(data.length < this.param.limit)
         }
-      );
-    }
-  }
-};
+      )
+    },
+  },
+}
 </script>

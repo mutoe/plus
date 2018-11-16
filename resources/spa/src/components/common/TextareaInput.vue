@@ -16,16 +16,16 @@
 
 <script>
 export default {
-  name: "TextareaInput",
+  name: 'TextareaInput',
   props: {
-    value: { type: String, default: "" },
+    value: { type: String, default: '' },
     readonly: { type: Boolean, default: false },
     maxlength: { type: [Number, String], default: null },
     warnlength: { type: [Number, String], default: null },
-    placeholder: { type: String, default: "" },
-    rows: { type: [Number, String], default: 0 }
-  }
-};
+    placeholder: { type: String, default: '' },
+    rows: { type: [Number, String], default: 0 },
+  },
+}
 </script>
 
 <style lang="less" scoped>
