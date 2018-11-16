@@ -50,7 +50,7 @@
 
     <popup-dialog
       ref="dialog"
-      title="用户充值协议">
+      :title="`${currencyUnit}提取规则`">
       <p v-html="rule"/>
     </popup-dialog>
 
