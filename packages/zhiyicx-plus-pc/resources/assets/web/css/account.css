@@ -114,7 +114,7 @@
 .pay-box .pay-sum .opt,.pay-box .pay-way .opt {width:190px;height:80px;font-size:20px;line-height:80px;margin-right:30px;margin-bottom:30px;border-radius:2px;display:inline-block;text-align:center;cursor:pointer;background-color:#EDEDED;}
 .pay-box .pay-sum .opt,.pay-box .pay-way .opt:nth-child(3n+1) {margin-right:0px;}
 .pay-box .pay-sum .opt:last-child {margin-right:0;}
-.pay-box .pay-sum .active,.pay-box .pay-way .active {background-color:#CDE9F3;border:1px solid #59B6D7;}
+.pay-box .pay-sum .active,.pay-box .pay-way .active {border:1px solid #59B6D7;}
 .pay-box .custom-sum {width:50%;border-radius:2px;border:1px solid #EDEDED;padding:8px;margin:10px 0;}
 .pay-box .pay-way {padding-bottom:30px;margin-bottom:30px;border-bottom:1px solid #EDEDED;}
 .pay-box .pay-way .opt {width:120px;height:50px;line-height:50px;}
@@ -123,8 +123,7 @@
 .pay-box .pay-curr .opt{width:170px;height:40px;font-size:20px;line-height:40px;margin-right:30px;border-radius:2px;display:inline-block;text-align:center;cursor:pointer;background-color:#EDEDED;margin-bottom: 10px;}
 .pay-box .pay-curr .opt:last-child {margin-right:0;}
 .pay-box .pay-curr .active{background-color:#CDE9F3;}
-.pay-box .pay-way label img {margin-top:-1px;margin-left:-1px;width:152px;height:59px;background-color:#fff;}
-.pay-box .pay-way label {border:1px solid transparent;overflow:hidden;display:inline-block;width:150px;height:57px;}
+.pay-box .pay-way label {border:1px solid transparent;overflow:hidden;display:inline-block;}
 
 /* 绑定 */.bind-box {width:80%;}
 .bind-box .bind-line {/*height:30px;*/    line-height:30px;}

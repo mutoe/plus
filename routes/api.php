@@ -442,6 +442,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 手动检测支付宝订单的支付状态
             $api->post('/checkOrders', API2\PayController::class.'@checkAlipayOrder');
+
+            // 手动检测微信订单的支付状态
+            $api->post('/checkWechatOrders', API2\PayController::class.'@checkWechatOrder');
         });
 
         $api->group(['prefix' => 'currencyRecharge'], function (RouteContract $api) {

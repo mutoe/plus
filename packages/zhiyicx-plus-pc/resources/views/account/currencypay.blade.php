@@ -32,10 +32,10 @@
 
         <p class="tcolor">选择充值方式</p>
         <div class="pay-way">
-            <label for="alipay" class="active"><img src="{{ asset('assets/pc/images/pay_pic_zfb_on.png') }}"/></label>
+            <label for="alipay" class="active"><img src="{{ asset('assets/pc/images/pay_pic_zfb.png') }}"/></label>
             <input class="hide" id="alipay" type="radio" name="payway" value="AlipayWapOrder" checked>
             @if($config['bootstrappers']['wallet:transform']['open'])
-                <label for="wallet"><img src="{{ asset('assets/pc/images/pay_pic_wallet_on.png') }}"/></label>
+                <label for="wallet"><img src="{{ asset('assets/pc/images/pay_pic_wallet.png') }}"/></label>
                 <input class="hide" id="wallet" type="radio" name="payway" value="wallet_pc_direct">
             @endif
         </div>

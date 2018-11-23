@@ -411,13 +411,16 @@ class PayController extends Controller
         $user = $request->user();
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
+        $wechat_type = $request->input('wechat_type');
         $openId = $request->input('openId', '');
         $config = array_filter(config('newPay.wechatPay'));
-        if (! $openId) {
+
+        if ($wechat_type == 'WechatPay_Js' && ! $openId) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
         // 微信配置必须包含, appId, apiKey, mchId, 缺一不可
         if (count($config) < 3) {
+            echo 1;exit;
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
         if (! $amount) {
@@ -428,11 +431,16 @@ class PayController extends Controller
             return $response->json(['message' => '请求来源非法'], 403);
         }
 
-        $gateWay = Omnipay::create('WechatPay_Js');
+        if (! $wechat_type) {
+            return $response->json(['message' => '提交的信息不完整'], 422);
+        }
+
+        $gateWay = Omnipay::create($wechat_type);
         $gateWay->setAppId($config['appId']);
         $gateWay->setApiKey($config['apiKey']);
         $gateWay->setMchId($config['mchId']);
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechat/notify');
+        // $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechat/notify');
+        $gateWay->setNotifyUrl('https://tsplus.utools.club/api/v2/wechat/notify');
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '钱包充值';
@@ -463,7 +471,9 @@ class PayController extends Controller
             $walletCharge->save();
             $walletOrder->save();
 
-            return $response->json(['message' => '订单创建成功', 'data' => $request->getJsOrderData()], 201);
+            $responseData = $request->getData();
+            $responseData['out_trade_no'] = $order->out_trade_no;
+            return $response->json(['message' => '订单创建成功', 'data' => $responseData], 201);
         }
 
         return $response->json(['message' => '创建微信订单失败'], 422);
@@ -510,6 +520,29 @@ class PayController extends Controller
         } else {
             exit('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
         }
+    }
+
+    public function checkWechatOrder(Request $request, ResponseFactory $response, NativePayOrder $nativePayOrder)
+    {
+        $out_trade_no = $request->input('out_trade_no');
+        // 验证订单合法性
+        if (! $out_trade_no) {
+            return $response->json(['message' => '充值信息有误'], 422);
+        }
+        $order = $nativePayOrder->where('out_trade_no', $out_trade_no)
+            ->first();
+        if (! $order) {
+            return $response->json(['message' => '订单不存在'], 404);
+        }
+        // 已经通过异步通知处理了
+        if ($order->status === 1) {
+            return $response->json(['message' => '充值成功'], 200);
+        }
+        if ($order->status === 2) {
+            return $response->json(['message' => '充值失败'], 200);
+        }
+
+        return $response->json(['message' => '充值处理中'], 200);
     }
 
     protected function createChargeModel(Request $request, string $channel): WalletChargeModel
