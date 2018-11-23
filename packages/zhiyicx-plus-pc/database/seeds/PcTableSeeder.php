@@ -1,21 +1,5 @@
 <?php
 
-/*
- * +----------------------------------------------------------------------+
- * |                          ThinkSNS Plus                               |
- * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
- * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
- * +----------------------------------------------------------------------+
- * | Author: Slim Kit Group <master@zhiyicx.com>                          |
- * | Homepage: www.thinksns.com                                           |
- * +----------------------------------------------------------------------+
- */
-
 use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\AdvertisingSpace;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
@@ -115,12 +99,12 @@ class PcTableSeeder extends Seeder
                 'image' => [
                     'link' => 'url',
                     'image' => 'required|url',
-                ],
+                ]
             ],
             'message' => [
                 'image' => [
                     'image.required' => '广告图不能为空',
-                ],
+                ]
             ],
         ]);
 
@@ -139,12 +123,12 @@ class PcTableSeeder extends Seeder
                 'image' => [
                     'link' => 'url',
                     'image' => 'required|url',
-                ],
+                ]
             ],
             'message' => [
                 'image' => [
                     'image.required' => '广告图不能为空',
-                ],
+                ]
             ],
         ]);
 
@@ -163,12 +147,12 @@ class PcTableSeeder extends Seeder
                 'image' => [
                     'link' => 'url',
                     'image' => 'required|url',
-                ],
+                ]
             ],
             'message' => [
                 'image' => [
                     'image.required' => '广告图不能为空',
-                ],
+                ]
             ],
         ]);
 
@@ -179,21 +163,21 @@ class PcTableSeeder extends Seeder
             'allow_type' => 'pc:news:list',
             'format' => [
                 'pc:news:list' => [
-                    'name' => '用户名|string|必填，用户名',
-                    'content' => '内容|string|广告内容',
-                    'image' => '图片|string|广告图片',
-                    'time' => '时间|date|广告动态时间',
-                    'link' => '链接|string|广告链接',
+                    "name" => "用户名|string|必填，用户名",
+                    "content" => "内容|string|广告内容",
+                    "image" => "图片|string|广告图片",
+                    "time" => "时间|date|广告动态时间",
+                    "link" => "链接|string|广告链接"
                 ],
             ],
             'rule' => [
                 'pc:news:list' => [
-                    'name' => 'required',
-                    'image' => 'url',
-                    'time' => 'required|date',
-                    'link' => 'required|url',
-                    'content' => 'required',
-                ],
+                    "name" => "required",
+                    "image" => "url",
+                    "time" => "required|date",
+                    "link" => "required|url",
+                    "content" => "required",
+                ]
             ],
             'message' => [
                 'pc:news:list' => [
@@ -204,7 +188,7 @@ class PcTableSeeder extends Seeder
                     'content.required' => '内容必填',
                     'link.required' => '广告连接不能为空',
                     'link.url' => '广告链接无效',
-                ],
+                ]
             ],
         ]);
 
@@ -215,23 +199,23 @@ class PcTableSeeder extends Seeder
             'allow_type' => 'pc:feedlist',
             'format' => [
                 'pc:feeds:list' => [
-                    'avatar' => '头像图|string|必填，头像',
-                    'name' => '用户名|string|必填，用户名',
-                    'content' => '内容|string|广告内容',
-                    'image' => '图片|string|广告图片',
-                    'time' => '时间|date|广告动态时间',
-                    'link' => '链接|string|广告链接',
+                    "avatar" => "头像图|string|必填，头像",
+                    "name" => "用户名|string|必填，用户名",
+                    "content" => "内容|string|广告内容",
+                    "image" => "图片|string|广告图片",
+                    "time" => "时间|date|广告动态时间",
+                    "link" => "链接|string|广告链接",
                 ],
             ],
             'rule' => [
                 'pc:feeds:list' => [
-                    'name' => 'required',
-                    'image' => 'url',
-                    'avatar' => 'required|url',
-                    'time' => 'required|date',
-                    'link' => 'required|url',
-                    'content' => 'required',
-                ],
+                    "name" => "required",
+                    "image" => "url",
+                    "avatar" => "required|url",
+                    "time" => "required|date",
+                    "link" => "required|url",
+                    "content" => "required",
+                ]
             ],
             'message' => [
                 'pc:feeds:list' => [
@@ -244,7 +228,7 @@ class PcTableSeeder extends Seeder
                     'content.required' => '内容必填',
                     'link.required' => '广告连接不能为空',
                     'link.url' => '广告链接无效',
-                ],
+                ]
             ],
         ]);
     }

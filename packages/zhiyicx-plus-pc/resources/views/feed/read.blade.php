@@ -105,7 +105,7 @@
             @if(count($feed['topics']))
             <div class="selected-topics" style="margin-bottom: 20px;">
                 @foreach($feed['topics'] as $topic)
-                <a href='javascript:;' onclick="layer.alert(buyTSInfo)" class="selected-topic-item">{{ $topic['name'] }}</a>
+                <a href='{{ route("pc:topicDetail", ["topic_id" => $topic["id"]]) }}' class="selected-topic-item">{{ $topic['name'] }}</a>
                 @endforeach
             </div>
             @endif
@@ -154,12 +154,7 @@
 
                 {{-- 打賞 --}}
                 @if($config['bootstrappers']['feed']['reward'] && $user['id'] !== $TS['id'])
-                    @include('pcview::widgets.rewards' , [
-                        'rewards_data' => $feed['rewards'],
-                        'rewards_type' => 'feeds',
-                        'rewards_id' => $feed['id'],
-                        'rewards_info' => $feed['reward'],
-                    ])
+                    @include('pcview::widgets.rewards' , ['rewards_data' => $feed['rewards'], 'rewards_type' => 'feeds', 'rewards_id' => $feed['id'], 'rewards_info' => $feed['reward']])
                 @endif
             </div>
 

@@ -1,30 +1,16 @@
 <?php
 
-/*
- * +----------------------------------------------------------------------+
- * |                          ThinkSNS Plus                               |
- * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
- * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
- * +----------------------------------------------------------------------+
- * | Author: Slim Kit Group <master@zhiyicx.com>                          |
- * | Homepage: www.thinksns.com                                           |
- * +----------------------------------------------------------------------+
- */
-
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Zhiyi\Plus\Models\User;
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class BaseController extends Controller
 {
@@ -33,7 +19,7 @@ class BaseController extends Controller
     public function __construct()
     {
         // 初始化
-        $this->middleware(function ($request, $next) {
+        $this->middleware(function($request, $next) {
             // 用户认证
             $user = $request->user();
             if ($user) {
@@ -58,7 +44,7 @@ class BaseController extends Controller
             // 站点配置
             $config = Cache::get('config');
 
-            if (! $config) {
+            if (!$config) {
                 $config = [];
 
                 // 启动信息接口
@@ -79,13 +65,10 @@ class BaseController extends Controller
                 // 底部导航
                 $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->byStatus(1)->get();
 
-<<<<<<< HEAD
                 // 获取所有广告位
                 // dd(api('GET', '/api/v2/advertisingspace') ?: []);
                 $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace') ?: [], NULL, 'space');
 
-=======
->>>>>>> master
                 // 环信
                 $easemob = $repository->get('easemob');
                 $config['easemob_key'] = $easemob['app_key'];
@@ -113,7 +96,7 @@ class BaseController extends Controller
 
             // 公共地址
             $this->PlusData['routes']['api'] = asset('/api/v2');
-            $this->PlusData['routes']['storage'] = asset('/api/v2/files').'/';
+            $this->PlusData['routes']['storage'] = asset('/api/v2/files'). '/';
 
             // 环信相关用户
             $this->PlusData['easemob_users'] = isset($_COOKIE['easemob_uids']) ? User::whereIn('id', explode(',', $_COOKIE['easemob_uids']))->get() : [];
@@ -122,8 +105,9 @@ class BaseController extends Controller
         });
     }
 
+
     /**
-     * 操作提示.
+     * 操作提示
      * @author ZsyD
      * @param  int    $status  [状态]
      * @param  string $url     [跳转链接]
@@ -144,7 +128,7 @@ class BaseController extends Controller
     }
 
     /**
-     * 查看资源页面.
+     * 查看资源页面
      *
      * @param Request $request
      * @return mixed
@@ -167,11 +151,17 @@ class BaseController extends Controller
                 if (! $comment) {
                     return abort(404);
                 }
-
                 return response()->redirectTo(route('pc:reportview', ['reportable_id' => $comment->commentable_id, 'reportable_type' => $comment->commentable_type]), 302);
                 break;
             case 'feeds':
                 return response()->redirectTo(route('pc:feedread', ['feed' => $reportable_id]), 302);
+                break;
+            case 'questions':
+                return response()->redirectTo(route('pc:questionread', ['question' => $reportable_id]), 302);
+                break;
+            case 'question-answers':
+                $answer = api('GET', '/api/v2/question-answers/'.$reportable_id );
+                return response()->redirectTo(route('pc:answeread', ['question' => $answer->question_id, 'answer' => $reportable_id]), 302);
                 break;
             case 'news':
                 return response()->redirectTo(route('pc:newsread', ['news_id' => $reportable_id]), 302);
@@ -185,3 +175,4 @@ class BaseController extends Controller
         }
     }
 }
+

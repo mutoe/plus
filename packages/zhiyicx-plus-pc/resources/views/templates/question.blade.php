@@ -57,10 +57,11 @@
                     )
                 )
                     {!! str_limit(formatList($post['answer']['body']), 250, '...') !!}
-                    <a class="u-more" href="javascript:;">查看详情</a>
+                    <a class="u-more" href="{{ route('pc:answeread', ['question' => $post['id'], 'answer' => $post['answer']['id']]) }}">查看详情</a>
                 @else
-                    <span class="fuzzy">
-                        @php for ($i = 0; $i < 250; $i ++) { echo 'T'; } @endphp
+                    <span class="fuzzy" onclick="QA.look({{ $post['answer']['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $post['id'] }}, this)">
+                        @php
+                            for ($i = 0; $i < 250; $i ++) { echo 'T'; } @endphp
                     </span>
                 @endif
             </div>
@@ -85,7 +86,6 @@
     </li>
 </ul>
 @endforeach
-<<<<<<< HEAD
 {{-- @elseif(isset($search) && $search)
 <script>
 if (!$('.no_data_div').length && $('#content_list').find('li').length < 1) {
@@ -94,6 +94,4 @@ if (!$('.no_data_div').length && $('#content_list').find('li').length < 1) {
 }
 </script>
  --}}
-=======
->>>>>>> master
 @endif

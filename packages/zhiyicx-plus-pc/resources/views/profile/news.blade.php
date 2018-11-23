@@ -55,7 +55,18 @@ $(function(){
 })
 
 $('.J-menu > a').on('click', function(){
-	layer.alert(buyTSInfo)
+	var type = $(this).attr('cid');
+
+	$('#content_list').html('').hide();
+	loader.init({
+        container: '#content_list',
+        loading: '.profile_content',
+        url: '/users/{{$user['id']}}/news',
+        params: {type: type, isAjax: true }
+    });
+
+    $('.J-menu a').removeClass('active');
+    $(this).addClass('active');
 });
 </script>
 @endsection

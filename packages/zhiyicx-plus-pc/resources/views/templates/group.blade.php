@@ -32,6 +32,7 @@
                                 state="1"
                                 mode="{{$item['mode']}}"
                                 money="{{$item['money']}}"
+                                onclick="grouped.init(this);"
                             >已加入</button>
                         @endif
                     @else
@@ -50,6 +51,7 @@
                                 state="0"
                                 mode="{{$item['mode']}}"
                                 money="{{$item['money']}}"
+                                onclick="grouped.init(this);"
                             >+加入</button>
                         @endif
                     @endif

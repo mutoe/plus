@@ -1,7 +1,6 @@
 var loadHtml = "<div class='loading'><img src='" + TS.RESOURCE_URL + "/images/three-dots.svg' class='load'></div>";
 var confirmTxt = '<svg class="icon" aria-hidden="true"><use xlink:href="#icon-warning"></use></svg> ';
 var initNums = 255;
-var buyTSInfo = '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。';
 
 axios.defaults.baseURL = TS.SITE_URL;
 axios.defaults.headers.common['Accept'] = 'application/json';
@@ -678,7 +677,6 @@ var rewarded = {
 
     show: function(id, type, pay_amount) {
         checkLogin();
-        if (['feeds', 'news'].indexOf(type) > -1) return layer.alert(buyTSInfo);
         rewarded.payload = {};
         var html = '<div class="reward_box">'
                     + '<p class="confirm_title">打赏</p>'
@@ -983,10 +981,12 @@ var comment = {
     pinneds: function (type, source_id, id){
         var url = '';
         if (type == 'feeds') {
-            layer.alert(buyTSInfo)
+            url = '/api/v2/feeds/' + source_id + '/comments/' + id + '/currency-pinneds';
+            pinneds.show(url, 'pinned');
         }
         if (type == 'news') {
-            layer.alert(buyTSInfo)
+            url = '/api/v2/news/' + source_id + '/comments/' + id + '/currency-pinneds';
+            pinneds.show(url, 'pinned');
         }
         if (type == 'group-posts') {
             url = '/api/v2/plus-group/currency-pinned/comments/'+ id;
@@ -1997,6 +1997,16 @@ $(function() {
 
         if(!target.is('.u-share, .u-share-show') && !target.is('.u-share svg') && target.parents('.u-share-show').length == 0) {
             $('.u-share-show').fadeOut();
+        }
+
+        // 相关问题
+        if(!target.is('div.question-searching') && target.parents('.question-searching').length == 0) {
+            $('.question-searching').fadeOut();
+        }
+
+        // 问题专题
+        if(!target.is('div.question-topics-list') && !target.is('dl,dt,dd,li')) {
+            $('.question-topics-list').hide();
         }
 
         // 圈子管理

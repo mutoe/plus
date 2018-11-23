@@ -1,32 +1,17 @@
 <?php
 
-/*
- * +----------------------------------------------------------------------+
- * |                          ThinkSNS Plus                               |
- * +----------------------------------------------------------------------+
- * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
- * +----------------------------------------------------------------------+
- * | This source file is subject to version 2.0 of the Apache license,    |
- * | that is bundled with this package in the file LICENSE, and is        |
- * | available through the world-wide-web at the following url:           |
- * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
- * +----------------------------------------------------------------------+
- * | Author: Slim Kit Group <master@zhiyicx.com>                          |
- * | Homepage: www.thinksns.com                                           |
- * +----------------------------------------------------------------------+
- */
-
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Auth;
-use Illuminate\Http\Request;
+use Session;
 use Overtrue\Socialite\SocialiteManager;
+use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class SocialiteController extends BaseController
 {
     /**
-     * 三方登录/绑定（未登录）.
+     * 三方登录/绑定（未登录）
      * @author ZsyD
      * @param Request $request
      * @param string  $service [三方类型]
@@ -45,7 +30,7 @@ class SocialiteController extends BaseController
     }
 
     /**
-     * 三方登录/绑定（已登录）.
+     * 三方登录/绑定（已登录）
      * @author ZsyD
      * @param  Request $request
      * @param  string  $service [三方类型]
@@ -72,7 +57,7 @@ class SocialiteController extends BaseController
     }
 
     /**
-     * 第三方回调页.
+     * 第三方回调页
      * @author ZsyD
      * @param  Request $request
      * @param  string  $service [三方类型]
@@ -98,8 +83,9 @@ class SocialiteController extends BaseController
             $request->offsetSet('content', isset($res['message']) ? $res['message'] : '您的账号已成功绑定');
 
             return $this->notice($request);
+
         } else {
-            // 未登录时账号注册/绑定
+        // 未登录时账号注册/绑定
             $res = api('POST', '/api/v2/socialite/'.$service, ['access_token' => $access_token]);
 
             if (isset($res['token'])) { // 登录
@@ -113,6 +99,7 @@ class SocialiteController extends BaseController
                     'status' => 1,
                     'message' => '登录成功',
                 ];
+
             } else { // 绑定、注册
                 $return = [
                     'status' => -1,
@@ -127,10 +114,12 @@ class SocialiteController extends BaseController
 
             return view('pcview::socialite.socialite', $return, $this->PlusData);
         }
+
+        return;
     }
 
     /**
-     * 三方用户注册/绑定账号（未登录时）.
+     * 三方用户注册/绑定账号（未登录时）
      * @author ZsyD
      * @param  Request $request
      * @return mixed

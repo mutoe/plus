@@ -26,6 +26,7 @@
                     <li><a href="javascript:;" @if($type == 3) class="selected" @endif type="3">文章</a></li>
                     {{--<li><a href="javascript:;" @if($type == 2) class="selected" @endif type="2">问答</a></li>--}}
                     <li><a href="javascript:;" @if($type == 4) class="selected" @endif type="4">用户</a></li>
+                    {{-- <li><a href="javascript:;" @if($type == 5) class="selected" @endif type="5">圈子</a></li> --}}
                     <li>
                         <div type="5" class="zy_select t_c gap12 select-gray" id="J-group">
                             <span @if($type == 5 || $type == 7) class="selected" @endif>{{ $type == 7 ? '帖子' : '圈子' }}</span>
@@ -36,6 +37,7 @@
                             <i></i>
                         </div>
                     </li>
+                    {{--<li><a href="javascript:;" @if($type == 6) class="selected" @endif type="6">专题</a></li>--}}
                     <li>
                         <div type="2" class="zy_select t_c gap12 select-gray" id="J-question">
                             <span @if($type == 2 || $type == 6) class="selected" @endif>{{ $type == 6 ? '专题' : '问答' }}</span>
@@ -73,8 +75,9 @@
 
 @section('scripts')
 <script src="{{ asset('assets/pc/js/module.weibo.js') }}"></script>
+<script src="{{ asset('assets/pc/js/module.question.js') }}"></script>
+<script src="{{ asset('assets/pc/js/module.group.js') }}"></script>
 <script src="{{ asset('assets/pc/js/module.picshow.js') }}"></script>
-
 <script type="text/javascript">
 $(function() {
     var type = '{{ $type }}';
@@ -108,6 +111,8 @@ $(function() {
     })
 
     function switchType(type) {
+        $('#content_list').html('');
+
         switch(type) {
             case '1': // 动态加载
                 var params = {
@@ -123,8 +128,20 @@ $(function() {
                 });
                 break;
             case '2': //问答加载
-                layer.alert(buyTSInfo)
-                return;
+                var params = {
+                    type: type,
+                    limit: 10,
+                    keywords: keywords
+                };
+                loader.init({
+                    container: '#content_list',
+                    loading: '.search_container',
+                    url: '/search/data',
+                    params: params,
+                    paramtype: 1
+                });
+                break;
+
             case '3': // 资讯加载
                 var params = {
                     type: type,
@@ -155,16 +172,49 @@ $(function() {
                 break;
 
             case '5': // 圈子加载
-                layer.alert(buyTSInfo)
-                return;
+                var params = {
+                    type: type,
+                    limit: 10,
+                    keywords: keywords
+                };
+                loader.init({
+                    container: '#content_list',
+                    loading: '.search_container',
+                    url: '/search/data',
+                    params: params,
+                    paramtype: 1,
+                });
+                break;
 
             case '6': // 专题加载
-                layer.alert(buyTSInfo)
-                return;
+                var params = {
+                    type: type,
+                    limit: 10,
+                    keywords: keywords
+                };
+                loader.init({
+                    container: '#content_list',
+                    loading: '.search_container',
+                    url: '/search/data',
+                    params: params,
+                    paramtype: 1,
+                });
+                break;
 
             case '7': // 帖子加载
-                layer.alert(buyTSInfo)
-                return;
+                var params = {
+                    type: type,
+                    limit: 10,
+                    keywords: keywords
+                };
+                loader.init({
+                    container: '#content_list',
+                    loading: '.search_container',
+                    url: '/search/data',
+                    params: params,
+                    paramtype: 1,
+                });
+                break;
 
             case '8': // 话题加载
                 var params = {
@@ -182,8 +232,6 @@ $(function() {
                 break;
         };
     }
-
-    $('#content_list').html('');
 
     $('#J-question li, #J-group li').on('click', function(){
         $(this).parents('ul').find('a').removeClass('selected');

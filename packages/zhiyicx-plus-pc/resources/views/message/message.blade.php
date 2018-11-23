@@ -121,9 +121,10 @@
                 </div>
             </div>
 
-            <div class="chat_content_wrap" id="popupcover">
+            <div class="chat_content_wrap">
                 <div class="chat_content">
                     <div class="message_cont" id="message_cont">
+
                     </div>
                 </div>
             </div>
@@ -173,7 +174,13 @@
 
         select.on("click", "li", function(e){
             e.stopPropagation();
-            layer.alert(buyTSInfo)
+            var $this = $(this).parent("ul");
+            $(this).addClass("active").siblings(".active").removeClass("active");
+            $this.prev('span').html($(this).html());
+            $this.parent(".zy_select").removeClass("open");
+            $this.parent(".zy_select").data("value", $(this).data("value"));
+
+            messageData($(this).data("value"));
         });
 
         $(document).click(function() {
@@ -251,11 +258,6 @@
                 }
             }, 500);
         });
-
-        $('#popupcover').on('click', function(event) {
-            event.stopPropagation()
-            layer.alert(buyTSInfo)
-        })
 
         // 创建群组
         $('#chat_add_group').click(function(){
@@ -373,11 +375,6 @@
 
         // 加载内容
         if(type != 0) messageData(type);
-
-        document.querySelector('#popupcover').addEventListener('click', function(event) {
-            event.stopPropagation()
-            layer.alert(buyTSInfo)
-        }, true)
     });
 
 

@@ -45,27 +45,27 @@
             <ul class="profile_nav_list clearfix">
                 <li @if($current == 'feeds') class="active" @endif><a href="{{ route('pc:mine', $user['id']) }}">主页</a></li>
 
-                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">圈子</a></li>
+                <li @if($current == 'group') class="active" @endif><a href="{{ route('pc:profilegroup', $user['id']) }}">圈子</a></li>
 
-                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">问答</a></li>
+                 <li @if($current == 'question') class="active" @endif><a href="{{ route('pc:profilequestion', $user['id']) }}">问答</a></li>
 
                 <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">资讯</a></li>
 
                 <li @if($current == 'collect') class="active" @endif><a href="{{ route('pc:profilecollectfeeds') }}">收藏</a></li>
             </ul>
 
-            <a class="btn btn-primary contribute-btn" href="javascript:;" onclick="layer.alert(buyTSInfo)">
+            <a class="btn btn-primary contribute-btn" id="news-release" href="{{ route('pc:newsrelease') }}">
                 <svg class="icon"><use xlink:href="#icon-publish"></use></svg>投稿
             </a>
         @else
             <ul class="profile_nav_list clearfix">
                 <li @if($current == 'feeds') class="active" @endif><a href="{{ route('pc:mine', $user['id']) }}">TA的主页</a></li>
 
-                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的圈子</a></li>
+                <li @if($current == 'group') class="active" @endif><a href="{{ route('pc:profilegroup', $user['id']) }}">TA的圈子</a></li>
 
-                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的文章</a></li>
+                <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">TA的文章</a></li>
 
-                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的问答</a></li>
+                <li @if($current == 'question') class="active" @endif><a href="{{ route('pc:profilequestion', $user['id']) }}">TA的问答</a></li>
             </ul>
             <div class="m-option">
                 <span class="options" onclick="options(this)">
@@ -75,7 +75,7 @@
                     <div class="triangle"></div>
                     <ul>
                         <li>
-                            <a href="javascript:;" onclick="layer.alert(buyTSInfo)">
+                            <a href="javascript:;" onclick="rewarded.show({{$user['id']}}, 'user')">
                                 <svg class="icon"><use xlink:href="#icon-money"></use></svg>
                                 <span>打赏</span>
                             </a>
