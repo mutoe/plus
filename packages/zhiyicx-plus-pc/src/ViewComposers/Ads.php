@@ -15,7 +15,9 @@ class Ads
         try {
             // 避免新建站点时如果未清空缓存页面报错的问题
             $ads = api('GET', '/api/v2/advertisingspace/' . $config['ads_space'][$view['space']]['id'] . '/advertising');
-        } catch (\Throwable $th) { }
+        } catch (\Throwable $th) {
+            $ads = [];
+        }
 
         $view->with('ads', $ads);
     }
