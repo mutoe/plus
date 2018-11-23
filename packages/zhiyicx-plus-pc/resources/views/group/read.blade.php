@@ -104,7 +104,6 @@
                                         state="1"
                                         mode="{{$group['mode']}}"
                                         money="{{$group['money']}}"
-                                        onclick="grouped.init(this);"
                                     >已加入</button>
                                 @else
                                     <button
@@ -113,7 +112,6 @@
                                         state="0"
                                         mode="{{$group['mode']}}"
                                         money="{{$group['money']}}"
-                                        onclick="grouped.init(this);"
                                     >+加入</button>
                                 @endif
                         </div>
@@ -242,7 +240,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/pc/js/module.group.js') }}"></script>
 <script src="{{ asset('assets/pc/js/module.picshow.js') }}"></script>
 <script src="{{ asset('assets/pc/js/qrcode.js') }}"></script>
 <script>

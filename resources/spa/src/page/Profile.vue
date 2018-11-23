@@ -68,34 +68,9 @@
               <use xlink:href="#icon-arrow-right"/>
             </svg>
           </router-link>
-          <!--
-          <router-link to="/upgrade" tag="li" class="m-entry">
-            <svg class='m-style-svg m-svg-def m-entry-prepend'>
-              <use xlink:href="#icon-profile-question"></use>
-            </svg>
-            <span class="m-text-box m-flex-grow1">我的问答</span>
-            <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
-            </svg>
-          </router-link>
-          -->
-          <!--
-          <router-link to="/own/groups" tag="li" class="m-entry">
-            <svg class='m-style-svg m-svg-def m-entry-prepend'>
-              <use xlink:href="#icon-profile-group"></use>
-            </svg>
-            <span class="m-text-box m-flex-grow1">我的圈子</span>
-            <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
-            </svg>
-          </router-link>
-          -->
         </ul>
         <ul class="m-box-model m-entry-group">
-          <router-link
-            to="/wallet"
-            class="m-entry"
-            tag="li">
+          <li class="m-entry" @click="popupBuyTS">
             <svg class="m-style-svg m-svg-def m-entry-prepend">
               <use xlink:href="#icon-profile-wallet"/>
             </svg>
@@ -104,11 +79,8 @@
             <svg class="m-style-svg m-svg-def m-entry-append">
               <use xlink:href="#icon-arrow-right"/>
             </svg>
-          </router-link>
-          <router-link
-            tag="li"
-            to="/currency"
-            class="m-entry">
+          </li>
+          <li class="m-entry" @click="popupBuyTS">
             <svg class="m-style-svg m-svg-def m-entry-prepend">
               <use xlink:href="#icon-profile-integral"/>
             </svg>
@@ -117,7 +89,7 @@
             <svg class="m-style-svg m-svg-def m-entry-append">
               <use xlink:href="#icon-arrow-right"/>
             </svg>
-          </router-link>
+          </li>
           <router-link
             to="/profile/collection/feeds"
             tag="li"

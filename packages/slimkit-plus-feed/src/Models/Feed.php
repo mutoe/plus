@@ -105,7 +105,7 @@ class Feed extends Model
         return $this->hasMany(FileWith::class, 'raw', 'id')
             ->where('channel', 'feed:image');
     }
-    
+
     /**
      * 动态付费节点.
      *

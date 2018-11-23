@@ -277,6 +277,7 @@
                 get: function() {
                     return this.alipay.alipayKey || "";
                 },
+
                 set: function(alipayKey) {
                     const alipay = this.config.alipay || {};
                     alipay.alipayKey = alipayKey;

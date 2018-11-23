@@ -99,7 +99,6 @@ class FilesController extends Controller
         $clientWidth = $request->input('width', 0);
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight, $response): FileModel {
             // 图片做旋转处理
-
             if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {
                 ini_set('memory_limit', '-1');
                 Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
@@ -109,7 +108,6 @@ class FilesController extends Controller
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
                 return $response->json(['message' => '上传失败'], 500);
             }
-
             $fileModel->filename = $filename;
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();

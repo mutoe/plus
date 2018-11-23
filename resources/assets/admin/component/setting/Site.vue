@@ -48,12 +48,12 @@
               </div>
             </div>
             <div class="form-group" v-if="site.reward.status">
-              <label class="control-label col-md-2">打赏选项</label>
+              <label class="control-label col-md-2">打赏金额</label>
               <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.reward.amounts">
               </div>
               <div class="col-md-4">
-                <span class="help-block">配置打赏的积分数量选项，多个选项用英文半角符号“,”分割 例如：5,10,15。</span>
+                <span class="help-block">打赏金额配置，单位(分)。最少为1分，多个金额用英文半角符号“,”分割 例如：5,10,15。</span>
               </div>
             </div>
 
@@ -141,79 +141,71 @@
 </div>
 </template>
 <script>
-import request, { createRequestURI } from "../../util/request";
-import PlusMessageBundle from "plus-message-bundle";
-import ClearCache from "../../components/modules/setting/ClearCache";
+import request, { createRequestURI } from '../../util/request';
+import PlusMessageBundle from 'plus-message-bundle';
+import ClearCache from '../../components/modules/setting/ClearCache';
 export default {
   components: {
-    "clear-cache": ClearCache
+    'clear-cache': ClearCache,
   },
   data: () => ({
-    loadding: true,
-    radio: {
-      on: true,
-      off: false
-    },
-    site: {
-      gold: {
-        status: true
+      loadding: true,
+      radio: {
+        on: true,
+        off: false,
       },
-      reward: {
-        status: true,
-        amounts: ""
+      site: {
+        gold: {
+          status: true,
+        },
+        reward: {
+          status: true,
+          amounts: '',
+        },
+        reserved_nickname: '',
+        client_email: '',
+        user_invite_template: '',
+        anonymous: {
+          status: false,
+          rule: ''
+        },
+        about_url:null,
       },
-      reserved_nickname: "",
-      client_email: "",
-      user_invite_template: "",
-      anonymous: {
-        status: false,
-        rule: ""
-      },
-      about_url: null
-    },
-    message: {
-      error: null,
-      success: null
-    }
+      message: {
+        error: null,
+        success: null,
+      }
   }),
   methods: {
-    getSiteConfigures() {
+    getSiteConfigures () {
       this.loadding = true;
-      request
-        .get(createRequestURI("site/configures"), {
-          validateStatus: status => status === 200
-        })
-        .then(({ data = {} }) => {
-          this.loadding = false;
-          this.site = { ...this.site, ...data };
-        })
-        .catch(
-          ({ response: { data = { message: "加载站点配置失败" } } = {} }) => {
-            this.loadding = false;
-            this.message.error = new PlusMessageBundle().getMessage();
-          }
-        );
+      request.get(createRequestURI('site/configures'), {
+        validateStatus: status => status === 200,
+      }).then(({ data = {} }) => {
+        this.loadding = false;
+        this.site = { ...this.site, ...data };
+      }).catch(({ response: { data = { message: '加载站点配置失败' } } = {} }) => {
+        this.loadding = false;
+        this.message.error = (new PlusMessageBundle).getMessage();
+      });
     },
-    updateSiteConfigure() {
-      $("#submit-btn").button("loading");
-      request
-        .put(
-          createRequestURI("update/site/configure"),
-          { site: this.site },
-          { validateStatus: status => status === 201 }
-        )
-        .then(({ data: { message: [message] = [] } }) => {
-          $("#submit-btn").button("reset");
-          this.message.success = message;
-        })
-        .catch(({ response: { data = {} } = {} }) => {
-          let Message = new PlusMessageBundle(data);
-          this.message.error = Message.getMessage();
-        });
+    updateSiteConfigure () {
+      $("#submit-btn").button('loading');
+      request.put(
+        createRequestURI('update/site/configure'),
+        { site: this.site },
+        { validateStatus: status => status === 201 }
+      ).then(({ data: { message: [ message ] = [] } }) => {
+        $("#submit-btn").button('reset');
+        this.message.success = message;
+      }).catch(({ response: { data = {} } = {} }) => {
+        let Message = new PlusMessageBundle(data);
+        this.message.error = Message.getMessage();
+      });
     },
   },
-  created() {
+  created () {
     this.getSiteConfigures();
-  }
+  },
 };
 </script>

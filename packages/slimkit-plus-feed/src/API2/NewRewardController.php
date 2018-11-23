@@ -44,17 +44,15 @@ class NewRewardController extends Controller
      * 打赏一条动态.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request     $request
-     * @param  Feed        $feed
-     * @param UserProcess  $process
-     * @param GoldType     $goldModel
-     * @param CommonConfig $configModel
+     * @param  Request $request
+     * @param  Feed $feed
+     * @param  WalletCharge $charge
      * @return mix
-     * @throws \Exception
      */
     public function reward(Request $request, Feed $feed, UserProcess $process, GoldType $goldModel)
     {
         $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
+        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
@@ -71,7 +69,7 @@ class NewRewardController extends Controller
 
         if (! $user->currency || $user->currency->sum < $amount) {
             return response()->json([
-                'message' => $goldName.'不足',
+                'message' => '余额不足',
             ], 403);
         }
 
@@ -81,7 +79,7 @@ class NewRewardController extends Controller
         $pay = $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的动态', $target->name, $feedTitle, $amount), sprintf('打赏“%s”的动态，%s扣除%s', $target->name, $goldName, $amount));
         $paid = $process->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的动态', $user->name), sprintf('“%s”打赏了你的动态，%s增加%s', $user->name, $goldName, $amount));
         if ($pay && $paid) {
-            $target->sendNotifyMessage('feed:reward', sprintf('“%s”打赏了你的动态', $user->name), [
+            $target->sendNotifyMessage('feed:reward', sprintf('“%s”打赏了你的动态', $target->name), [
                 'feed' => $feed,
                 'user' => $user,
             ]);

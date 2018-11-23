@@ -24,28 +24,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class WechatController extends Controller
-{   
+{
     /**
-     * 获取授权跳转页面, 防止appid外泄
+     * 获取授权跳转页面, 防止appid外泄.
      * @Author   Wayne
      * @DateTime 2018-03-19
      * @Email    qiaobin@zhiyicx.com
      * @return   [type]              [description]
      */
-    public function getOauthUrl(Request $request) {
+    public function getOauthUrl(Request $request)
+    {
         $config = config('socialite.wechat-mp') ?? null;
         $url = $request->post('redirectUrl') ?? '';
-        if($url === '') {
+        if ($url === '') {
             return response()->json(['message' => '微信配置错误'], 422);
         }
 
-        $originUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='. $config['appid'] .'&redirect_uri='. $url .'&response_type=code&scope=snsapi_userinfo&state=true#wechat_redirect';
+        $originUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$config['appid'].'&redirect_uri='.$url.'&response_type=code&scope=snsapi_userinfo&state=true#wechat_redirect';
 
         return response()->json(['url' => $originUrl], 200);
     }
 
     /**
-     * 获取网页授权的access_token, 以及unionid
+     * 获取网页授权的access_token, 以及unionid.
      * @Author   Wayne
      * @DateTime 2018-03-19
      * @Email    qiaobin@zhiyicx.com
@@ -56,50 +57,52 @@ class WechatController extends Controller
     public function getAccess(string $code)
     {
         $config = config('socialite.wechat-mp') ?? null;
-        $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='. $config['appid'] .'&secret='. $config['secret'] .'&code=' . $code . '&grant_type=authorization_code';
+        $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$config['appid'].'&secret='.$config['secret'].'&code='.$code.'&grant_type=authorization_code';
         $res = file_get_contents($url);
 
         return response()->json(json_decode($res), 200);
     }
 
     /**
-     * 获取微信用户信息
+     * 获取微信用户信息.
      * @Author   Wayne
      * @DateTime 2018-03-19
      * @Email    qiaobin@zhiyicx.com
      * @param    Request             $request [description]
      * @return   [type]                       [description]
      */
-    public function getUser(Request $request) {
+    public function getUser(Request $request)
+    {
         $access_token = $request->input('access_token');
         $openid = $request->input('openid');
 
-        $user = file_get_contents('https://api.weixin.qq.com/sns/userinfo?access_token=' . $access_token . '&openid='. $openid . '&lang=zh_CN`');
+        $user = file_get_contents('https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN`');
+
         return response()->json(json_decode($user), 200);
     }
 
-    public function calculateConfig(Request $request) {
+    public function calculateConfig(Request $request)
+    {
         $url = $request->input('url', '');
-        if(!$url) {
+        if (! $url) {
             return response()->json(['message' => '传递的链接地址错误'], 422);
         }
         $accessToken = Cache::get('wechat-mp-accessToken', '');
         $jssdkTicket = Cache::get('wedchat-mp-jssdk-ticket', '');
         $config = config('socialite.wechat-mp');
-        if(!$accessToken || !$jssdkTicket) {
-            $originUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='. $config['appid'] .'&secret='. $config['secret'];
+        if (! $accessToken || ! $jssdkTicket) {
+            $originUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$config['appid'].'&secret='.$config['secret'];
             $result = json_decode(file_get_contents($originUrl), true) ?? [];
-            if(isset($result['errcode'])) {
-                \Log::debug('微信分享配置信息错误');
+            if (! $result) {
                 return response()->json(['message' => '微信配置错误'], 422);
             }
 
             $accessToken = $result['access_token'];
             Cache::put('wechat-mp-accessToken', $accessToken, 118);
 
-            $jssdkTicketOrigin = json_decode(file_get_contents('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='. $accessToken. '&type=jsapi'), true) ?? [];
+            $jssdkTicketOrigin = json_decode(file_get_contents('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$accessToken.'&type=jsapi'), true) ?? [];
 
-            if(!$jssdkTicketOrigin) {
+            if (! $jssdkTicketOrigin) {
                 return response()->json(['message' => '微信配置错误'], 422);
             }
 
@@ -108,19 +111,19 @@ class WechatController extends Controller
             // 计算随机字符串
         }
 
-        $str="QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm";
+        $str = 'QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnm';
         str_shuffle($str);
-        $noncestr=substr(str_shuffle($str),2,16);
+        $noncestr = substr(str_shuffle($str), 2, 16);
         $timestamp = time();
 
-        $str = 'jsapi_ticket='. $jssdkTicket .'&noncestr='. $noncestr .'&timestamp='. $timestamp .'&url='. $url;
+        $str = 'jsapi_ticket='.$jssdkTicket.'&noncestr='.$noncestr.'&timestamp='.$timestamp.'&url='.$url;
         $signature = sha1($str);
 
         return response()->json([
             'appid' => $config['appid'],
             'noncestr' => $noncestr,
             'timestamp' => $timestamp,
-            'signature' => $signature
+            'signature' => $signature,
         ], 200);
     }
 }

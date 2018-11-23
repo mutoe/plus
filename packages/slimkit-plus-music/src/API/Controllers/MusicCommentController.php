@@ -77,7 +77,7 @@ class MusicCommentController extends Controller
         $this->sendAtMessage($comment->body, $user, $comment);
 
         return response()->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }

@@ -1,14 +1,28 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\User as UserModel;
-use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\replaceUrl;
-use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\getUserInfo;
-use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Plus\username;
+use Zhiyi\Plus\Models\User as UserModel;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 
 class ProfileController extends BaseController
 {
@@ -42,14 +56,14 @@ class ProfileController extends BaseController
                     $html = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
                     break;
                 default:
-                    # code...
+                    // code...
                     break;
             }
 
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         if ($user) {
@@ -80,7 +94,7 @@ class ProfileController extends BaseController
         if ($request->isAjax) {
             $params = [
                 'type' => $request->query('type'),
-                'after' => $request->query('after', 0)
+                'after' => $request->query('after', 0),
             ];
             if ($request->query('user')) {
                 $params['user'] = $request->query('user');
@@ -93,7 +107,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);
@@ -127,7 +141,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -138,7 +152,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 收藏的文章
+     * 收藏的文章.
      * @author 28youth
      * @param  Request $request
      * @return mixed
@@ -159,7 +173,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -170,7 +184,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 收藏的问答
+     * 收藏的问答.
      * @author 28youth
      * @param  Request $request
      * @return mixed
@@ -192,7 +206,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -203,7 +217,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 收藏的帖子
+     * 收藏的帖子.
      * @author ZSYD
      * @param  Request $request
      * @return mixed
@@ -226,7 +240,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -234,48 +248,6 @@ class ProfileController extends BaseController
         $url = route('pc:profilecollectgroup');
 
         return view('pcview::profile.collect', compact('user', 'type', 'url'), $this->PlusData);
-    }
-
-    /**
-     * 圈子
-     * @author 28youth
-     * @param  Request     $request
-     * @param  int $user_id [用户id]
-     * @return mixed
-     */
-    public function group(Request $request, ?string $user)
-    {
-        if (! $user || $user == $this->PlusData['TS']['id']) {
-            $user = $request->user();
-        } else {
-            $user = UserModel::where(username($user), $user)->with('tags')->first();
-        }
-        $this->PlusData['current'] = 'group';
-        if ($request->isAjax) {
-            $type = (int) $request->query('type');
-            $params = [
-                'offset' => $request->query('offset', 0),
-                'limit' => $request->query('limit', 10),
-                'type' => $request->query('type', 'join')
-            ];
-            if (!$type) {
-                $data['type'] = $params['type'];
-                $data['group'] = $user->id ? api('GET', '/api/v2/plus-group/user-groups', $params) : api('GET', '/api/v2/plus-group/groups/users', array_merge($params, ['user_id' => $user->id]));
-                $html = view('pcview::templates.group', $data, $this->PlusData)->render();
-            } else {
-                $posts['posts'] = api('GET', '/api/v2/plus-group/user-group-posts', $params);
-                $html = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
-            }
-
-            return response()->json([
-                'data' => $html,
-            ]);
-        }
-        $user->follower = $user->hasFollower($request->user()->id);
-        $data['user'] = $user->toArray();
-        $data['type'] = 'join';
-
-        return view('pcview::profile.group', $data, $this->PlusData);
     }
 
     /**
@@ -348,7 +320,7 @@ class ProfileController extends BaseController
 
             return response()->json([
                 'data' => $html,
-                'after' => $after
+                'after' => $after,
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);

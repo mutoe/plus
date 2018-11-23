@@ -168,7 +168,7 @@ class FeedPinnedController extends Controller
             $userCount->total += 1;
             $userCount->save();
 
-            return response()->json(['message' => '操作成功', 'data' => $pinned], 201);
+            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
         }
     }
 

@@ -12,7 +12,6 @@
 
 @section('content')
 <div class="news_slide">
-    @include('pcview::widgets.ads', ['space' => 'pc:news:top', 'type' => 2])
 </div>
 
 <div class="news_main clearfix">
@@ -31,7 +30,7 @@
 
         <div class="right_container">
             <div class="news_release_btn">
-                <a href="javascript:;" id="news-release">
+                <a href="javascript:;" onclick="layer.alert(buyTSInfo)">
                     <span>
                         <svg class="icon white_color" aria-hidden="true"><use xlink:href="#icon-publish"></use></svg>投稿
                     </span>
@@ -40,8 +39,6 @@
             <!-- 近期热点 -->
             @include('pcview::widgets.hotnews')
 
-            <!-- 广告位 -->
-            @include('pcview::widgets.ads', ['space' => 'pc:news:right', 'type' => 1])
         </div>
 
     </div>
@@ -67,7 +64,7 @@ $(function(){
             category: {{ $cate_id }}
         };
     }
- 
+
     loader.init({
         container: '#news_list',
         loading: '#news_list',
@@ -129,19 +126,6 @@ $(function(){
     // 图片懒加载
     $("img.lazy").lazyload({effect: "fadeIn"});
 
-    // 投稿权限判断
-    $('#news-release').on('click', function () {
-        checkLogin();
-        if (TS.BOOT['news:contribute'].verified && TS.USER.verified == null) {
-            ly.confirm(formatConfirm('投稿提示', '成功通过平台认证的用户才能投稿，是否去认证？'), '去认证' , '', function(){
-                window.location.href = "{{ route('pc:authenticate') }}";
-            });
-        } else {
-            window.location.href = "{{ route('pc:newsrelease') }}";
-        }
-
-        return false;
-    });
 })
 </script>
 @endsection

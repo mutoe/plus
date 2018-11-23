@@ -1,19 +1,34 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 
-
 class SearchController extends BaseController
 {
     /**
-     * 搜索
+     * 搜索.
      * @author Foreach
      * @param  Request     $request
-     * @param  int|integer $type     [搜索类型]
+     * @param  int|int $type     [搜索类型]
      * @param  string      $keywords [关键字]
      * @return mixed
      */
@@ -26,7 +41,7 @@ class SearchController extends BaseController
     }
 
     /**
-     * 搜索获取数据
+     * 搜索获取数据.
      * @author Foreach
      * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -45,7 +60,7 @@ class SearchController extends BaseController
                     'limit' => $limit,
                     'type' => 'new',
                     'search' => $keywords,
-                    'after' => $after
+                    'after' => $after,
                 ];
 
                 $datas = api('GET', '/api/v2/feeds', $params);
@@ -54,25 +69,11 @@ class SearchController extends BaseController
                 $after = last($data['feeds'])['id'] ?? 0;
                 $html = view('pcview::templates.feeds', $data, $this->PlusData)->render();
                 break;
-            case '2':
-                $params = [
-                    'type' => 'all',
-                    'limit' => $limit,
-                    'offset' => $offset,
-                    'subject' => $keywords
-                ];
-
-                $datas = api('GET', '/api/v2/questions', $params);
-                $data['data'] = $datas;
-                $data['search'] = true;
-                $after = last($data['data'])['id'] ?? 0;
-                $html = view('pcview::templates.question', $data, $this->PlusData)->render();
-                break;
             case '3':
                 $params = [
                     'limit' => $limit,
                     'after' => $after,
-                    'key' => $keywords
+                    'key' => $keywords,
                 ];
 
                 $datas = api('GET', '/api/v2/news', $params);
@@ -85,48 +86,12 @@ class SearchController extends BaseController
                 $params = [
                     'limit' => $limit,
                     'offset' => $offset,
-                    'keyword' => $keywords
+                    'keyword' => $keywords,
                 ];
 
                 $datas = api('GET', '/api/v2/user/search', $params);
                 $data['users'] = $datas;
-                $html =  view('pcview::templates.user', $data, $this->PlusData)->render();
-                break;
-            case '5':
-                $params = [
-                    'limit' => $limit,
-                    'offset' => $offset,
-                    'keyword' => $keywords
-                ];
-
-                $datas = api('GET', '/api/v2/plus-group/groups', $params);
-                $data['group'] = $datas;
-                $after = last($data['group'])['id'] ?? 0;
-                $html = view('pcview::templates.group', $data, $this->PlusData)->render();
-                break;
-            case '6':
-                $params = [
-                    'limit' => $limit,
-                    'offset' => $offset,
-                    'follow' => 1,
-                    'name' => $keywords
-                ];
-                $datas = api('GET', '/api/v2/question-topics', $params);
-                $data['data'] = $datas;
-                $data['search'] = true;
-                $after = last($data['data'])['id'] ?? 0;
-                $html = view('pcview::templates.question_topic', $data, $this->PlusData)->render();
-                break;
-            case '7':
-                $params = [
-                    'limit' => $limit,
-                    'offset' => $offset,
-                    'keyword' => $keywords
-                ];
-                $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
-                $datas = $posts['posts'];
-                $after = 0;
-                $html = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
+                $html = view('pcview::templates.user', $data, $this->PlusData)->render();
                 break;
             case '8':
                 $params = [
@@ -142,10 +107,10 @@ class SearchController extends BaseController
         }
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $html,
             'count' => count($datas),
-            'after' => $after
+            'after' => $after,
         ]);
     }
 }

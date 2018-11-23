@@ -3,7 +3,7 @@
 
     <common-header>
       圈子
-      <template slot="right">
+      <div slot="right" @click.capture.stop.prevent="popupBuyTS">
         <svg class="m-style-svg m-svg-def" @click="onSearchClick">
           <use xlink:href="#icon-search"/>
         </svg>

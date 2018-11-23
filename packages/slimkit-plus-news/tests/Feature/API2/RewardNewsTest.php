@@ -79,6 +79,7 @@ class RewardNewsTest extends TestCase
             'password' => bcrypt('123456'),
         ]);
         $other->currency()->increment('sum', 100);
+
         $response = $this
             ->actingAs($other, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/new-rewards", [

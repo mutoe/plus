@@ -218,7 +218,7 @@ class FeedCommentController extends Controller
             app(Push::class)->push(sprintf('%s 回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'feed:comment-reply']);
             unset($userCommentedCount);
         }
-        $comment->load(['user', 'reply']);
+        $comment->load('user');
 
         // 发送 at 数据
         $this->sendAtMessage($comment->body, $user, $comment);

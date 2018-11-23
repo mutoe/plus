@@ -1,5 +1,5 @@
 export function showAmount (amount) {
   const { walletRatio = 100 } = window.FEED;
 
-  return amount + '(积分)';
+  return amount / walletRatio * 100 + '(元)';
 }

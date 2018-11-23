@@ -31,8 +31,4 @@ return [
         'appid' => null,
         'secret' => null,
     ],
-    'wechat-mp' => [
-        'appid' => null,
-        'secret' => null
-    ],
 ];

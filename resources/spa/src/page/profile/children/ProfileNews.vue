@@ -33,15 +33,7 @@
           <a>被驳回</a>
         </router-link>
       </div>
-      <jo-load-more
-        ref="loadmore"
-        @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
-        <news-card
-          v-for="news in newsList"
-          :news="news"
-          :key="news.id" />
-      </jo-load-more>
+      <p class="info-tips">开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。</p>
     </main>
   </div>
 </template>
