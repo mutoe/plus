@@ -353,11 +353,16 @@
             $('#J-select-topics li').each(function(index){
                 args.topics_.push($(this).data('id'));
             });
-            var lastChar = args.subject.charAt(args.subject.length - 1)
             if (args.subject.length < 1) {
                 $('#subject').focus();
                 noticebox('请输入标题', 0);
                 // $('.subject-error').text('请输入标题').show();
+                return false;
+            } else if (args.subject.charAt(args.subject.length - 1) != '?' && args.subject.charAt(args.subject.length - 1) != '？') {
+                $('#subject').focus();
+                noticebox('请以问号结束提问', 0);
+                // $('.subject-error').text('请以问号结束提问').show();
+
                 return false;
             } else if (args.subject.match(/([\u4E00-\u9FA5A-Za-z0-9])/g) == null) {
                 $('#subject').focus();
@@ -377,10 +382,6 @@
                 noticebox('请填写问题描述', 0);
 
                 return false;
-            }
-
-            if (lastChar != '?' && lastChar != '？') {
-                args.subject += '？'
             }
 
             return true;

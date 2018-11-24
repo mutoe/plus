@@ -92,8 +92,7 @@
                                 <svg class="icon s-fc2 f-vatb"><use xlink:href="#icon-position"></use></svg>
                                 <font class="s-fc">{{$group['location']}}</font>
                             </div>
-                            @if (($group['joined'] && $group['joined']['role'] == 'member'&& !$group['joined']['disabled'])
-                                || !$group['joined'])
+                            @if ($group['joined'] && ($group['joined']['role'] == 'member') && !$group['joined']['disabled'])
                                 <a class="u-report" href="javascript:;" onclick="reported.init({{$group['id']}}, 'group');">举报圈子</a>
                             @endif
                                 @if ($group['joined'])

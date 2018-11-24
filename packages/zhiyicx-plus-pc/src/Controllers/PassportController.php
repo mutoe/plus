@@ -147,10 +147,6 @@ class PassportController extends BaseController
      */
     public function perfect()
     {
-        if ($this->PlusData['TS'] != null) {
-            return redirect(route('pc:feeds'));
-        }
-
         $data['tags'] = api('GET', '/api/v2/tags');
         $data['user_tag'] = api('GET', '/api/v2/user/tags');
         return view('pcview::passport.perfect', $data, $this->PlusData);
