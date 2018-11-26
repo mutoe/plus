@@ -921,7 +921,7 @@ var comment = {
                     html += '                    </ul>'
                     html += '                </div>'
                     html += '            </div>';
-                    html += '            <div class="reply_body">'+res.comment.body+'</div>';
+                    html += '            <div class="reply_body">'+original_body+'</div>';
                     html += '        </dd>';
                     html += '    </dl>';
                     html += '</div>';

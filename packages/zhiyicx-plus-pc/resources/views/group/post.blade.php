@@ -227,6 +227,7 @@
 
 @section('scripts')
     <script src="{{ asset('assets/pc/js/module.group.js') }}"></script>
+    <script src="{{ asset('assets/pc/js/module.mention.js') }}"></script>
     <script type="text/javascript">
         $("img.lazy").lazyload({effect: "fadeIn"});
     </script>
