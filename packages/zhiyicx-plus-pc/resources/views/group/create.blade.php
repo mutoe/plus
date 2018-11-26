@@ -150,7 +150,9 @@ selBox.on('click', 'span', function(){
     $(this).remove();
 });
 
+var pending = false
 $('#J-create-group').on('click', function(){
+    if (pending) return
     var protocol = $('[name="protocol"]:checked').val();
     var categrey = $('#categrey').data('value');
     var modeType = $('[name="modes"]:checked').val();
@@ -213,12 +215,14 @@ $('#J-create-group').on('click', function(){
             formData.append('tags[][id]', $(this).data('id'));
         });
         if (protocol !== undefined) {
+            pending = true
             axios.post(POST_URL, formData)
             .then(function (response) {
                 noticebox('发布成功，请等待审核', 1, '/group');
             })
             .catch(function (error) {
                 showError(error.response.data);
+                pending = false
             });
         } else {
             noticebox('请勾选同意ThinkSNS+的圈子创建协议', 0);
