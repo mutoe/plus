@@ -36,7 +36,7 @@ class GroupRecommendController
         $offset = $request->query('offset', 0);
 
         $user = $request->query('user');
-        $group = $request->query('group');
+        $name = $request->query('name');
         $category = (int) $request->query('category');
         $start = $request->query('start');
         $end = $request->query('end');
@@ -48,9 +48,9 @@ class GroupRecommendController
         ])
         ->has('group');
 
-        $query = $query->when($group, function ($query) use ($group) {
-            return $query->whereHas('group', function ($query) use ($group) {
-                return $query->where('name', 'like', sprintf('%%%s%%', $group));
+        $query = $query->when($name, function ($query) use ($name) {
+            return $query->whereHas('group', function ($query) use ($name) {
+                return $query->where('name', 'like', sprintf('%%%s%%', $name));
             });
         })
         ->when($start || $end, function ($query) use ($start, $end) {
