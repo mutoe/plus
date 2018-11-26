@@ -89,6 +89,22 @@
                 "symlink": true,
                 "plus-soft": true
             }
+        },
+        {
+            "type": "path",
+            "url": "packages/zhiyicx-plus-group",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "packages/zhiyicx-plus-question",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
         }
     ],
     "require": {
