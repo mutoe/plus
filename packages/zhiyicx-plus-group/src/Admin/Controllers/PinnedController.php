@@ -73,7 +73,7 @@ class PinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post) {
+        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post, $userCount) {
             // 保存置顶请求
             $pinnedModel->save();
             // 给用户发消息通知
