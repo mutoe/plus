@@ -54,8 +54,8 @@ class RouteServiceProvider extends ServiceProvider
         // Register Bootstraper API event.
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
-                'question:apply_amount'     => (int) config('question.apply_amount'),
-                'question:onlookers_amount' => (int) config('question.onlookers_amount'),
+                'question:apply_amount'     => setting('Q&A', 'apply-amount', 200),
+                'question:onlookers_amount' => setting('Q&A', 'onlookers-amount', 100),
             ];
         });
     }

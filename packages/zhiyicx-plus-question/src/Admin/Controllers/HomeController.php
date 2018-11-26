@@ -21,7 +21,6 @@ namespace SlimKit\PlusQuestion\Admin\Controllers;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Auth\JWTAuthToken;
-use Zhiyi\Plus\Support\Configuration;
 
 class HomeController extends Controller
 {
@@ -43,11 +42,11 @@ class HomeController extends Controller
     public function switch()
     {
         return response()->json([
-            'switch' => config('question.app.switch'),
-            'apply_amount' => config('question.apply_amount'),
-            'onlookers_amount' => config('question.onlookers_amount'),
-            'anonymity_rule' => config('question.anonymity_rule'),
-            'reward_rule' => setting('Q&A', 'reward-rule'),
+            'switch' => setting('Q&A', 'switch', true),
+            'apply_amount' => setting('Q&A', 'apply-amount', 200),
+            'onlookers_amount' =>  setting('Q&A', 'onlookers-amount', 100),
+            'anonymity_rule' => setting('Q&A', 'anonymity-rule', '匿匿名规则，管理理后台’问答应⽤用-基本信息‘中可配置'),
+            'reward_rule' => setting('Q&A', 'reward-rule', '悬赏规则，管理理后台’问答应⽤用-基本信息’中可配置'),
         ]);
     }
 
@@ -55,25 +54,18 @@ class HomeController extends Controller
      * Store Question & Answer switch.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Support\Configuration $config
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Request $request, Configuration $config)
+    public function store(Request $request)
     {
-        $switch = (bool) $request->input('switch');
-        $apply_amount = (int) $request->input('apply_amount');
-        $onlookers_amount = (int) $request->input('onlookers_amount');
-        $anonymity_rule = (string) $request->input('anonymity_rule');
-
-        $config->set([
-            'question.app.switch' => $switch,
-            'question.apply_amount' => $apply_amount,
-            'question.onlookers_amount' => $onlookers_amount,
-            'question.anonymity_rule' => $anonymity_rule,
+        setting('Q&A')->set([
+            'switch' => (bool) $request->input('switch'),
+            'apply-amount' => (int) $request->input('apply_amount'),
+            'onlookers-amount' => (int) $request->input('onlookers_amount'),
+            'anonymity-rule' => $request->input('anonymity_rule'),
+            'reward-rule' => $request->input('reward_rule'),
         ]);
-
-        setting('Q&A')->set('reward-rule', $request->input('reward_rule'));
 
         return response()->json(['message' => '设置成功'], 201);
     }

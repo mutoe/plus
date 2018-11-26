@@ -44,11 +44,6 @@ class AppServiceProvider extends ServiceProvider
         // Register handler singleton.
         $this->registerHandlerSingletions();
 
-        // Publish config file.
-        $this->publishes([
-            $this->app->make('path.question').'/config/question.php' => $this->app->configPath('question.php'),
-        ], 'config');
-
         // Publish public resource.
         $this->publishes([
             $this->app->make('path.question.assets') => $this->app->PublicPath().'/assets/question-answer',
@@ -72,9 +67,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance('path.question.assets', $path.'/assets');
         $this->app->instance('path.question.resources', $path.'/resources');
         $this->app->instance('path.question.lang', $path.'/resources/lang');
-
-        // Merge config.
-        $this->mergeConfig();
 
         // register cntainer aliases
         $this->registerContainerAliases();
@@ -147,18 +139,5 @@ class AppServiceProvider extends ServiceProvider
     private function loadHandleFrom(string $name, $handler)
     {
         \Zhiyi\Plus\Support\PackageHandler::loadHandleFrom($name, $handler);
-    }
-
-    /**
-     * Merge config.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    private function mergeConfig()
-    {
-        $this->mergeConfigFrom(
-            $this->app->make('path.question').'/config/question.php', 'question'
-        );
     }
 }

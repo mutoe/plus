@@ -31,10 +31,10 @@ class QuestionConfigController extends Controller
     public function get()
     {
         return response()->json([
-            'apply_amount' => config('question.apply_amount', 200),
-            'onlookers_amount' => config('question.onlookers_amount', 100),
-            'anonymity_rule' => config('question.anonymity_rule', null),
-            'reward_rule' => setting('Q&A', 'reward-rule', null),
+            'apply_amount' => setting('Q&A', 'apply-amount', 200),
+            'onlookers_amount' => setting('Q&A', 'onlookers-amount', 100),
+            'anonymity_rule' => setting('Q&A', 'anonymity-rule', '匿匿名规则，管理理后台’问答应⽤用-基本信息‘中可配置'),
+            'reward_rule' => setting('Q&A', 'reward-rule', '悬赏规则，管理理后台’问答应⽤用-基本信息’中可配置'),
         ], 200);
     }
 }

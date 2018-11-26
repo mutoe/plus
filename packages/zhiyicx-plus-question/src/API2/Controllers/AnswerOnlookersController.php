@@ -19,6 +19,7 @@
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\WalletCharge;
 use SlimKit\PlusQuestion\Models\Answer;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -33,7 +34,7 @@ class AnswerOnlookersController extends Controller
 
     public function __construct()
     {
-        $this->onlookers_amount = config('question.onlookers_amount');
+        $this->onlookers_amount = setting('Q&A', 'onlookers-amount', 100);
         $this
             ->middleware(VerifyUserPassword::class)
             ->only(['store', 'newStore']);
