@@ -143,7 +143,7 @@
             'news' : '/news/{{$id}}/comments',
             'feeds' : '/feeds/{{$id}}/comments',
             'group-posts' : '/groups/{{$id}}/comments',
-            'answer' : '/questions/answers/{{$id}}/comments',
+            'question-answers' : '/questions/answers/{{$id}}/comments',
             'product' : '/product/{{$id}}/comments',
             // 'question' : '/questions/{{$id}}/comments',
         };
