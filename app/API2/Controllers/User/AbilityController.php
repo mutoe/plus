@@ -18,23 +18,29 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusFeed\Tests\Feature\API2;
+namespace Zhiyi\Plus\API2\Controllers\User;
 
-use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\API2\Controllers\Controller;
+use Zhiyi\Plus\API2\Resources\Ability as AbilityResource;
 
-class GetFeedRankUserTest extends TestCase
+class AbilityController extends Controller
 {
     /**
-     * 获取动态排行.
-     *
-     * @return mixed
+     * Create the controller instance.
      */
-    public function testGetFeedRankUser()
+    public function __construct()
     {
-        $response = $this
-            ->json('GET', '/api/v2/feeds/ranks');
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([]);
+        $this->middleware('auth:api');
+    }
+
+    /**
+     * List all abilities.
+     */
+    public function __invoke(Request $request)
+    {
+        return AbilityResource::collection(
+            $request->user()->ability()->all()->values()
+        );
     }
 }

@@ -18,43 +18,23 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Tests\Feature\API2;
+namespace Zhiyi\Plus\API2\Resources;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class WalletTransformTest extends TestCase
+class Ability extends JsonResource
 {
-    use DatabaseTransactions;
-
-    protected $user;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->user = factory(UserModel::class)->create();
-        $this->user->newWallet()->update(['balance' => 999999]);
-    }
-
     /**
-     * 测试发起转换积分.
-     *
-     * @return void
-     * @author BS <414606094@qq.com>
+     * The resource to array.
+     * @param \Illuminate\Http\Request $request
+     * @return array
      */
-    public function testTransfer()
+    public function toArray($request): array
     {
-        $response = $this->actingAs($this->user, 'api')->json('POST', '/api/v2/plus-pay/transform', ['amount' => 2121]);
-
-        $response->assertStatus(201);
-    }
-
-    protected function tearDown()
-    {
-        $this->user->forceDelete();
-
-        parent::tearDown();
+        return [
+            'name' => $this->name,
+            'display_name' => $this->display_name,
+            'description' => $this->description,
+        ];
     }
 }
