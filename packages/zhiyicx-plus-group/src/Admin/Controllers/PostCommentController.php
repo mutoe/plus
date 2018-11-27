@@ -89,6 +89,9 @@ class PostCommentController
     public function delete(CommentModel $comment)
     {
         $comment->delete();
+        if ($post = $comment->commentable) {
+            $post->decrement('comments_count', 1);
+        }
 
         return response()->json(null, 204);
     }
