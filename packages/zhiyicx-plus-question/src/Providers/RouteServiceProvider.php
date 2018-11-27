@@ -18,6 +18,7 @@
 
 namespace SlimKit\PlusQuestion\Providers;
 
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
