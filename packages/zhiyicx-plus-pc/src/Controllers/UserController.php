@@ -68,10 +68,9 @@ class UserController extends BaseController
     /**
      * 地区搜索
      * @author 28youth
-     * @param  Request $request
      * @return mixed
      */
-    public function area(Request $request)
+    public function area()
     {
 
         $data['area'] = api('GET', '/api/v2/locations/hots');
