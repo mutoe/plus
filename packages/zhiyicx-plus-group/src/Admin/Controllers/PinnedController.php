@@ -73,7 +73,7 @@ class PinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post) {
+        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post, $userCount) {
             // 保存置顶请求
             $pinnedModel->save();
             // 给用户发消息通知
@@ -135,7 +135,7 @@ class PinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $post, $founder) {
+        $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $post, $userCount) {
             // 保存置顶
             $pinned->save();
             $userCount->save();
@@ -197,7 +197,7 @@ class PinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($pinned, $chargeModel, $user, $post) {
+        $post->getConnection()->transaction(function () use ($pinned, $chargeModel, $user, $post, $userCount) {
             // 退还余额
             $user->wallet()->increment('balance', $pinned->amount);
 
