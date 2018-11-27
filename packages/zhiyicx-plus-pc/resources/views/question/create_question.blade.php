@@ -1,6 +1,10 @@
-@section('title') 提问 @endsection @extends('pcview::layouts.default') @section('styles')
+@section('title') 提问 @endsection
+@extends('pcview::layouts.default')
+@section('styles')
 <link rel="stylesheet" href="{{ URL::asset('assets/pc/css/question.css') }}" />
-@endsection @section('content')
+@endsection
+
+@section('content')
 <div class="create-question">
     <div class="step1">
         <div class="question-tw">提问</div>
@@ -41,77 +45,70 @@
             <input id="anonymity" name="anonymity" type="checkbox" @if(isset($question) && $question['anonymity'] == 1) checked="checked" @endif class="input-checkbox"/>
             <label for="anonymity">启动匿名</label>
         </div>
-        @if(isset($question) && ($question['amount'] > 0 || empty($question['invitations']) || $question['status'] == 1))
-            <div class="question-next"><button id="question-submit">完成</button></div>
-        @else
-            <div class="question-next"><button id="question-next">下一步</button></div>
-        @endif
+        <div class="question-next"><button id="question-next">下一步</button></div>
     </div>
-    @if(!isset($question) || ($question['amount'] == 0 || empty($question['invitations'])))
-        <div class="step2">
-            <div class="question-tw">设置悬赏
-                <span class="tw-notice">(可跳过)</span>
-                <span class="reward-rule">悬赏规则</span>
-            </div>
-            <div class="reward-row">
-                <div class="reward-notice">设置悬赏金额</div>
-                <ul class="reward-example">
-                    @foreach(explode(',', $config['bootstrappers']['site']['reward']['amounts']) as $amount)
-                        <li>{{ $amount }}</li>
-                    @endforeach
-                </ul>
-                <input type="text" min="1" oninput="value=moneyLimit(value)" class="custom-money" id="amount" placeholder="自定义悬赏金额">
-                <input type="hidden" id="amount-hide" name="amount">
-            </div>
-            @if(!isset($question))
-                <div class="reward-row">
-                    <div class="invitation-notice">
-                        {{--<div class="reward-notice">悬赏邀请</div>--}}
-                        {{--<span>--}}
-                        {{--<input id="reward" name="reward" type="checkbox" class="input-checkbox"/>--}}
-                        {{--<label for="reward">邀请答题人，设置围观等</label>--}}
-                        {{--</span>--}}
-                        <div class="reward-notice">悬赏邀请</div>
-                        <span>
-                            <input id="rewardyes" name="reward" type="radio" value="1" class="input-radio"/>
-                            <label for="rewardyes">是</label>
-                        </span>
-                        <span>
-                            <input id="rewardno" name="reward" type="radio" value="0" checked="checked" class="input-radio"/>
-                            <label for="rewardno">否</label>
-                        </span>
-                    </div>
-                    <div class="invitation-con">
-                        <dl>
-                            <dt>邀请回答</dt>
-                            <dd id="invitation_user">
-                                <a href="javascript:" id="invitation-add">添加</a>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>是否开启围观</dt>
-                            <dd>
-                        <span>
-                            <input id="lookyes" name="look" type="radio" value="1" class="input-radio"/>
-                             <label for="lookyes">是</label>
-                        </span>
-                                <span>
-                            <input id="lookno" name="look" type="radio" value="0" checked="checked" class="input-radio"/>
-                             <label for="lookno">否</label>
-                        </span>
-                            </dd>
-                        </dl>
-                    </div>
-                </div>
-            @endif
-            <div class="question-next">
-                <button id="question-last">上一步</button>
-                <button id="question-submit">@if(isset($question))完成@else发布问题@endif</button>
-            </div>
-
+    <div class="step2">
+        <div class="question-tw">设置悬赏
+            <span class="tw-notice">(可跳过)</span>
+            <span class="reward-rule">悬赏规则</span>
         </div>
-    @endif
+        <div class="reward-row">
+            <div class="reward-notice">设置悬赏金额</div>
+            <ul class="reward-example">
+                @foreach(explode(',', $config['bootstrappers']['site']['reward']['amounts']) as $amount)
+                    <li>{{ $amount }}</li>
+                @endforeach
+            </ul>
+            <input type="text" min="1" oninput="value=moneyLimit(value)" class="custom-money" id="amount" placeholder="自定义悬赏金额">
+            <input type="hidden" id="amount-hide" name="amount">
+        </div>
+        @if(!isset($question))
+            <div class="reward-row">
+                <div class="invitation-notice">
+                    {{--<div class="reward-notice">悬赏邀请</div>--}}
+                    {{--<span>--}}
+                    {{--<input id="reward" name="reward" type="checkbox" class="input-checkbox"/>--}}
+                    {{--<label for="reward">邀请答题人，设置围观等</label>--}}
+                    {{--</span>--}}
+                    <div class="reward-notice">悬赏邀请</div>
+                    <span>
+                        <input id="rewardyes" name="reward" type="radio" value="1" class="input-radio"/>
+                        <label for="rewardyes">是</label>
+                    </span>
+                    <span>
+                        <input id="rewardno" name="reward" type="radio" value="0" checked="checked" class="input-radio"/>
+                        <label for="rewardno">否</label>
+                    </span>
+                </div>
+                <div class="invitation-con">
+                    <dl>
+                        <dt>邀请回答</dt>
+                        <dd id="invitation_user">
+                            <a href="javascript:" id="invitation-add">添加</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>是否开启围观</dt>
+                        <dd>
+                    <span>
+                        <input id="lookyes" name="look" type="radio" value="1" class="input-radio"/>
+                            <label for="lookyes">是</label>
+                    </span>
+                            <span>
+                        <input id="lookno" name="look" type="radio" value="0" checked="checked" class="input-radio"/>
+                            <label for="lookno">否</label>
+                    </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        @endif
+        <div class="question-next">
+            <button id="question-last">上一步</button>
+            <button id="question-submit">@if(isset($question))完成@else发布问题@endif</button>
+        </div>
 
+    </div>
 </div>
 @endsection
 
