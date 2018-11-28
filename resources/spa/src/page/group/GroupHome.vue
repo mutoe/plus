@@ -10,7 +10,7 @@
         <svg class="m-style-svg m-svg-def" @click="beforeCreateGroup">
           <use xlink:href="#icon-group-create"/>
         </svg>
-      </template>
+      </div>
     </common-header>
 
     <main>
