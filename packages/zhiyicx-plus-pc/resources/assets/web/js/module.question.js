@@ -27,18 +27,21 @@ var QA = {
     delAnswer: function (question_id, answer_id, callUrl) {
         callUrl = callUrl ? callUrl : '';
         url = '/api/v2/question-answers/' + answer_id;
-        axios.delete(url)
-          .then(function (response) {
-             if (callUrl == '') {
-                 $('#answer' + answer_id).fadeOut();
-                 $('.qs' + question_id).text(parseInt($('.qs' + question_id).text())-1);
-             } else {
-                 noticebox('删除成功', 1, callUrl);
-             }
-          })
-          .catch(function (error) {
-            showError(error.response.data);
-          });
+        layer.confirm(confirmTxt + '确定删除这条答案？', {}, function() {
+            axios.delete(url)
+            .then(function (response) {
+                layer.closeAll()
+                if (callUrl == '') {
+                    $('#answer' + answer_id).fadeOut();
+                    $('.qs' + question_id).text(parseInt($('.qs' + question_id).text())-1);
+                } else {
+                    noticebox('删除成功', 1, callUrl);
+                }
+            })
+            .catch(function (error) {
+                showError(error.response.data);
+            });
+        })
     },
     share: function (answer_id) {
         var bdDesc = $('#answer' + answer_id).find('.answer-body').text();
@@ -131,7 +134,7 @@ var question = {
         });
     },
     delQuestion: function(question_id) {
-        ly.confirm(formatConfirm('提示', '确定删除这条信息？'), '' , '', function(){
+        ly.confirm(formatConfirm('提示', '确定删除这条问题？'), '' , '', function(){
             var url ='/api/v2/currency-questions/' + question_id;
             axios.delete(url)
               .then(function (response) {
