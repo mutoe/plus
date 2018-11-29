@@ -17,6 +17,7 @@
  */
 
 use Illuminate\Support\Facades\Schema;
+use SlimKit\PlusQuestion\Models\Topic;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -43,6 +44,8 @@ class CreateTopicsTable extends Migration
 
             $table->index('name');
         });
+
+        Topic::firstOrCreate(['name' => '默认专题']);
     }
 
     /**
