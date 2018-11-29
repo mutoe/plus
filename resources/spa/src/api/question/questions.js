@@ -75,6 +75,35 @@ export function unwatch (id) {
 }
 
 /**
+ * 发布问题
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {Object} params
+ * @param {string} params.subject
+ * @param {string} params.title
+ * @param {string} params.body
+ * @param {string} params.text_body
+ * @param {boolean} [params.anonymity=0]
+ * @param {string} [params.password]
+ * @returns
+ */
+export function postQuestion (params) {
+  return api.post('/questions', params, { validateStatus: s => s === 201 })
+}
+
+/**
+ * 获取话题
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @returns
+ */
+export function getTopics () {
+  return api.get('/question-topics', { validateStatus: s => s === 200 })
+}
+
+/**
  * 举报问题
  *
  * @author mutoe <mutoe@foxmail.com>

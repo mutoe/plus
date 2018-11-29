@@ -68,6 +68,9 @@
             @blur="onBlur"
             @input="setContent"/>
         </div>
+        <v-switch v-model="question.anonymity" class="anonymity-switch">
+          <slot>匿名提问</slot>
+        </v-switch>
       </div>
       <div
         v-show="step === 3"
@@ -123,6 +126,7 @@
 <script>
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import * as api from '@/api/question/questions'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
@@ -147,6 +151,7 @@ export default {
       question: {
         title: '',
         body: '',
+        anonymity: 0,
       },
     }
   },
@@ -246,11 +251,9 @@ export default {
       this.question.body = value
       // this.moveCurPos();
     },
-    getTopics () {
-      // GET /question-topics
-      this.$http.get(`/question-topics`).then(({ data = [] }) => {
-        this.topics = data
-      })
+    async getTopics () {
+      const { data } = await api.getTopics()
+      this.topics = data || []
     },
     getAvatar (avatar) {
       avatar = avatar || {}
@@ -281,7 +284,7 @@ export default {
       }
     },
     beforePost () {
-      const { body, title } = this.question
+      const { body, title, anonymity } = this.question
       if (!body) return (this.step = 2) && this.$Message.error('请输入问题详情')
 
       if (!title) return (this.step = 1) && this.$Message.error('请输入问题标题')
@@ -293,14 +296,13 @@ export default {
         topics: this.selectedTops,
         body,
         text_body: body,
+        anonymity,
       })
     },
     postQuestion (params) {
       if (this.loading) return
       this.loading = true
-      // POST /questions
-      this.$http
-        .post(`/questions`, params, { validateStatus: s => s === 201 })
+      api.postQuestion(params)
         .then(({ data: { message, question } }) => {
           this.$Message.success(message)
           this.$router.push(`/questions/${question.id}`)
@@ -396,6 +398,13 @@ export default {
       -webkit-appearance: none !important;
       -moz-appearance: none !important;
     }
+  }
+
+  .anonymity-switch {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid @border-color;
   }
 }
 
