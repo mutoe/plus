@@ -1,7 +1,6 @@
 <template>
   <div class="p-topic-detail">
-
-    <common-header>{{ topic.name || "专题详情" }}</common-header>
+    <CommonHeader>{{ topic.name || "专题详情" }}</CommonHeader>
 
     <!-- Topic base -->
     <main>
@@ -19,17 +18,19 @@
         <button
           v-if="topic.has_follow"
           class="follow active"
-          @click="handleUnfollow(topic)" >
+          @click="handleUnfollow(topic)"
+        >
           <svg class="m-style-svg m-svg-small">
-            <use xlink:href="#icon-yes"/>
+            <use xlink:href="#icon-yes" />
           </svg>已关注
         </button>
         <button
           v-else
           class="follow"
-          @click="handleFollow(topic)">
+          @click="handleFollow(topic)"
+        >
           <svg class="m-style-svg m-svg-small">
-            <use xlink:href="#icon-plus"/>
+            <use xlink:href="#icon-plus" />
           </svg>关注
         </button>
       </div>
@@ -41,58 +42,75 @@
       <div class="experts">
         <span>{{ topic.experts_count }}位相关专家</span>
         <div>
-          <avatar
+          <Avatar
             v-for="(user, index) in topic.experts"
+            :key="user.id"
             :user="user"
             :style="[{ zIndex: topic.experts.length - index }]"
-            :key="user.id"
             size="tiny"
-            class="experts-user" />
+            class="experts-user"
+          />
         </div>
       </div>
 
       <!-- Types nav -->
       <nav ref="types" class="types">
-        <router-link
+        <RouterLink
           :to="{ path: `/question-topics/${id}` }"
           replace
           exact
-          exact-active-class="active">热门</router-link>
-        <router-link
+          exact-active-class="active"
+        >
+          热门
+        </RouterLink>
+        <RouterLink
           :to="{ path: `/question-topics/${id}`, query: { type: 'excellent' } }"
           replace
           exact
-          exact-active-class="active">精选</router-link>
-        <router-link
+          exact-active-class="active"
+        >
+          精选
+        </RouterLink>
+        <RouterLink
           :to="{ path: `/question-topics/${id}`, query: { type: 'reward' } }"
           replace
           exact
-          exact-active-class="active">悬赏</router-link>
-        <router-link
+          exact-active-class="active"
+        >
+          悬赏
+        </RouterLink>
+        <RouterLink
           :to="{ path: `/question-topics/${id}`, query: { type: 'new' } }"
           replace
           exact
-          exact-active-class="active">最新</router-link>
-        <router-link
+          exact-active-class="active"
+        >
+          最新
+        </RouterLink>
+        <RouterLink
           :to="{ path: `/question-topics/${id}`, query: { type: 'all' } }"
           replace
           exact
-          exact-active-class="active">全部</router-link>
+          exact-active-class="active"
+        >
+          全部
+        </RouterLink>
       </nav>
 
       <!-- Questions -->
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         class="questions"
         @onRefresh="handleRefresh"
-        @onLoadMore="handleLoadQuestions" >
-        <question-card
+        @onLoadMore="handleLoadQuestions"
+      >
+        <QuestionCard
           v-for="question in questions"
           :key="question.id"
-          :question="question" />
-      </jo-load-more>
+          :question="question"
+        />
+      </JoLoadMore>
     </main>
-
   </div>
 </template>
 

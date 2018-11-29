@@ -2,8 +2,9 @@
   <div
     :style="menuStyle"
     class="m-pos-f m-box p-group-menu m-justify-end"
-    @click.self="showMenu">
-    <div class="m-box-model p-group-menu-wrap"/>
+    @click.self="showMenu"
+  >
+    <div class="m-box-model p-group-menu-wrap" />
   </div>
 </template>
 <script>

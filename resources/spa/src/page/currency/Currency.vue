@@ -1,19 +1,19 @@
 <template lang="html">
   <div class="p-currency">
-
-    <common-header class="header">
+    <CommonHeader class="header">
       我的{{ currencyUnit }}
-      <router-link slot="left" to="/profile">
+      <RouterLink slot="left" to="/profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-back" />
         </svg>
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         slot="right"
-        to="/currency/journal-detail">
+        to="/currency/journal-detail"
+      >
         明细
-      </router-link>
-    </common-header>
+      </RouterLink>
+    </CommonHeader>
 
     <section class="m-currency-panel">
       <h3>当前{{ currencyUnit }}</h3>
@@ -21,10 +21,11 @@
     </section>
 
     <ul class="m-box-model m-entry-group padding">
-      <router-link
+      <RouterLink
         to="/currency/recharge"
         tag="li"
-        class="m-entry">
+        class="m-entry"
+      >
         <svg class="m-style-svg m-svg-def m-entry-prepend">
           <use xlink:href="#icon-currency-recharge" />
         </svg>
@@ -32,11 +33,12 @@
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />
         </svg>
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         to="/currency/withdraw"
         tag="li"
-        class="m-entry">
+        class="m-entry"
+      >
         <svg class="m-style-svg m-svg-def m-entry-prepend">
           <use xlink:href="#icon-profile-wallet" />
         </svg>
@@ -44,10 +46,10 @@
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />
         </svg>
-      </router-link>
+      </RouterLink>
     </ul>
 
-    <detail-ad type="currency"/>
+    <DetailAd type="currency" />
 
     <footer>
       <p @click="showRule">
@@ -58,12 +60,12 @@
       </p>
     </footer>
 
-    <popup-dialog
+    <PopupDialog
       ref="dialog"
-      :title="`${currencyUnit}规则`">
-      <p v-html="rule"/>
-    </popup-dialog>
-
+      :title="`${currencyUnit}规则`"
+    >
+      <p v-html="rule" />
+    </PopupDialog>
   </div>
 </template>
 

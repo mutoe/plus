@@ -1,22 +1,26 @@
 <template>
   <div class="c-banner-advertisement">
-    <swipe
+    <Swipe
       v-if="list.length"
       :autoplay-time="loopTime"
-      class="banner-swipe">
-      <swipe-item
+      class="banner-swipe"
+    >
+      <SwipeItem
         v-for="ad in list"
-        :key="ad.id">
+        :key="ad.id"
+      >
         <a
           :href="ad.data.link"
-          class="wrap">
+          class="wrap"
+        >
           <img
             :src="ad.data.image"
-            class="ad">
+            class="ad"
+          >
           <h4 class="title">{{ ad.title }}</h4>
         </a>
-      </swipe-item>
-    </swipe>
+      </SwipeItem>
+    </Swipe>
   </div>
 </template>
 

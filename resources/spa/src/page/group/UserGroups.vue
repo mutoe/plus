@@ -1,23 +1,24 @@
 <template>
   <div class="p-user-groups">
-
-    <common-header>{{ title }}</common-header>
+    <CommonHeader>{{ title }}</CommonHeader>
 
     <main>
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :auto-load="false"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
+        @onLoadMore="onLoadMore"
+      >
         <ul>
           <li
             v-for="group in groups"
             :key="group.id"
-            class="m-bb1">
-            <group-item :group="group"/>
+            class="m-bb1"
+          >
+            <GroupItem :group="group" />
           </li>
         </ul>
-      </jo-load-more>
+      </JoLoadMore>
     </main>
   </div>
 </template>

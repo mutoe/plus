@@ -22,11 +22,13 @@
         v-if="!joined || joined.audit === 0"
         :disabled="loading || joined.audit === 0"
         class="m-text-cut"
-        @click.stop="beforeJoined">
+        @click.stop="beforeJoined"
+      >
         <svg
           v-if="!(joined.audit ===0)"
           :style="loading ? {} : {width: '0.2rem', height:'0.2rem'}"
-          class="m-style-svg m-svg-def">
+          class="m-style-svg m-svg-def"
+        >
           <use :xlink:href="`#icon-${loading ? 'loading' : 'plus'}`" />
         </svg>
         <span>{{ joined.audit === 0 ? "审核中" : "加入" }}</span>

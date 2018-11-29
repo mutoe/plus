@@ -1,6 +1,6 @@
 <template>
   <div class="p-group-permission">
-    <common-header>发帖权限设置</common-header>
+    <CommonHeader>发帖权限设置</CommonHeader>
     <main>
       <ul class="list">
         <li :class="{active: current === 'member'}" @click="current = 'member'">所有成员</li>

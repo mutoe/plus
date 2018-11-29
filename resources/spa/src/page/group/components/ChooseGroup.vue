@@ -1,20 +1,19 @@
 <template>
-  <transition name="popr">
+  <Transition name="popr">
     <div v-if="visible" class="p-choose-group">
-      <common-header :back="close">选择圈子</common-header>
+      <CommonHeader :back="close">选择圈子</CommonHeader>
 
       <ul class="list">
         <li
           v-for="group in list"
           :key="group.id"
-          @click.capture.stop="selectGroup(group)">
-          <group-item :group="group"/>
+          @click.capture.stop="selectGroup(group)"
+        >
+          <GroupItem :group="group" />
         </li>
       </ul>
-
     </div>
-
-  </transition>
+  </Transition>
 </template>
 
 <script>

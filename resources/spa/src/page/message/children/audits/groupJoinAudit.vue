@@ -1,17 +1,19 @@
 <template>
   <div :class="`${prefixCls}`">
     <div :class="`${prefixCls}-container`">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :class="`${prefixCls}-loadmore`"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore" >
-        <audit-status-group-join
+        @onLoadMore="onLoadMore"
+      >
+        <AuditStatusGroupJoin
           v-for="audit in audits"
-          :class="`${prefixCls}-item`"
           :key="`group-join-${audit.id}`"
-          :audit="audit" />
-      </jo-load-more>
+          :class="`${prefixCls}-item`"
+          :audit="audit"
+        />
+      </JoLoadMore>
     </div>
   </div>
 </template>
@@ -19,7 +21,6 @@
 <script>
 import _ from 'lodash'
 import { mapState } from 'vuex'
-import AuditContent from '../../components/AuditContent.vue'
 import AuditStatusGroupJoin from '../../components/AuditStatusGroupJoin.vue'
 
 const prefixCls = 'msgList'
@@ -27,7 +28,6 @@ const prefixCls = 'msgList'
 export default {
   name: 'GroupJoinAudit',
   components: {
-    AuditContent,
     AuditStatusGroupJoin,
   },
   data: () => ({

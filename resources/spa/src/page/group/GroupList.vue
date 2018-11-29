@@ -1,54 +1,57 @@
 <template>
   <div class="p-group-list">
-
-    <common-header class="common-header">
+    <CommonHeader class="common-header">
       全部圈子
       <template slot="right">
         <svg class="m-style-svg m-svg-def" @click="$router.push({name: 'groupSearch'})">
-          <use xlink:href="#icon-search"/>
+          <use xlink:href="#icon-search" />
         </svg>
         <svg class="m-style-svg m-svg-def" @click="$router.push({name: 'groupCreate'})">
-          <use xlink:href="#icon-group-create"/>
+          <use xlink:href="#icon-group-create" />
         </svg>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <nav class="groups-nav">
-      <router-link
+      <RouterLink
         :to="{name: 'groups', query: { type: 'recommend' }}"
         class="item"
         exact
         replace
         tag="div"
-        active-class="active">
+        active-class="active"
+      >
         <span>推荐</span>
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         v-for="cate in categories"
-        :to="{ name: 'groups', query: { category: cate.id } }"
         :key="cate.id"
+        :to="{ name: 'groups', query: { category: cate.id } }"
         class="item"
         exact
         replace
         tag="div"
-        active-class="active">
+        active-class="active"
+      >
         <span class="m-text-cut">{{ cate.name }}</span>
-      </router-link>
+      </RouterLink>
     </nav>
 
     <main>
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :auto-load="false"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
+        @onLoadMore="onLoadMore"
+      >
         <div
           v-for="group in groups"
           :key="group.id"
-          class="group-item-wrap">
-          <group-item :group="group" :show-action="true" />
+          class="group-item-wrap"
+        >
+          <GroupItem :group="group" :show-action="true" />
         </div>
-      </jo-load-more>
+      </JoLoadMore>
     </main>
   </div>
 </template>

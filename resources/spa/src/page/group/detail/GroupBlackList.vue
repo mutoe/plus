@@ -1,11 +1,11 @@
 <template>
   <div class="p-group-black-list">
-    <search-bar v-model="keyword" class="search-bar"/>
+    <SearchBar v-model="keyword" class="search-bar" />
 
     <template v-if="keyword.length">
       <ul>
         <li v-for="m in searchList" :key="m.id">
-          <group-user-item :member="m" />
+          <GroupUserItem :member="m" />
         </li>
       </ul>
     </template>
@@ -14,11 +14,10 @@
       <h3>黑名单({{ blackList.length }})</h3>
       <ul>
         <li v-for="m in blackList" :key="m.id">
-          <group-user-item :member="m" @more="onMoreClick(m.id)" />
+          <GroupUserItem :member="m" @more="onMoreClick(m.id)" />
         </li>
       </ul>
     </template>
-
   </div>
 </template>
 

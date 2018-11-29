@@ -2,7 +2,7 @@
   <div class="p-question-answer-item" @click="viewDetail">
     <div class="main">
       <div class="avatar" @click.stop="viewUser">
-        <avatar :anonymity="anonymity" :user="user" />
+        <Avatar :anonymity="anonymity" :user="user" />
       </div>
       <div class="info">
         <h3 class="main-header">

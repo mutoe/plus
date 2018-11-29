@@ -5,14 +5,15 @@
       <div
         v-if="!image && !video"
         :class="`${prefixCls}-item-bottom-noImg`"
-        class="content">
+        class="content"
+      >
         {{ content }}
       </div>
       <div v-else :class="`${prefixCls}-item-bottom-img`">
         <div class="img">
-          <async-file v-if="image && type !== 'group'" :file="image.file">
+          <AsyncFile v-if="image && type !== 'group'" :file="image.file">
             <img slot-scope="props" :src="props.src">
-          </async-file>
+          </AsyncFile>
           <img v-if="type === 'group'" :src="image">
           <img v-if="video" :src="video">
         </div>

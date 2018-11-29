@@ -1,20 +1,20 @@
 <template lang="html">
   <div class="p-wallet wallet">
-
-    <common-header class="header">
+    <CommonHeader class="header">
       钱包
-      <router-link slot="left" to="/profile">
+      <RouterLink slot="left" to="/profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-back" />
         </svg>
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         slot="right"
         :to="{ path: 'detail' }"
-        append>
+        append
+      >
         明细
-      </router-link>
-    </common-header>
+      </RouterLink>
+    </CommonHeader>
 
     <section class="m-wallet-panel">
       <h3>账户余额(元)</h3>
@@ -22,11 +22,12 @@
     </section>
 
     <ul class="m-box-model m-entry-group padding">
-      <router-link
+      <RouterLink
         :to="{path: 'recharge'}"
         append
         tag="li"
-        class="m-entry">
+        class="m-entry"
+      >
         <svg class="m-style-svg m-svg-def m-entry-prepend">
           <use xlink:href="#icon-currency-recharge" />
         </svg>
@@ -34,12 +35,13 @@
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />
         </svg>
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         :to="{path: &quot;withdraw&quot;}"
         append
         tag="li"
-        class="m-entry">
+        class="m-entry"
+      >
         <svg class="m-style-svg m-svg-def m-entry-prepend">
           <use xlink:href="#icon-profile-wallet" />
         </svg>
@@ -47,14 +49,15 @@
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />
         </svg>
-      </router-link>
+      </RouterLink>
     </ul>
 
     <ul class="m-box-model m-entry-group padding">
-      <router-link
+      <RouterLink
         :to="{path: '/currency/recharge'}"
         tag="li"
-        class="m-entry">
+        class="m-entry"
+      >
         <svg class="m-style-svg m-svg-def m-entry-prepend">
           <use xlink:href="#icon-currency-recharge" />
         </svg>
@@ -62,7 +65,7 @@
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />
         </svg>
-      </router-link>
+      </RouterLink>
     </ul>
 
     <footer>
@@ -74,12 +77,12 @@
       </p>
     </footer>
 
-    <popup-dialog
+    <PopupDialog
       ref="dialog"
-      title="充值提现规则">
-      <p v-html="rule"/>
-    </popup-dialog>
-
+      title="充值提现规则"
+    >
+      <p v-html="rule" />
+    </PopupDialog>
   </div>
 </template>
 

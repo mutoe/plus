@@ -1,12 +1,15 @@
 <template>
   <section>
     <div :class="`${prefixCls}-item-top`">
-      <avatar :user="user" />
+      <Avatar :user="user" />
       <section class="userInfo">
         <span v-if="!user.id" :class="`${prefixCls}-item-top-link`">未知用户</span>
-        <router-link
+        <RouterLink
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${user._id}`">{{ user.name }}</router-link>
+          :to="`/users/${user._id}`"
+        >
+          {{ user.name }}
+        </RouterLink>
         <span>赞了你的资讯</span>
         <p>{{ like.created_at | time2tips }}</p>
       </section>
@@ -17,7 +20,8 @@
         <div
           v-if="!getImage"
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           {{ like.likeable.title }}
         </div>
         <div v-else :class="`${prefixCls}-item-bottom-img`">

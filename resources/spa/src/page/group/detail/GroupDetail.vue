@@ -8,39 +8,41 @@
     @touchmove.stop="onDrag"
     @mouseup="stopDrag"
     @touchend="stopDrag"
-    @mouseleave="stopDrag">
-
+    @mouseleave="stopDrag"
+  >
     <header
       ref="head"
       :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }"
-      class="m-box m-lim-width m-pos-f m-head-top bg-transp">
+      class="m-box m-lim-width m-pos-f m-head-top bg-transp"
+    >
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0">
         <svg class="m-style-svg m-svg-def mr10" @click="goBack">
-          <use xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back" />
         </svg>
-        <circle-loading v-show="updating" color="light"/>
+        <CircleLoading v-show="updating" color="light" />
       </div>
-      <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-center"/>
+      <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-center" />
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-end">
         <svg class="m-style-svg m-svg-def" @click="onSearchClick">
-          <use xlink:href="#icon-search"/>
+          <use xlink:href="#icon-search" />
         </svg>
         <svg class="m-style-svg m-svg-def" @click="onMoreClick">
-          <use xlink:href="#icon-more"/>
+          <use xlink:href="#icon-more" />
         </svg>
       </div>
     </header>
 
     <div v-if="loading" class="m-pos-f m-spinner">
-      <div/>
-      <div/>
+      <div />
+      <div />
     </div>
 
     <main style="overflow-x: hidden; overflow-y:auto; min-height: 100vh">
       <div
         ref="banner"
         :style="[groupBackGround,paddingTop, {transitionDuration: dragging ? '0s' : '300ms'}]"
-        class="p-group-detail-banner">
+        class="p-group-detail-banner"
+      >
         <div class="m-box m-aln-end m-justify-st m-pos-f p-group-detail-bg-mask">
           <div class="p-group-detail-avatar">
             <img :src="groupAvatar">
@@ -51,14 +53,20 @@
               <span
                 append
                 to="member"
-                tag="span">成员:<i>{{ groupUserCount }}</i></span>
+                tag="span"
+              >
+                成员:<i>{{ groupUserCount }}</i>
+              </span>
             </p>
             <p>
               <span
                 class="m-text-cut address"
                 append
                 to="followings"
-                tag="span">地址:<address>{{ location }}</address></span>
+                tag="span"
+              >
+                地址:<address>{{ location }}</address>
+              </span>
             </p>
           </div>
           <div class="m-box m-aln-center m-flex-grow0 m-flex-shink0 group-item-action c_fff">
@@ -66,7 +74,8 @@
               v-if="!joined"
               :disabled="loading"
               class="m-text-cut"
-              @click="beforeJoined">
+              @click="beforeJoined"
+            >
               <svg :style="loading ? {} : {width: '0.2rem', height:'0.2rem'}" class="m-style-svg m-svg-def">
                 <use :xlink:href="`#icon-${loading ? 'loading' : 'plus'}`" />
               </svg>
@@ -82,42 +91,46 @@
       <div
         v-clickoutside="hidenFilter"
         class="m-box m-aln-center m-justify-bet p-group-detail-filter-box"
-        @click="showFilter = !showFilter">
+        @click="showFilter = !showFilter"
+      >
         <span>帖子数量<em>{{ groupPostsCount }}</em></span>
         <div class="m-box m-aln-center p-group-detail-filter">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
-            <use xlink:href="#icon-list"/>
+            <use xlink:href="#icon-list" />
           </svg>
-          <transition v-if="showFilter">
+          <Transition v-if="showFilter">
             <ul class="p-group-detail-filter-options">
               <li
                 v-for="(val, key) of feedTypes"
                 :key="key"
                 class="m-box m-aln-center m-justify-bet"
-                @click="screen = key">
+                @click="screen = key"
+              >
                 <span>{{ val }}</span>
                 <svg v-if="screen === key" class="m-style-svg m-svg-small">
-                  <use xlink:href="#icon-yes"/>
+                  <use xlink:href="#icon-yes" />
                 </svg>
               </li>
             </ul>
-          </transition>
+          </Transition>
         </div>
       </div>
       <ul class="p-group-detail-feeds">
         <li v-for="feed in pinneds" :key="`gdf-${groupId}-pinned-feed-${feed.id}`">
-          <group-feed-card
+          <GroupFeedCard
             :pinned="true"
             :feed="feed"
             :group="group"
-            @reload="updateData" />
+            @reload="updateData"
+          />
         </li>
         <li v-for="(feed, index) in posts" :key="`gdf-${groupId}-feed-${feed.id}-${index}`">
-          <group-feed-card
+          <GroupFeedCard
             :feed="feed"
             :group="group"
-            @reload="updateData" />
+            @reload="updateData"
+          />
         </li>
       </ul>
       <div class="m-box m-aln-center m-justify-center load-more-box">
@@ -125,7 +138,8 @@
         <span
           v-else
           class="load-more-btn"
-          @click.stop="getFeeds(true)">
+          @click.stop="getFeeds(true)"
+        >
           {{ fetchFeeding ? "加载中..." : "点击加载更多" }}
         </span>
       </div>
@@ -135,69 +149,74 @@
       <ul class="list">
         <li @click="$router.push({ name: 'groupMembers' })">
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-members"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-members" /></svg>
             成员
           </span>
           <span>
             {{ group.users_count - group.blacklist_count }}
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right" /></svg>
           </span>
         </li>
         <li @click="$router.push({ name: 'groupInfo' })">
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-info"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-info" /></svg>
             详细信息
           </span>
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right" /></svg>
           </span>
         </li>
         <li v-if="isOwner" @click="$router.push({name: 'groupPermission'})">
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-access"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-access" /></svg>
             发帖权限
           </span>
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right" /></svg>
           </span>
         </li>
         <li v-if="isGroupManager" @click="$router.push({name: 'groupBlackList'})">
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-blacklist"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-blacklist" /></svg>
             黑名单
           </span>
           <span>
             {{ group.blacklist_count }}
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right" /></svg>
           </span>
         </li>
         <li v-else @click="onReport">
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-report"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-group-report" /></svg>
             举报圈子
           </span>
           <span>
-            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right"/></svg>
+            <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-arrow-right" /></svg>
           </span>
         </li>
       </ul>
       <button
         v-if="isOwner"
         class="btn-quit"
-        @click="onTransfer">转让圈子</button>
+        @click="onTransfer"
+      >
+        转让圈子
+      </button>
       <button
         v-else
         class="btn-quit"
-        @click="onExit">退出圈子</button>
+        @click="onExit"
+      >
+        退出圈子
+      </button>
     </aside>
-    <div class="slide-mask" @click="showSlide = false"/>
+    <div class="slide-mask" @click="showSlide = false" />
 
     <button class="create-post" @click="onCreatePostClick">
       <svg class="m-style-svg m-svg-def white">
-        <use xlink:href="#icon-plus"/>
+        <use xlink:href="#icon-plus" />
       </svg>
     </button>
-
   </div>
 </template>
 

@@ -1,21 +1,23 @@
 <template>
   <div class="p-group-post-create">
-
-    <common-header>
+    <CommonHeader>
       发帖
       <span
         slot="right"
         :class="{ disabled }"
         class="primary"
-        @click="onSubmit">发布</span>
-    </common-header>
+        @click="onSubmit"
+      >
+        发布
+      </span>
+    </CommonHeader>
 
     <section v-if="!groupId" class="form-select-item">
       <label>选择圈子</label>
       <div class="input-wrap" @click="selectGroup">
         <span class="placeholder">{{ group.name }}</span>
         <svg class="m-style-svg m-svg-def m-entry-append">
-          <use xlink:href="#icon-arrow-right"/>
+          <use xlink:href="#icon-arrow-right" />
         </svg>
       </div>
     </section>
@@ -26,7 +28,8 @@
           v-model="title"
           type="text"
           placeholder="输入标题，20字以内"
-          maxlength="20">
+          maxlength="20"
+        >
       </div>
 
       <div class="content-wrap">
@@ -34,21 +37,23 @@
         <textarea
           v-model="content"
           placeholder="输入要说的话"
-          rows="1"/>
+          rows="1"
+        />
       </div>
     </main>
 
-    <form-switch-item
+    <FormSwitchItem
       v-if="group.allow_feed"
       v-model="feed"
       class="form-switch-item"
-      label="同步至动态"/>
+      label="同步至动态"
+    />
 
-    <choose-group
+    <ChooseGroup
       v-if="!groupId"
       ref="chooseGroup"
-      @change="onGroupChange"/>
-
+      @change="onGroupChange"
+    />
   </div>
 </template>
 

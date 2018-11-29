@@ -1,13 +1,14 @@
 <template>
   <div class="p-group-members">
-    <search-bar v-model="keyword" class="search-bar"/>
+    <SearchBar v-model="keyword" class="search-bar" />
     <h3>选择新圈主</h3>
     <ul>
       <li
         v-for="m in searchList"
         :key="m.id"
-        @click.capture.stop="onChoose(m)">
-        <group-user-item :member="m" />
+        @click.capture.stop="onChoose(m)"
+      >
+        <GroupUserItem :member="m" />
       </li>
     </ul>
   </div>

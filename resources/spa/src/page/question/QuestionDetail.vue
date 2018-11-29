@@ -1,39 +1,39 @@
 <template>
   <div class="p-question-detail">
-
-    <common-header>
+    <CommonHeader>
       问题详情
       <span slot="right">
         <svg class="m-style-svg m-svg-def" @click="onMoreClick">
-          <use xlink:href="#icon-more"/>
+          <use xlink:href="#icon-more" />
         </svg>
       </span>
-    </common-header>
+    </CommonHeader>
 
     <div class="container">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         @onRefresh="handleRefreshAnswers"
-        @onLoadMore="handleLoadMoreAnswers" >
+        @onLoadMore="handleLoadMoreAnswers"
+      >
         <!-- Main -->
         <div class="main">
-
           <!-- Topics -->
           <div class="main-topics">
-            <router-link
+            <RouterLink
               v-for="topic in topics"
-              :to="`/question-topics/${topic.id}`"
               :key="topic.id"
-              class="label" >
+              :to="`/question-topics/${topic.id}`"
+              class="label"
+            >
               {{ topic.name }}
-            </router-link>
+            </RouterLink>
           </div>
 
           <!-- Title -->
           <h3 class="main-title">{{ question.subject }}</h3>
 
           <!-- Body -->
-          <div class="markdown-body" v-html="htmlBody"/>
+          <div class="markdown-body" v-html="htmlBody" />
 
           <!-- watch -->
           <div class="main-watch">
@@ -52,7 +52,8 @@
             <button
               v-if="question.watched"
               class="main-watch-follow active"
-              @click="handleUnwatch" >
+              @click="handleUnwatch"
+            >
               <svg class="m-style-svg follow-btn">
                 <use xlink:href="#icon-yes" />
               </svg>
@@ -61,7 +62,8 @@
             <button
               v-else
               class="main-watch-follow"
-              @click="handleWatch" >
+              @click="handleWatch"
+            >
               <svg class="m-style-svg follow-btn">
                 <use xlink:href="#icon-plus" />
               </svg>
@@ -83,19 +85,20 @@
           <div
             v-if="question.my_answer"
             class="button"
-            @click="gotoMyAnswer">
+            @click="gotoMyAnswer"
+          >
             查看回答
           </div>
           <div
             v-else
             class="button"
-            @click="addAnswer">
+            @click="addAnswer"
+          >
             <svg class="main-button-icon" fill="#666">
               <use xlink:href="#icon-question-add" />
             </svg>
             添加回答
           </div>
-
         </div>
 
         <!-- Amswers -->
@@ -110,12 +113,12 @@
         </div>
 
         <!-- Answer list -->
-        <question-answer-item
+        <QuestionAnswerItem
           v-for="answer in answers"
           :key="answer.id"
-          :answer="answer" />
-
-      </jo-load-more>
+          :answer="answer"
+        />
+      </JoLoadMore>
     </div>
   </div>
 </template>

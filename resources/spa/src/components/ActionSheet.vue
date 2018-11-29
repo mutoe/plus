@@ -1,13 +1,14 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="show"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
+        @click="cancel"
+      />
+    </Transition>
 
-    <transition name="pop">
+    <Transition name="pop">
       <div v-if="show" class="m-acbtn-box">
         <header v-if="tips">
           <h2 class="m-acbtn-title">{{ title }}</h2>
@@ -20,7 +21,8 @@
             :key="btn.text"
             :style="btn.style"
             class="m-acbtn"
-            @click="btn.methods(btn, index)">
+            @click="btn.methods(btn, index)"
+          >
             <a href="javascript:;">{{ btn.text }}</a>
           </li>
         </ul>
@@ -30,7 +32,7 @@
           </li>
         </ul>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 

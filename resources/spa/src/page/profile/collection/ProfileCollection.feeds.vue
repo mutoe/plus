@@ -1,20 +1,22 @@
 <template>
   <div class="p-profile-collection-feeds">
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       style="padding-top: .9rem"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore">
+      @onLoadMore="onLoadMore"
+    >
       <ul>
         <li
           v-for="feed in feedList"
           :key="`clet-${feed.id}`"
-          class="p-profile-collection-feeds-item">
-          <feed-card :feed="feed" :show-footer="false"/>
+          class="p-profile-collection-feeds-item"
+        >
+          <FeedCard :feed="feed" :show-footer="false" />
         </li>
       </ul>
-    </jo-load-more>
+    </JoLoadMore>
   </div>
 </template>
 

@@ -1,22 +1,23 @@
 <template>
   <div :class="`${prefixCls}`">
-
-    <common-header>收到的赞</common-header>
+    <CommonHeader>收到的赞</CommonHeader>
 
     <div :class="`${prefixCls}-container`">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :class="`${prefixCls}-loadmore`"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore" >
+        @onLoadMore="onLoadMore"
+      >
         <div
           v-for="like in likes"
           v-if="like.id"
+          :key="like.id"
           :class="`${prefixCls}-item`"
-          :key="like.id">
-          <component :is="items[like.likeable_type]" :like="like"/>
+        >
+          <Component :is="items[like.likeable_type]" :like="like" />
         </div>
-      </jo-load-more>
+      </JoLoadMore>
     </div>
   </div>
 </template>

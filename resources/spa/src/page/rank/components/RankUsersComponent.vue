@@ -14,8 +14,9 @@
         v-for="user in getShow"
         :key="user.id"
         :class="`${prefixCls}-user m-aln-st`"
-        @click="to(`/users/${user.id}`)">
-        <avatar :class="`${prefixCls}-user-avatar`" :user="user" />
+        @click="to(`/users/${user.id}`)"
+      >
+        <Avatar :class="`${prefixCls}-user-avatar`" :user="user" />
         <p class="m-flex-grow1 m-flex-shrink1 m-text-cut">{{ user.name }}</p>
       </div>
     </div>

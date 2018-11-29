@@ -1,7 +1,7 @@
 <template>
   <div class="c-wallet-detail-item" @click.stop="showDetail">
-    <div class="time" v-html="created_at"/>
-    <div class="title" >{{ detail.body || detail.title }}</div>
+    <div class="time" v-html="created_at" />
+    <div class="title">{{ detail.body || detail.title }}</div>
     <div class="amount">
       <span v-if="detail.state === 0" class="gray">审核中</span>
       <span v-if="detail.state === 1">{{ detail.type > 0 ? '+' : '-' }}{{ (detail.amount / 100).toFixed(2) }}</span>

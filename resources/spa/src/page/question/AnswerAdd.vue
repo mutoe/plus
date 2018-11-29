@@ -1,25 +1,29 @@
 <template>
   <div class="p-answer-add">
-    <common-header class="header">
+    <CommonHeader class="header">
       添加回答
       <span
         slot="right"
         :class="{disabled}"
         class="post-btn"
-        @click="onPost">发布</span>
-    </common-header>
+        @click="onPost"
+      >
+        发布
+      </span>
+    </CommonHeader>
 
     <main>
-      <textarea v-model="content" placeholder="请输入你的回答"/>
+      <textarea v-model="content" placeholder="请输入你的回答" />
     </main>
 
     <footer>
-      <v-switch
+      <VSwitch
         v-model="anonymity"
         type="checkbox"
-        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row">
+        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
+      >
         <slot>匿名回答</slot>
-      </v-switch>
+      </VSwitch>
     </footer>
   </div>
 </template>

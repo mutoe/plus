@@ -4,15 +4,15 @@
     <div class="input-wrap" @click="switchPosition">
       <span :class="{placeholder: !value.label}">{{ value.label || "位置" }}</span>
       <svg v-if="!readonly" class="m-style-svg m-svg-def m-entry-append">
-        <use xlink:href="#icon-arrow-right"/>
+        <use xlink:href="#icon-arrow-right" />
       </svg>
     </div>
 
-    <location
+    <Location
       :show="showPosition"
       :is-component="true"
-      @close="close" />
-
+      @close="close"
+    />
   </section>
 </template>
 

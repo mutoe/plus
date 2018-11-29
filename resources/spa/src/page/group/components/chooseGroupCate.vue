@@ -1,8 +1,7 @@
 <template>
-  <transition name="fade">
+  <Transition name="fade">
     <div v-if="showPage" class="m-box-model m-pos-f p-choose-category m-main">
-
-      <common-header :back="cancel"> {{ title || "圈子分类" }} </common-header>
+      <CommonHeader :back="cancel"> {{ title || "圈子分类" }} </CommonHeader>
 
       <main>
         <ul class="m-cates">
@@ -11,12 +10,14 @@
             v-if="cate.id"
             :key="cate.id"
             class="m-cate"
-            @click="selected(cate)"><span>{{ cate.name }}</span></li>
+            @click="selected(cate)"
+          >
+            <span>{{ cate.name }}</span>
+          </li>
         </ul>
       </main>
-
     </div>
-  </transition>
+  </Transition>
 </template>
 <script>
 export default {

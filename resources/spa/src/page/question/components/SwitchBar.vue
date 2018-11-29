@@ -1,35 +1,37 @@
 <template>
-  <common-header class="c-switch-bar">
+  <CommonHeader class="c-switch-bar">
     <div class="tab">
       <!-- Queation type link. -->
-      <router-link
+      <RouterLink
         :replace="true"
         :exact="true"
         :class="{active: $route.path === '/question'}"
         class="item"
-        to="/question" >
+        to="/question"
+      >
         问答
-      </router-link>
+      </RouterLink>
 
       <!-- Tags type link. -->
-      <router-link
+      <RouterLink
         :replace="true"
         :exact="true"
         :class="{active: $route.path === '/question/topics'}"
         class="item"
-        to="/question/topics" >
+        to="/question/topics"
+      >
         专题
-      </router-link>
+      </RouterLink>
     </div>
 
     <template slot="right">
-      <router-link to="/question/search" >
+      <RouterLink to="/question/search">
         <svg class="m-style-svg m-svg-def search-btn">
           <use xlink:href="#icon-search" />
         </svg>
-      </router-link>
+      </RouterLink>
     </template>
-  </common-header>
+  </CommonHeader>
 </template>
 
 <script>

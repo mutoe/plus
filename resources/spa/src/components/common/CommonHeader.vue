@@ -3,15 +3,15 @@
     <div class="left">
       <slot name="left">
         <svg class="m-style-svg m-svg-def" @click="onBackClick">
-          <use xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back" />
         </svg>
       </slot>
     </div>
     <div class="title">
-      <div class="title-wrap"><slot/></div>
+      <div class="title-wrap"><slot /></div>
     </div>
     <div class="right">
-      <slot name="right"/>
+      <slot name="right" />
     </div>
   </header>
 </template>

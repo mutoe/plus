@@ -1,28 +1,29 @@
 <template>
   <div class="p-profile-collection">
-
-    <common-header>我的收藏</common-header>
+    <CommonHeader>我的收藏</CommonHeader>
 
     <main>
       <div class="m-pos-f m-box m-aln-center m-justify-bet m-sub-nav m-bb1 m-main">
-        <router-link
+        <RouterLink
           replace
           exact
           tag="div"
           exact-active-class="active"
           to="/profile/collection/feeds"
-          class="m-sub-nav-item">
+          class="m-sub-nav-item"
+        >
           <a>动态</a>
-        </router-link>
-        <router-link
+        </RouterLink>
+        <RouterLink
           replace
           exact
           tag="div"
           exact-active-class="active"
           to="/profile/collection/news"
-          class="m-sub-nav-item">
+          class="m-sub-nav-item"
+        >
           <a>资讯</a>
-        </router-link>
+        </RouterLink>
       <!-- <router-link
           replace
           exact
@@ -42,9 +43,9 @@
           <a>帖子</a>
         </router-link> -->
       </div>
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
+      <KeepAlive>
+        <RouterView />
+      </KeepAlive>
     </main>
   </div>
 </template>

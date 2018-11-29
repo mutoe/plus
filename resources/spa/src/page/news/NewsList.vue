@@ -1,42 +1,43 @@
 <template>
   <div class="p-news">
-
-    <common-header class="common-header">
+    <CommonHeader class="common-header">
       资讯
       <template slot="right">
         <svg class="m-style-svg m-svg-def" @click="$router.push({path: '/news/search'})">
-          <use xlink:href="#icon-search"/>
+          <use xlink:href="#icon-search" />
         </svg>
         <svg class="m-style-svg m-svg-def" @click="beforeCreatePost">
-          <use xlink:href="#icon-news-draft"/>
+          <use xlink:href="#icon-news-draft" />
         </svg>
       </template>
-    </common-header>
+    </CommonHeader>
 
-    <news-filter v-if="isLogin" @change="onCateChange"/>
+    <NewsFilter v-if="isLogin" @change="onCateChange" />
 
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :class="{guest: !isLogin}"
       class="loadmore"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore">
-
+      @onLoadMore="onLoadMore"
+    >
       <!-- 资讯顶部 banner 广告位 -->
-      <banner-ad type="news"/>
+      <BannerAd type="news" />
 
-      <template v-for="card in list" >
-        <news-card
+      <template v-for="card in list">
+        <NewsCard
           v-if="card.author"
           :key="`news${card.id}`"
           :current-cate="currentCate"
-          :news="card" />
-        <ad-card
+          :news="card"
+        />
+        <AdCard
           v-if="card.space_id"
           :key="`ad${card.id}`"
-          :ad="card"/>
+          :ad="card"
+        />
       </template>
-    </jo-load-more>
+    </JoLoadMore>
   </div>
 </template>
 

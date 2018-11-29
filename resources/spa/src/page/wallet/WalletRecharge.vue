@@ -1,7 +1,6 @@
 <template>
   <div class="m-box-model p-wallet-recharge m-pos-f">
-
-    <common-header>充值</common-header>
+    <CommonHeader>充值</CommonHeader>
 
     <main class="m-box-model m-aln-center m-justify-center">
       <div class="m-box-model m-lim-width m-main">
@@ -14,7 +13,10 @@
               :style="{ width: `${1 / rechargeItems.length * 100}%` }"
               :class="{ active: ~~amount === ~~item && !customAmount }"
               class="m-pinned-amount-btn"
-              @click="chooseDefaultAmount(item)">{{ item.toFixed(2) }}</button>
+              @click="chooseDefaultAmount(item)"
+            >
+              {{ item.toFixed(2) }}
+            </button>
           </div>
         </div>
         <div class="m-box m-aln-center m-justify-bet m-pinned-row plr20 m-pinned-amount-customize">
@@ -26,7 +28,8 @@
               class="m-text-r"
               pattern="[0-9]*"
               placeholder="输入金额"
-              oninput="value=value.slice(0,8)">
+              oninput="value=value.slice(0,8)"
+            >
             <span>元</span>
           </div>
         </div>
@@ -34,22 +37,25 @@
 
       <div
         class="m-entry"
-        @click="selectRechargeType">
+        @click="selectRechargeType"
+      >
         <span class="m-text-box m-flex-grow1">选择充值方式</span>
         <div class="m-box m-aln-end paid-type">{{ rechargeTypeText }}</div>
         <svg class="m-style-svg m-svg-def m-entry-append">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-right"/>
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-right" />
         </svg>
       </div>
 
       <div
         class="plr20 m-lim-width"
-        style="margin-top: 0.6rem">
+        style="margin-top: 0.6rem"
+      >
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
-          @click="handleOk">
-          <circle-loading v-if="loading" />
+          @click="handleOk"
+        >
+          <CircleLoading v-if="loading" />
           <span v-else>确定</span>
         </button>
       </div>

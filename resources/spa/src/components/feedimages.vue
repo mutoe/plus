@@ -4,14 +4,16 @@
       <li v-for="(img, index) in pics" :key="`pics-${id}-${index}`">
         <div
           :class="['m-pics-box',{ 'long': isLongImg(img) }]"
-          :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;">
-          <async-file :file="img.file" >
+          :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;"
+        >
+          <AsyncFile :file="img.file">
             <div
               slot-scope="props"
               :style="{ backgroundImage: `url(${props.src})` }"
               class="m-pic"
-              @click.stop="handleClick($event, index)" />
-          </async-file>
+              @click.stop="handleClick($event, index)"
+            />
+          </AsyncFile>
         </div>
       </li>
     </ul>

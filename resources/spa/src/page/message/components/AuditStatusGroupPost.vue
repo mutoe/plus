@@ -11,7 +11,8 @@
     <section
       v-else
       class="green"
-      @click="showOperations(audit)">
+      @click="showOperations(audit)"
+    >
       <span class="audit-show">{{ audit.amount }}{{ currencyUnit }} / {{ audit.day }}天</span>
       <span class="audit-operation">审核</span>
     </section>

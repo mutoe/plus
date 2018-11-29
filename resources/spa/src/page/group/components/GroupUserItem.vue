@@ -1,13 +1,13 @@
 <template>
   <div class="c-group-user-item" @click="onUserClick">
     <div class="info">
-      <avatar :user="user" class="avatar"/>
+      <Avatar :user="user" class="avatar" />
       <span class="name m-text-cut">{{ user.name }}</span>
       <span v-if="member.role === 'founder'" class="founder">圈主</span>
       <span v-if="member.role === 'administrator'" class="admin">管理员</span>
     </div>
     <div class="more" @click.stop="handleMore">
-      <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-more"/></svg>
+      <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-more" /></svg>
     </div>
   </div>
 </template>

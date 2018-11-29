@@ -12,7 +12,8 @@
       <section
         v-if="audit.expires_at === null"
         class="green"
-        @click="showOperations(audit)">
+        @click="showOperations(audit)"
+      >
         <span class="audit-show">{{ audit.amount }}分 / {{ audit.day }}天</span>
         <span class="audit-operation">审核</span>
       </section>

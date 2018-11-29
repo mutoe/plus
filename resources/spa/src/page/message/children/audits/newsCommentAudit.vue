@@ -1,24 +1,26 @@
 <template>
   <div :class="`${prefixCls}`">
     <div :class="`${prefixCls}-container`">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :class="`${prefixCls}-loadmore`"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore" >
+        @onLoadMore="onLoadMore"
+      >
         <div
           v-for="audit in audits"
+          :key="`news-comment-${audit.id}`"
           :class="`${prefixCls}-item`"
-          :key="`news-comment-${audit.id}`">
+        >
           <div :class="`${prefixCls}-item-top`">
-            <avatar :user="audit.user"/>
+            <Avatar :user="audit.user" />
             <section class="userInfo">
-              <router-link :class="`${prefixCls}-item-top-link`" :to="`/users/${audit.user_id}`">
+              <RouterLink :class="`${prefixCls}-item-top-link`" :to="`/users/${audit.user_id}`">
                 {{ audit.user.name }}
-              </router-link>
+              </RouterLink>
               <p>{{ audit.created_at | time2tips }}</p>
             </section>
-            <audit-status-news-comment :audit="audit"/>
+            <AuditStatusNewsComment :audit="audit" />
           </div>
           <!--<div :class="`${prefixCls}-item-bottom`" v-if="audit.news">-->
           <!--&lt;!&ndash; <div class="content" @click="goToDetail(audit.news.id)" v-if="audit.comment"> &ndash;&gt;-->
@@ -35,9 +37,9 @@
           <!--该文章已被删除-->
           <!--</div>-->
           <!--</div>-->
-          <audit-content :audit="getAuditContent(audit)"/>
+          <AuditContent :audit="getAuditContent(audit)" />
         </div>
-      </jo-load-more>
+      </JoLoadMore>
     </div>
   </div>
 </template>

@@ -1,43 +1,51 @@
 <template>
   <div class="p-question-search">
-
-    <search-bar v-model="keyword"/>
+    <SearchBar v-model="keyword" />
 
     <nav class="questions-nav">
-      <router-link
+      <RouterLink
         to="/question/search"
         replace
         exact
-        exact-active-class="active">问题</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        问题
+      </RouterLink>
+      <RouterLink
         :to="{path: '/question/search', query: {type: 'topic'}}"
         replace
         exact
-        exact-active-class="active">专题</router-link>
+        exact-active-class="active"
+      >
+        专题
+      </RouterLink>
     </nav>
 
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0"
       style="padding-top: 0.9rem"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore">
+      @onLoadMore="onLoadMore"
+    >
       <template v-if="type === 'question'">
-        <question-card
+        <QuestionCard
           v-for="question in list"
           :key="question.id"
-          :question="question" />
+          :question="question"
+        />
       </template>
       <template v-else>
-        <topic-card
+        <TopicCard
           v-for="topic in list"
           :key="topic.id"
-          :topic="topic" />
+          :topic="topic"
+        />
       </template>
-    </jo-load-more>
+    </JoLoadMore>
 
-    <div v-show="noData" class="m-no-find"/>
+    <div v-show="noData" class="m-no-find" />
   </div>
 </template>
 

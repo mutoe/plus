@@ -7,10 +7,13 @@
         <span
           v-for="tag in value"
           :key="tag.id"
-          class="m-tag">{{ tag.name }}</span>
+          class="m-tag"
+        >
+          {{ tag.name }}
+        </span>
       </div>
       <svg v-if="!readonly" class="m-style-svg m-svg-def m-entry-append">
-        <use xlink:href="#icon-arrow-right"/>
+        <use xlink:href="#icon-arrow-right" />
       </svg>
     </div>
   </section>

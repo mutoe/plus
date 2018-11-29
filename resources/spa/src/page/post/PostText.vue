@@ -1,45 +1,49 @@
 <template>
   <div class="p-post-text m-box-model">
-
-    <common-header :pinned="true">
+    <CommonHeader :pinned="true">
       发布动态
       <template slot="left">
         <a href="javascript:;" @click="beforeGoBack">取消</a>
       </template>
       <template slot="right">
-        <circle-loading v-if="loading" />
+        <CircleLoading v-if="loading" />
         <a
           v-else
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent.stop="beforePost">发布</a>
+          @click.prevent.stop="beforePost"
+        >
+          发布
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
       <div style="height: 100%;">
-        <textarea-input
+        <TextareaInput
           v-model="contentText"
           :maxlength="255"
           :warnlength="200"
           :rows="11"
-          class="textarea-input" />
+          class="textarea-input"
+        />
       </div>
-
     </main>
 
     <footer>
-      <v-switch
+      <VSwitch
         v-if="paycontrol"
         v-model="pinned"
         type="checkbox"
-        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row">
+        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
+      >
         <slot>是否收费</slot>
-      </v-switch>
+      </VSwitch>
       <div
         v-show="pinned"
         style="margin-top: -1px"
-        class="m-box-model m-lim-width m-main" >
+        class="m-box-model m-lim-width m-main"
+      >
         <div class="m-pinned-amount-btns">
           <p class="m-pinned-amount-label">设置文字收费金额</p>
           <div v-if="items.length > 0" class="m-box m-aln-center">
@@ -49,7 +53,10 @@
               :style="{ width: `${1 / items.length * 100}%` }"
               :class="{ active: amount === item }"
               class="m-pinned-amount-btn"
-              @click="chooseDefaultAmount(item)">{{ item }}</button>
+              @click="chooseDefaultAmount(item)"
+            >
+              {{ item }}
+            </button>
           </div>
         </div>
         <div class="m-box m-aln-center m-justify-bet m-bb1 m-bt1 m-pinned-row plr20 m-pinned-amount-customize">
@@ -61,7 +68,8 @@
               pattern="[0-9]*"
               class="m-text-r"
               placeholder="输入金额"
-              oninput="value=value.slice(0, 8)" >
+              oninput="value=value.slice(0, 8)"
+            >
             <span>{{ currencyUnit }}</span>
           </div>
         </div>

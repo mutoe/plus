@@ -10,20 +10,21 @@
         :placeholder="placeholder"
         :readonly="readonly"
         type="text"
-        @input="$emit('input', $event.target.value)">
+        @input="$emit('input', $event.target.value)"
+      >
     </div>
 
     <!-- 多行文本输入框 -->
     <template v-else-if="type === 'textarea'">
-      <textarea-input
+      <TextareaInput
         v-model="textareaContent"
         :placeholder="placeholder"
         :maxlength="maxlength"
         :readonly="readonly"
         :warnlength="warnlength"
-        :label="label"/>
+        :label="label"
+      />
     </template>
-
   </section>
 </template>
 

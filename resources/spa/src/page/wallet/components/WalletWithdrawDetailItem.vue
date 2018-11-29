@@ -1,7 +1,7 @@
 <template>
   <div class="c-wallet-withdraw-detail-item" @click.stop="showDetail">
-    <div class="time" v-html="created_at"/>
-    <div class="title" >{{ typeText }} 账户提现</div>
+    <div class="time" v-html="created_at" />
+    <div class="title">{{ typeText }} 账户提现</div>
     <div class="amount">
       <span v-if="detail.status === 0" class="gray">审核中</span>
       <span v-if="detail.status === 2" class="gray">审核失败</span>

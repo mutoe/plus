@@ -1,65 +1,75 @@
 <template>
   <div class="p-group-create">
-    <common-header>创建圈子
+    <CommonHeader>
+      创建圈子
       <span
         slot="left"
         class="m-send-btn"
-        @click="goBack">取消</span>
+        @click="goBack"
+      >
+        取消
+      </span>
       <template slot="right">
-        <circle-loading v-if="loading" />
+        <CircleLoading v-if="loading" />
         <a
           v-else
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent="handleOk">创建</a>
+          @click.prevent="handleOk"
+        >
+          创建
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <form>
-
-      <form-avatar-item
+      <FormAvatarItem
         v-model="avatar"
         label="上传圈子头像"
         shape="square"
-        type="blob" />
+        type="blob"
+      />
 
-      <form-input-item
+      <FormInputItem
         v-model="form.name"
         label="圈名"
         maxlength="20"
-        placeholder="输入圈名, 20字以内"/>
+        placeholder="输入圈名, 20字以内"
+      />
 
-      <form-select-item
+      <FormSelectItem
         v-model="category.name"
         label="分类"
         placeholder="选择圈子类别"
-        @click="switchCate"/>
+        @click="switchCate"
+      />
 
       <!-- 标签选择 -->
-      <form-tags-item v-model="tags" />
+      <FormTagsItem v-model="tags" />
 
       <!-- 位置选择 -->
-      <form-location-item v-model="location"/>
+      <FormLocationItem v-model="location" />
 
-      <form-input-item
+      <FormInputItem
         v-model="form.summary"
         type="textarea"
         label="简介"
         maxlength="255"
         warnlength="200"
-        placeholder="编辑简介"/>
+        placeholder="编辑简介"
+      />
 
       <hr>
 
-      <form-switch-item v-model="allowFeed" label="帖子同步至动态"/>
+      <FormSwitchItem v-model="allowFeed" label="帖子同步至动态" />
 
-      <form-switch-item v-model="privateMode" label="设置为封闭圈子" />
+      <FormSwitchItem v-model="privateMode" label="设置为封闭圈子" />
 
       <template v-if="privateMode">
         <section class="c-form-item bb">
           <label class="check-label" @click="needPaid = true">
-            <input :value="needPaid" type="checkbox" >
-            <span class="checkmark"/>
+            <input :value="needPaid" type="checkbox">
+            <span class="checkmark" />
             <span>收费入圈</span>
           </label>
           <label class="label-amount">
@@ -67,15 +77,16 @@
               v-model="form.money"
               type="text"
               placeholder="设置收费入圈金额"
-              maxlength="8">
+              maxlength="8"
+            >
             <span>{{ currencyUnit }}</span>
           </label>
         </section>
 
         <section class="c-form-item bb">
           <label class="check-label" @click="needPaid = false">
-            <input :value="!needPaid" type="checkbox" >
-            <span class="checkmark"/>
+            <input :value="!needPaid" type="checkbox">
+            <span class="checkmark" />
             <span>免费入圈</span>
           </label>
         </section>
@@ -83,24 +94,23 @@
 
       <p class="footage">注：用户需经圈管理员同意方可加入封闭圈子</p>
 
-      <form-input-item
+      <FormInputItem
         v-model="form.notice"
         type="textarea"
         label="公告"
         placeholder="选填"
         maxlength="2000"
-        warnlength="200" />
+        warnlength="200"
+      />
 
       <p class="footage">点击创建即代表同意<a href="javascript:;" @click="showProtocol">《ThinkSNS+圈子创建协议》</a></p>
-
     </form>
 
     <!-- 选择圈子分类遮罩层 -->
-    <choose-group-cate ref="chooseGroupCate" @change="onGroupCateChange"/>
+    <ChooseGroupCate ref="chooseGroupCate" @change="onGroupCateChange" />
 
     <!-- 圈子协议遮罩层 -->
-    <group-protocol ref="protocol"/>
-
+    <GroupProtocol ref="protocol" />
   </div>
 </template>
 

@@ -1,10 +1,10 @@
 <template>
-  <transition name="pop">
+  <Transition name="pop">
     <div v-if="visible" class="p-group-protocol">
-      <common-header :back="close">圈子创建协议</common-header>
-      <main class="m-art-body markdown-body" v-html="body"/>
+      <CommonHeader :back="close">圈子创建协议</CommonHeader>
+      <main class="m-art-body markdown-body" v-html="body" />
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

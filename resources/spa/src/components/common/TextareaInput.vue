@@ -9,7 +9,8 @@
       :readonly="readonly"
       :rows="rows ? rows : 1"
       class="c-textarea-input"
-      @input="$emit('input', $event.target.value)" />
+      @input="$emit('input', $event.target.value)"
+    />
     <span v-show="maxlength && value.length > warnlength" class="word-length">{{ value.length }} / {{ maxlength }}</span>
   </div>
 </template>

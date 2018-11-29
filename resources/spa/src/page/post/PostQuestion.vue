@@ -1,15 +1,15 @@
 <template>
   <div class="p-post-question">
-
-    <common-header>
+    <CommonHeader>
       {{ title }}
       <template slot="left">
         <a v-if="step === 1" @click.prevent="cancel">取消</a>
         <svg
           v-else
           class="m-style-svg m-svg-def"
-          @click="preStep">
-          <use xlink:href="#icon-back"/>
+          @click="preStep"
+        >
+          <use xlink:href="#icon-back" />
         </svg>
       </template>
       <template slot="right">
@@ -17,47 +17,58 @@
           v-if="step !== 3"
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent="nextStep">下一步</a>
+          @click.prevent="nextStep"
+        >
+          下一步
+        </a>
         <a
           v-if="step === 3 && selectedTops.length > 0"
           class="m-send-btn"
-          @click="beforePost">发布</a>
+          @click="beforePost"
+        >
+          发布
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
-    <transition-group
+    <TransitionGroup
       :enter-active-class="animated.enterClass"
       :leave-active-class="animated.leaveClass"
       tag="main"
       class="m-box-model m-flex-grow1 m-flex-shrink1 p-post-question-main"
-      style="padding-top: 0.9rem;">
+      style="padding-top: 0.9rem;"
+    >
       <div
         v-show="step === 1"
         key="step1"
-        class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-main">
+        class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-main"
+      >
         <div class="m-box m-lim-width question-title">
-          <textarea-input
+          <TextareaInput
             v-model="question.title"
             :maxlength="51"
             :warnlength="30"
-            placeholder="请输入问题并以问号结尾"/>
+            placeholder="请输入问题并以问号结尾"
+          />
         </div>
         <ul class="m-box-model m-lim-width question-list">
-          <router-link
+          <RouterLink
             v-for="q in questions"
             v-if="q.id"
             :key="q.id"
             :to="`/questions/${q.id}`"
-            tag="li">
+            tag="li"
+          >
             {{ q.subject }}
-          </router-link>
+          </RouterLink>
         </ul>
       </div>
       <div
         v-show="step === 2"
         key="step2"
         class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-main"
-        @click="autoFoucs">
+        @click="autoFoucs"
+      >
         <div class="m-rich-box">
           <span v-if="showPlaceholder" class="placeholder">详细描述你的问题，有助于受到准确的回答</span>
           <div
@@ -66,43 +77,48 @@
             class="m-editor"
             contenteditable="true"
             @blur="onBlur"
-            @input="setContent"/>
+            @input="setContent"
+          />
         </div>
-        <v-switch v-model="question.anonymity" class="anonymity-switch">
+        <VSwitch v-model="question.anonymity" class="anonymity-switch">
           <slot>匿名提问</slot>
-        </v-switch>
+        </VSwitch>
       </div>
       <div
         v-show="step === 3"
         key="step3"
-        class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-main">
+        class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-main"
+      >
         <ul class="m-flex-grow0 m-flex-shrink0 m-topics ml">
           <li
             v-for="topic in selectedTops"
             :key="`selected-${topic.id}`"
             class="m-box m-aln-center m-topic"
-            @click="selectedTopic(topic)">
+            @click="selectedTopic(topic)"
+          >
             <span>{{ topic.name }}</span>
             <svg class="m-style-svg m-svg-def">
-              <use xlink:href="#icon-clean"/>
+              <use xlink:href="#icon-clean" />
             </svg>
           </li>
         </ul>
         <div class="m-box m-aln-center m-flex-grow0 m-shrink0 m-bb1 m-lim-width question-title step3">
           <svg class="m-style-svg m-svg-def" style="fill: #ccc; margin-right: 0.3rem">
-            <use xlink:href="#icon-search"/>
+            <use xlink:href="#icon-search" />
           </svg>
           <input
             v-model="topicKeyWord"
             type="search"
             placeholder="搜索专题"
-            @input="inputTopicKeyWord">
+            @input="inputTopicKeyWord"
+          >
           <svg
             v-show="topicKeyWord.length > 0"
             class="m-style-svg m-svg-def"
             style="fill: #ccc; margin-right: 0.3rem"
-            @click="topicKeyWord = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="topicKeyWord = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div class="m-flex-grow1 m-flex-shrink1 m-topics">
@@ -110,7 +126,8 @@
             v-for="topic in topics"
             :key="topic.id"
             class="m-box m-aln-center m-topic m-bb1"
-            @click="selectedTopic(topic)" >
+            @click="selectedTopic(topic)"
+          >
             <img :src="getAvatar(topic.avatar)" class="m-flex-grow0 m-flex-shrink0 m-topic-avatar">
             <section class="m-flex-grow1 m-flex-shrink1 m-box-model m-ovxh">
               <h3>{{ topic.name }}</h3>
@@ -119,7 +136,7 @@
           </div>
         </div>
       </div>
-    </transition-group>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -172,16 +189,22 @@ export default {
       }
     },
     disabled () {
+      let result
       switch (this.step) {
         case 1:
-          return !this.question.title
+          result = !this.question.title
+          break
         case 2:
-          return !this.question.body
+          result = !this.question.body
+          break
         case 3:
-          return !0
+          result = !0
+          break
         case 4:
-          return !0
+          result = !0
+          break
       }
+      return result
     },
   },
   watch: {

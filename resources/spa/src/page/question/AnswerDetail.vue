@@ -1,5 +1,5 @@
 <template>
-  <article-card
+  <ArticleCard
     v-if="answer.id"
     :liked="liked"
     :loading="loading"
@@ -7,24 +7,25 @@
     @on-like="likeAnswer"
     @on-share="shareAnswer"
     @on-more="moreAction"
-    @on-comment="commentAnswer">
-
-    <common-header slot="head">{{ answer.question.subject }}</common-header>
+    @on-comment="commentAnswer"
+  >
+    <CommonHeader slot="head">{{ answer.question.subject }}</CommonHeader>
 
     <main class="m-flex-shrink1 m-flex-grow1 m-art m-main">
       <!-- 回答者信息 -->
       <div class="user-info-wrap">
-        <avatar :anonymity="answer.anonymity" :user="user" />
+        <Avatar :anonymity="answer.anonymity" :user="user" />
         <div class="user-info">
           <h2 v-if="isMine || !answer.anonymity" class="m-text-cut">{{ user.name }} <span v-if="answer.anonymity" class="gray">(匿名)</span></h2>
           <h2 v-else class="m-text-cut">匿名用户</h2>
           <p v-if="isMine || !answer.anonymity" class="m-text-cut">{{ user.bio || "这家伙很懒,什么也没留下" }}</p>
         </div>
-        <template v-if="!isMine && !answer.anonymity" :class="{ primary: user.follower }" >
+        <template v-if="!isMine && !answer.anonymity" :class="{ primary: user.follower }">
           <span
             v-if="!user.follower"
             class="actived"
-            @click="followUser(true)">
+            @click="followUser(true)"
+          >
             <svg class="m-style-svg follow-btn">
               <use xlink:href="#icon-plus" />
             </svg>
@@ -39,26 +40,28 @@
         </template>
       </div>
       <div class="m-art-body">
-        <p class="m-text-box markdown-body" v-html="formatBody(content)"/>
+        <p class="m-text-box markdown-body" v-html="formatBody(content)" />
       </div>
       <div class="m-box m-aln-center m-justify-bet m-art-foot">
-        <router-link
+        <RouterLink
           class="m-flex-grow1 m-flex-shrink1 m-box m-aln-center m-art-like-list"
           tag="div"
           to="likers"
-          append>
+          append
+        >
           <ul class="m-box m-flex-grow0 m-flex-shrink0 mr10">
             <li
-              v-for="({user = {}, id}, index) in likes.slice(0, 5)"
+              v-for="({userItem = {}, id}, index) in likes.slice(0, 5)"
               :key="id"
               :style="{ zIndex: 5-index }"
-              :class="`m-avatar-box-${user.sex}`"
-              class="m-avatar-box tiny">
-              <img :src="getAvatar(user.avatar)">
+              :class="`m-avatar-box-${userItem.sex}`"
+              class="m-avatar-box tiny"
+            >
+              <img :src="getAvatar(userItem.avatar)">
             </li>
           </ul>
           <span v-if="likeCount">{{ likeCount | formatNum }} 人点赞</span>
-        </router-link>
+        </RouterLink>
         <div class="m-box-model m-aln-end m-art-info">
           <span>发布于{{ time | time2tips }}</span>
           <span>{{ viewsCount | formatNum }}浏览</span>
@@ -70,24 +73,26 @@
           <a href="javascript:;">{{ reward.count | formatNum }}</a> 人打赏，共
           <a href="javascript:;">{{ ~~reward.amount }}</a> {{ currencyUnit }}
         </p>
-        <router-link
+        <RouterLink
           tag="ul"
           to="rewarders"
           append
-          class="m-box m-aln-center m-art-rew-list">
+          class="m-box m-aln-center m-art-rew-list"
+        >
           <li
             v-for="rew in rewardList"
             :key="rew.id"
             :class="`m-avatar-box-${rew.user.sex}`"
-            class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny">
+            class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny"
+          >
             <img :src="getAvatar(rew.user.avatar)">
           </li>
           <li v-if="rewardList.length > 0" class="m-box m-aln-center">
             <svg class="m-style-svg m-svg-def" style="fill:#bfbfbf">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </li>
-        </router-link>
+        </RouterLink>
       </div>
     </main>
     <!-- 评论列表 -->
@@ -95,28 +100,31 @@
       <ul class="m-box m-aln-center m-art-comments-tabs">
         <li>{{ commentCount | formatNum }}条评论</li>
       </ul>
-      <comment-item
+      <CommentItem
         v-for="(comment) in pinnedCom"
-        :pinned="true"
         :key="`pinned-comment-${comment.id}`"
+        :pinned="true"
         :comment="comment"
-        @click="replyComment" />
-      <comment-item
+        @click="replyComment"
+      />
+      <CommentItem
         v-for="(comment) in comments"
         :key="comment.id"
         :comment="comment"
-        @click="replyComment" />
+        @click="replyComment"
+      />
       <div class="m-box m-aln-center m-justify-center load-more-box">
         <span v-if="noMoreCom" class="load-more-ph">---没有更多---</span>
         <span
           v-else
           class="load-more-btn"
-          @click.stop="fetchAnswerComments(maxComId)">
+          @click.stop="fetchAnswerComments(maxComId)"
+        >
           {{ fetchComing ? "加载中..." : "点击加载更多" }}
         </span>
       </div>
     </div>
-  </article-card>
+  </ArticleCard>
 </template>
 
 <script>

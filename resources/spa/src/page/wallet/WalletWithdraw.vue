@@ -1,15 +1,15 @@
 <template lang="html">
   <div class="p-wallet-withdraw">
-
-    <common-header>
+    <CommonHeader>
       提现
-      <router-link
+      <RouterLink
         slot="right"
         class="withdraw-detail"
-        to="/wallet/withdraw/detail">
+        to="/wallet/withdraw/detail"
+      >
         提现明细
-      </router-link>
-    </common-header>
+      </RouterLink>
+    </CommonHeader>
 
     <main class="m-box-model m-aln-center m-justify-center">
       <div class="m-box-model m-lim-width m-main">
@@ -22,7 +22,8 @@
               class="m-text-r"
               pattern="[0-9]*"
               placeholder="输入金额"
-              oninput="value=value.slice(0,8)">
+              oninput="value=value.slice(0,8)"
+            >
             <span>元</span>
           </div>
         </div>
@@ -44,7 +45,8 @@
               v-model="account"
               type="text"
               class="m-text-r"
-              placeholder="输入提现账户">
+              placeholder="输入提现账户"
+            >
           </div>
         </div>
       </div>
@@ -53,8 +55,9 @@
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
-          @click="handleOk">
-          <circle-loading v-if="loading" />
+          @click="handleOk"
+        >
+          <CircleLoading v-if="loading" />
           <span v-else>确定</span>
         </button>
       </div>

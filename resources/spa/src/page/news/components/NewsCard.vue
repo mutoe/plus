@@ -1,8 +1,9 @@
 <template>
-  <router-link
+  <RouterLink
     :to="`/news/${news.id}`"
     tag="div"
-    class="news-card">
+    class="news-card"
+  >
     <section class="body">
       <h2>{{ title }}</h2>
       <p>
@@ -15,7 +16,7 @@
     <div v-if="image" class="poster">
       <img :src="image">
     </div>
-  </router-link>
+  </RouterLink>
 </template>
 
 <script>

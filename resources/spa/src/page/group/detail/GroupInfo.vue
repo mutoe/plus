@@ -1,49 +1,54 @@
 <template>
   <div class="p-group-info">
-    <common-header>详细信息</common-header>
+    <CommonHeader>详细信息</CommonHeader>
 
     <form>
-      <form-avatar-item
+      <FormAvatarItem
         v-model="group.avatar"
         :readonly="true"
         label="圈子头像"
         shape="square"
-        type="storage" />
+        type="storage"
+      />
 
-      <form-input-item
+      <FormInputItem
         v-model="group.name"
         :readonly="true"
-        label="圈名"/>
+        label="圈名"
+      />
 
-      <form-input-item
+      <FormInputItem
         v-model="category.name"
         :readonly="true"
-        label="分类"/>
+        label="分类"
+      />
 
       <!-- 标签选择 -->
-      <form-tags-item v-model="group.tags" :readonly="true" />
+      <FormTagsItem v-model="group.tags" :readonly="true" />
 
       <!-- 位置选择 -->
-      <form-input-item
+      <FormInputItem
         v-model="location"
         :readonly="true"
         type="textarea"
-        label="位置"/>
+        label="位置"
+      />
 
-      <form-input-item
+      <FormInputItem
         v-model="group.summary"
         :readonly="true"
         type="textarea"
-        label="简介"/>
+        label="简介"
+      />
 
       <hr>
 
-      <form-input-item
+      <FormInputItem
         v-model="group.notice"
         :readonly="true"
         type="textarea"
-        label="公告"/>
-
+        label="公告"
+      />
     </form>
   </div>
 </template>

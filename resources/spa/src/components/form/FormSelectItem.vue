@@ -4,7 +4,7 @@
     <div class="input-wrap" @click="onClick">
       <span :class="{placeholder: value.length === 0}">{{ value || placeholder }}</span>
       <svg v-if="!readonly" class="m-style-svg m-svg-def m-entry-append">
-        <use xlink:href="#icon-arrow-right"/>
+        <use xlink:href="#icon-arrow-right" />
       </svg>
     </div>
   </section>

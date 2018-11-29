@@ -1,15 +1,13 @@
 <template>
-  <transition name="toast">
-
+  <Transition name="toast">
     <div v-if="show" class="c-popup-dialog">
       <div class="panel">
-        <header v-if="title" v-text="title"/>
-        <main v-html="content"/>
-        <footer @click="onConfirm" v-text="confirmText"/>
+        <header v-if="title" v-text="title" />
+        <main v-html="content" />
+        <footer @click="onConfirm" v-text="confirmText" />
       </div>
     </div>
-
-  </transition>
+  </Transition>
 </template>
 
 <script>

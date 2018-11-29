@@ -2,31 +2,39 @@
   <div class="module-questions-topics">
     <!-- navs. -->
     <nav class="nav">
-      <router-link
+      <RouterLink
         to="/question/topics"
         replace
         exact
-        exact-active-class="active">全部专题</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        全部专题
+      </RouterLink>
+      <RouterLink
         :to="{ path: '/question/topics', query: { type: 'follow' } }"
         replace
         exact
-        exact-active-class="active">我关注的</router-link>
+        exact-active-class="active"
+      >
+        我关注的
+      </RouterLink>
     </nav>
 
     <!-- Main -->
-    <load-more
+    <LoadMore
       ref="LoadQuestionTopicsContainer"
       :on-refresh="handleRefresh"
-      :on-load-more="handleLoadMore" >
-      <topic-card
+      :on-load-more="handleLoadMore"
+    >
+      <TopicCard
         v-for="topic in topics"
         :key="topic.id"
         :topic="topic"
         :type="type"
         @follow="handleFollow"
-        @unfollow="handleUnfollow"/>
-    </load-more>
+        @unfollow="handleUnfollow"
+      />
+    </LoadMore>
   </div>
 </template>
 

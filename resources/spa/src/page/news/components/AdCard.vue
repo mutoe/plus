@@ -1,7 +1,8 @@
 <template>
   <a
     :href="ad.data.link"
-    class="news-card">
+    class="news-card"
+  >
     <section class="body">
       <h2>{{ ad.data.title }}</h2>
       <p>
@@ -11,7 +12,8 @@
     </section>
     <div
       v-if="ad.data.image"
-      class="poster">
+      class="poster"
+    >
       <img :src="ad.data.image">
     </div>
   </a>

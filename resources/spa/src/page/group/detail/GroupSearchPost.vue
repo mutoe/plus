@@ -1,24 +1,24 @@
 <template>
   <div class="p-search-post">
+    <SearchBar v-model="keywordOrigin" position="fixed" />
 
-    <search-bar v-model="keywordOrigin" position="fixed"/>
-
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0"
       class="lodemore"
       @onRefresh="onSearchInput"
-      @onLoadMore="onLoadMore">
-      <group-feed-card
+      @onLoadMore="onLoadMore"
+    >
+      <GroupFeedCard
         v-for="post in list"
         :key="post.id"
-        :feed="post"/>
-    </jo-load-more>
+        :feed="post"
+      />
+    </JoLoadMore>
 
     <p v-show="loading" class="load-more-ph m-text-c mt10">正在搜索...</p>
-    <div v-show="noResult && !loading && !list.length" class="m-no-find"/>
-
+    <div v-show="noResult && !loading && !list.length" class="m-no-find" />
   </div>
 </template>
 

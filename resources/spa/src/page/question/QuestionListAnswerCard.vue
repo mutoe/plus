@@ -2,12 +2,14 @@
   <div
     v-if="answer"
     class="module-question-list-answer-card"
-    @click="gotoQuestionDetail">
+    @click="gotoQuestionDetail"
+  >
     <!-- User avatar. -->
-    <avatar
+    <Avatar
       :anonymity="anonymity"
       :user="user"
-      size="nano" />
+      size="nano"
+    />
     <!-- Body -->
     {{ showUsername }} <span v-if="isMine && anonymity" class="gray">(匿名)</span>：{{ body }}
   </div>

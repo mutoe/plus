@@ -1,14 +1,14 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="m-box-model m-pos-f p-signin">
-
-      <common-header>
+      <CommonHeader>
         登录
-        <span slot="left"/>
-        <router-link slot="right" to="/signup">注册</router-link>
-      </common-header>
+        <span slot="left" />
+        <RouterLink slot="right" to="/signup">注册</RouterLink>
+      </CommonHeader>
 
       <main class="m-box-model m-flex-grow1">
         <div class="m-form-row m-main">
@@ -18,13 +18,15 @@
               id="account"
               v-model="account"
               type="text"
-              placeholder="用户名/手机号/邮箱">
+              placeholder="用户名/手机号/邮箱"
+            >
           </div>
           <svg
             v-show="account.length > 0"
             class="m-style-svg m-svg-def"
-            @click="account = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="account = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div class="m-form-row m-main">
@@ -36,7 +38,8 @@
               v-model="password"
               type="text"
               maxlength="16"
-              placeholder="输入6位以上登录密码">
+              placeholder="输入6位以上登录密码"
+            >
             <input
               v-else
               id="password"
@@ -44,10 +47,11 @@
               maxlength="16"
               type="password"
               placeholder="输入6位以上登录密码"
-              @keyup.enter="signinByAccount">
+              @keyup.enter="signinByAccount"
+            >
           </div>
           <svg class="m-style-svg m-svg-def" @click="eye = !eye">
-            <use :xlink:href="eye ? '#icon-eye-open' : '#icon-eye-close'"/>
+            <use :xlink:href="eye ? '#icon-eye-open' : '#icon-eye-close'" />
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -57,21 +61,22 @@
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
-            @click="signinByAccount">
-            <circle-loading v-if="loading" />
+            @click="signinByAccount"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>登录</span>
           </button>
         </div>
         <div class="m-box m-aln-center m-justify-bet other-link">
-          <router-link tag="span" to="/feeds?type=hot">
+          <RouterLink tag="span" to="/feeds?type=hot">
             <a>不登录，先随便逛逛</a>
-          </router-link>
-          <router-link tag="span" to="/forgot">
+          </RouterLink>
+          <RouterLink tag="span" to="/forgot">
             <a>忘记密码</a>
-          </router-link>
+          </RouterLink>
         </div>
         <div class="dynamic-signin">
-          <router-link to="/signin/dynamic">使用手机号一键登陆</router-link>
+          <RouterLink to="/signin/dynamic">使用手机号一键登陆</RouterLink>
         </div>
       </main>
 
@@ -88,10 +93,11 @@
           </div> -->
           <div
             class="m-box m-fd-col m-aln-center m-tr-item"
-            @click="signinByWechat">
+            @click="signinByWechat"
+          >
             <div class="m-tr-item-icon">
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-login-wechat"/>
+                <use xlink:href="#icon-login-wechat" />
               </svg>
             </div>
             <span>微信</span>
@@ -99,7 +105,7 @@
         </div>
       </footer>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

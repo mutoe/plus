@@ -6,8 +6,9 @@
         <input
           v-model="currentValue"
           :value="value"
-          type="checkbox" >
-        <div class="box"/>
+          type="checkbox"
+        >
+        <div class="box" />
       </label>
     </div>
   </section>

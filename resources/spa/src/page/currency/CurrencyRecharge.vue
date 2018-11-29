@@ -1,12 +1,11 @@
 <template>
   <div class="p-currency-recharge">
-
-    <common-header class="header">
+    <CommonHeader class="header">
       充值{{ currencyUnit }}
-      <router-link slot="right" to="/currency/detail" >
+      <RouterLink slot="right" to="/currency/detail">
         充值记录
-      </router-link>
-    </common-header>
+      </RouterLink>
+    </CommonHeader>
 
     <section class="m-currency-panel">
       <h3>充值比率</h3>
@@ -23,7 +22,8 @@
               :key="item"
               :class="{ active: ~~amount === ~~item && !customAmount }"
               class="m-pinned-amount-btn"
-              @click="chooseDefaultAmount(item)" >
+              @click="chooseDefaultAmount(item)"
+            >
               {{ Number(item/100).toFixed(2) }}
             </button>
           </div>
@@ -37,7 +37,8 @@
               class="m-text-r"
               pattern="[0-9]*"
               placeholder="输入金额"
-              oninput="value=value.slice(0,8)" >
+              oninput="value=value.slice(0,8)"
+            >
             <span>元</span>
           </div>
         </div>
@@ -51,12 +52,13 @@
         </svg>
       </div>
 
-      <div class="plr20 m-lim-width submit-btn-wrap" style="margin-top: 0.6rem" >
+      <div class="plr20 m-lim-width submit-btn-wrap" style="margin-top: 0.6rem">
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
-          @click="beforeSubmit" >
-          <circle-loading v-if="loading"/>
+          @click="beforeSubmit"
+        >
+          <CircleLoading v-if="loading" />
           <span v-else>确定</span>
         </button>
       </div>
@@ -70,10 +72,9 @@
         </p>
       </footer>
 
-      <popup-dialog ref="dialog" title="用户充值协议" >
+      <PopupDialog ref="dialog" title="用户充值协议">
         <p v-html="rule" />
-      </popup-dialog>
-
+      </PopupDialog>
     </main>
   </div>
 </template>

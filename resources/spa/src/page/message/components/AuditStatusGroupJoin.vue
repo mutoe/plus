@@ -1,12 +1,15 @@
 <template>
   <div class="msgList-item" @click="showOperations(audit)">
     <div class="msgList-item-top">
-      <avatar :user="audit.user" />
+      <Avatar :user="audit.user" />
 
       <section class="userInfo">
-        <router-link
+        <RouterLink
           :to="`/users/${audit.user_id}`"
-          class="msgList-item-top-link">{{ audit.user.name }}</router-link>
+          class="msgList-item-top-link"
+        >
+          {{ audit.user.name }}
+        </RouterLink>
         <p>{{ audit.created_at | time2tips }}</p>
       </section>
 
@@ -15,7 +18,7 @@
           <section v-if="audit.status === 1" class="gray">同意</section>
           <section v-else class="red">驳回</section>
         </section>
-        <section v-else class="green" >
+        <section v-else class="green">
           <span class="audit-operation">审核</span>
         </section>
       </div>
@@ -23,7 +26,7 @@
 
     <p class="tips">申请加入你创建的圈子<span class="gray">"{{ group.name }}"</span>, 请及时审核。</p>
 
-    <audit-content :audit="getAuditContent(audit)" />
+    <AuditContent :audit="getAuditContent(audit)" />
   </div>
 </template>
 

@@ -1,13 +1,13 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="m-box-model m-pos-f p-signin-dynamic">
-
-      <common-header>
+      <CommonHeader>
         一键登录
-        <router-link slot="right" to="/signup">注册</router-link>
-      </common-header>
+        <RouterLink slot="right" to="/signup">注册</RouterLink>
+      </CommonHeader>
 
       <main class="m-box-model m-flex-grow1">
         <div class="m-form-row m-main">
@@ -18,13 +18,15 @@
               v-model="account"
               maxlength="11"
               type="tel"
-              placeholder="输入11位手机号">
+              placeholder="输入11位手机号"
+            >
           </div>
           <svg
             v-show="account.length > 0"
             class="m-style-svg m-svg-def"
-            @click="account = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="account = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div class="m-form-row m-main">
@@ -36,7 +38,8 @@
               maxlength="6"
               type="number"
               placeholder="输入4-6位验证码"
-              @keyup.enter="signinByAccount">
+              @keyup.enter="signinByAccount"
+            >
           </div>
           <span :class="[{ disabledCode }, 'get-code']" @click="beforeGetCode">{{ codeText }}</span>
         </div>
@@ -47,8 +50,9 @@
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
-            @click="isRegister ? signupByCode() : signinByCode()">
-            <circle-loading v-if="loading" />
+            @click="isRegister ? signupByCode() : signinByCode()"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>登录</span>
           </button>
         </div>
@@ -57,9 +61,8 @@
           <a @click="goBack">使用账号密码登陆</a>
         </div>
       </main>
-
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
   <div class="p-group-members">
-    <search-bar v-model="keyword" class="search-bar"/>
+    <SearchBar v-model="keyword" class="search-bar" />
 
     <template v-if="keyword.length">
       <ul>
         <li v-for="m in searchList" :key="m.id">
-          <group-user-item :member="m" @more="onMoreClick(m)" />
+          <GroupUserItem :member="m" @more="onMoreClick(m)" />
         </li>
       </ul>
     </template>
@@ -13,18 +13,17 @@
       <h3>圈管理({{ administrator.length }})</h3>
       <ul>
         <li v-for="m in administrator" :key="m.id">
-          <group-user-item :member="m" @more="onMoreClick(m)" />
+          <GroupUserItem :member="m" @more="onMoreClick(m)" />
         </li>
       </ul>
 
       <h3>成员({{ member.length }})</h3>
       <ul>
         <li v-for="m in member" :key="m.id">
-          <group-user-item :member="m" @more="onMoreClick(m)" />
+          <GroupUserItem :member="m" @more="onMoreClick(m)" />
         </li>
       </ul>
     </template>
-
   </div>
 </template>
 

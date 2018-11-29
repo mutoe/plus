@@ -1,18 +1,17 @@
 <template>
   <div class="p-audit-list">
-
-    <common-header>
-      <diy-select
-        :options="options"
+    <CommonHeader>
+      <DiySelect
         v-model="currentType"
+        :options="options"
         placeholder="动态评论置顶"
-        style="margin-top: -1px"/>
-    </common-header>
+        style="margin-top: -1px"
+      />
+    </CommonHeader>
 
     <div class="container">
-      <router-view/>
+      <RouterView />
     </div>
-
   </div>
 </template>
 

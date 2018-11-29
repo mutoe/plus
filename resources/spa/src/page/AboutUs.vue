@@ -1,10 +1,9 @@
 <template>
   <div class="about-us">
-
-    <common-header>关于我们</common-header>
+    <CommonHeader>关于我们</CommonHeader>
 
     <main>
-      <div class="content markdown-body" v-html="body"/>
+      <div class="content markdown-body" v-html="body" />
     </main>
   </div>
 </template>

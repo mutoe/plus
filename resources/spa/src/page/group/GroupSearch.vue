@@ -1,46 +1,48 @@
 <template>
   <div class="p-group-search">
+    <SearchBar v-model="keywordOrigin" class="search-bar" />
 
-    <search-bar v-model="keywordOrigin" class="search-bar"/>
-
-    <nav-tab
+    <NavTab
       :nav="nav"
       :route="{name: 'groupSearch', query: 'type'}"
-      class="nav-tab"/>
+      class="nav-tab"
+    />
 
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0 "
       class="loadmore"
       @onRefresh="onSearchInput"
-      @onLoadMore="onLoadMore">
-
+      @onLoadMore="onLoadMore"
+    >
       <template v-if="type === 'posts'">
-        <group-feed-card
+        <GroupFeedCard
           v-for="post in list"
           :key="post.id"
-          :feed="post"/>
+          :feed="post"
+        />
       </template>
 
       <template v-else-if="type === 'groups' && keyword.length > 0">
-        <group-item
+        <GroupItem
           v-for="group in list"
           :key="group.id"
-          :group="group"/>
+          :group="group"
+        />
       </template>
 
       <template v-else>
-        <group-item
+        <GroupItem
           v-for="group in recommendList"
           :key="group.id"
-          :group="group"/>
+          :group="group"
+        />
       </template>
-
-    </jo-load-more>
+    </JoLoadMore>
 
     <p v-show="loading" class="load-more-ph m-text-c mt10">正在搜索...</p>
-    <template v-if="noResult &&!loading && keyword && !list.length" >
+    <template v-if="noResult &&!loading && keyword && !list.length">
       <div v-if="type === 'posts'" class="no-groups">
         <p> 未找到相关帖子～</p>
         <button @click="$router.push({name: 'groupCreatePost'})">去发帖</button>
@@ -50,7 +52,6 @@
         <button @click="$router.push({name: 'groupCreate'})">创建圈子</button>
       </div>
     </template>
-
   </div>
 </template>
 

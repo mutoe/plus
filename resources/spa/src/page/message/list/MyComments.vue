@@ -1,21 +1,22 @@
 <template>
   <div class="msgList">
-
-    <common-header>收到的评论</common-header>
+    <CommonHeader>收到的评论</CommonHeader>
 
     <div class="msgList-container">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         class="msgList-loadmore"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
+        @onLoadMore="onLoadMore"
+      >
         <div
           v-for="comment in comments"
           :key="`comment-key-${comment.id}`"
-          class="msgList-item">
-          <component :is="items[comment.commentable_type]" :comment="comment"/>
+          class="msgList-item"
+        >
+          <Component :is="items[comment.commentable_type]" :comment="comment" />
         </div>
-      </jo-load-more>
+      </JoLoadMore>
     </div>
   </div>
 </template>

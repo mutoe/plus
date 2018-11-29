@@ -1,14 +1,14 @@
 <template lang="html">
   <div class="p-currency-withdraw">
-
-    <common-header class="header">
+    <CommonHeader class="header">
       {{ currencyUnit }}提取
-      <router-link
+      <RouterLink
         slot="right"
-        :to="{path: '/currency/detail', query: { action: 'cash' } }">
+        :to="{path: '/currency/detail', query: { action: 'cash' } }"
+      >
         提取记录
-      </router-link>
-    </common-header>
+      </RouterLink>
+    </CommonHeader>
 
     <section class="m-currency-panel">
       <h3>{{ currencyUnit }}兑换余额</h3>
@@ -23,17 +23,20 @@
           v-model="amount"
           :placeholder="`请至少提取${cash.min}${currencyUnit}`"
           type="number"
-          oninput="value = value.slice(0,8)">
+          oninput="value = value.slice(0,8)"
+        >
       </div>
 
       <div
         class="m-lim-width"
-        style="margin-top: 0.6rem">
+        style="margin-top: 0.6rem"
+      >
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
-          @click="handleOk">
-          <circle-loading v-if="loading"/>
+          @click="handleOk"
+        >
+          <CircleLoading v-if="loading" />
           <span v-else>确定</span>
         </button>
       </div>
@@ -48,12 +51,12 @@
       </p>
     </footer>
 
-    <popup-dialog
+    <PopupDialog
       ref="dialog"
-      :title="`${currencyUnit}提取规则`">
-      <p v-html="rule"/>
-    </popup-dialog>
-
+      :title="`${currencyUnit}提取规则`"
+    >
+      <p v-html="rule" />
+    </PopupDialog>
   </div>
 </template>
 

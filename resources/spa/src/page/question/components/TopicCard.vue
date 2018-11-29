@@ -1,36 +1,40 @@
 <template>
   <div class="topic-card">
-    <router-link
+    <RouterLink
       :src="avatar"
       :to="`/question-topics/${topic.id}`"
       tag="img"
-      class="topic-image" />
-    <router-link
+      class="topic-image"
+    />
+    <RouterLink
       :to="`/question-topics/${topic.id}`"
       tag="a"
-      class="title">
+      class="title"
+    >
       <div class="topic m-text-cut">{{ topic.name }}</div>
       <div class="label">
         <span>{{ topic.follows_count }}</span>&nbsp;关注
         ·
         <span>{{ topic.questions_count }}</span>&nbsp;问题
       </div>
-    </router-link>
+    </RouterLink>
     <button
       v-if="topic.has_follow || type === 'follow'"
       class="follow active"
-      @click="handleUnfollow(topic)">
+      @click="handleUnfollow(topic)"
+    >
       <svg class="m-style-svg m-svg-small">
-        <use xlink:href="#icon-yes"/>
+        <use xlink:href="#icon-yes" />
       </svg>
       已关注
     </button>
     <button
       v-else
       class="follow"
-      @click="handleFollow(topic)">
+      @click="handleFollow(topic)"
+    >
       <svg class="m-style-svg m-svg-small">
-        <use xlink:href="#icon-plus"/>
+        <use xlink:href="#icon-plus" />
       </svg>
       关注
     </button>

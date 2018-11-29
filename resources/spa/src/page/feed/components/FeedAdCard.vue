@@ -1,9 +1,10 @@
 <template>
   <a
     :href="ad.data.link"
-    class="m-box-model m-card">
+    class="m-box-model m-card"
+  >
     <div class="m-box">
-      <avatar :user="ad.data" />
+      <Avatar :user="ad.data" />
       <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
         <header class="m-box m-aln-center m-justify-bet m-card-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ ad.data.name }}</h4>
@@ -14,7 +15,8 @@
         <article class="m-card-body">
           <div
             v-if="ad.data.content.length > 0"
-            class="m-card-con">
+            class="m-card-con"
+          >
             <p class="m-text-box m-text-cut-3">{{ ad.data.content }}</p>
             <div class="image">
               <img :src="ad.data.image">

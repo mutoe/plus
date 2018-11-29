@@ -1,14 +1,20 @@
 <template>
   <section>
     <div :class="`${prefixCls}-item-top`">
-      <avatar :user="user" />
+      <Avatar :user="user" />
       <section class="userInfo">
         <span
           v-if="!user.id"
-          :class="`${prefixCls}-item-top-link`">未知用户 </span>
-        <router-link
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${user._id}`">{{ user.name }}</router-link>
+        >
+          未知用户
+        </span>
+        <RouterLink
+          :class="`${prefixCls}-item-top-link`"
+          :to="`/users/${user._id}`"
+        >
+          {{ user.name }}
+        </RouterLink>
         <span>赞了你的帖子</span>
         <p>{{ like.created_at | time2tips }}</p>
       </section>

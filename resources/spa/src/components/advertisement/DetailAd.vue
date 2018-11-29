@@ -1,15 +1,18 @@
 <template>
   <div
     v-if="list.length"
-    class="c-detail-ad">
+    class="c-detail-ad"
+  >
     <a
       v-for="ad in list"
-      :href="ad.data.link"
       :key="ad.id"
-      class="item">
+      :href="ad.data.link"
+      class="item"
+    >
       <div
         :style="{'background-image': `url(${ad.data.image})`}"
-        class="img"/>
+        class="img"
+      />
     </a>
   </div>
 </template>

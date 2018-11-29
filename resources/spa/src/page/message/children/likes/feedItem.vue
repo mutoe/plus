@@ -1,17 +1,20 @@
 <template>
   <section>
     <div :class="`${prefixCls}-item-top`" class="m-box m-aln-center m-justify-bet">
-      <avatar :user="user" />
+      <Avatar :user="user" />
       <section class="userInfo m-flex-grow1 m-flex-shrink1 m-flex-base0">
         <span v-if="!user.id" :class="`${prefixCls}-item-top-link`">未知用户</span>
-        <router-link
+        <RouterLink
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${user.id}`">{{ user.name }}</router-link>
+          :to="`/users/${user.id}`"
+        >
+          {{ user.name }}
+        </RouterLink>
         <span> 赞了你的动态</span>
         <p>{{ like.created_at | time2tips }}</p>
       </section>
       <svg class="m-style-svg m-svg-def m-flex-grow0 m-shrink0">
-        <use xlink:href="#icon-like"/>
+        <use xlink:href="#icon-like" />
       </svg>
     </div>
     <div :class="`${prefixCls}-item-bottom`">
@@ -19,7 +22,8 @@
         <div
           v-if="!getImage && !getVideo"
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           {{ like.likeable.feed_content }}
         </div>
         <div v-else :class="`${prefixCls}-item-bottom-img`">
@@ -27,11 +31,13 @@
             <img
               v-if="getImage"
               :src="getImage"
-              :alt="user.name" >
+              :alt="user.name"
+            >
             <img
               v-if="getVideo"
               :src="getVideo.cover"
-              :alt="user.name" >
+              :alt="user.name"
+            >
           </div>
           <div class="content">
             {{ like.likeable.feed_content }}
@@ -41,7 +47,8 @@
       <section v-if="like.likeable === null">
         <div
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           动态已被删除
         </div>
       </section>

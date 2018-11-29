@@ -1,30 +1,33 @@
 <template>
   <div class="c-question-card">
     <!-- The question title. -->
-    <router-link
+    <RouterLink
       :to="`/questions/${question.id}`"
       tag="h3"
-      class="title">
+      class="title"
+    >
       {{ question.subject }}
       <span v-show="question.excellent && !noExcellent" class="shang-i">精</span>
-    </router-link>
+    </RouterLink>
 
     <!-- The question first image. -->
-    <router-link
+    <RouterLink
       v-if="firstImageStyle"
       :style="firstImageStyle"
       :to="`/questions/${question.id}`"
       tag="div"
-      class="image" />
+      class="image"
+    />
 
     <!-- Answer. -->
-    <question-list-answer-card v-if="Object.keys(answer).length" :answer="answer" />
+    <QuestionListAnswerCard v-if="Object.keys(answer).length" :answer="answer" />
 
     <!-- Bottom -->
-    <router-link
+    <RouterLink
       :to="`/questions/${question.id}`"
       class="button"
-      tag="div">
+      tag="div"
+    >
       <span class="button-style1">{{ question.watchers_count }}</span>
       关注
       <span class="dot">·</span>
@@ -35,7 +38,7 @@
         <span>赏</span> {{ question.amount }}
       </span>
       <span class="button-time">{{ question.created_at | time2tips }}</span>
-    </router-link>
+    </RouterLink>
   </div>
 </template>
 
