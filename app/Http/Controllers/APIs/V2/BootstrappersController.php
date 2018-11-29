@@ -60,13 +60,19 @@ class BootstrappersController extends Controller
             'reward' => setting('site', 'reward', []),
             'user_invite_template' => setting('user', 'invite-template'),
         ];
-        $bootstrappers['registerSettings'] = config('registerSettings', null);
+        $bootstrappers['registerSettings'] = setting('user', 'register-setting', [
+            'showTerms' => true,
+            'method' => 'all',
+            'content' => '# 服务条款及隐私政策',
+            'fixed' => 'need',
+            'type' => 'all',
+        ]);
 
         $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
         $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
         $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
 
-        $bootstrapper['currency'] = [
+        $bootstrappers['currency'] = [
             'IAP_only' => config('currency.recharge.IAP.only', true),
             'cash' => setting('currency', 'cash', [
                 'rule' => '我是提现规则',

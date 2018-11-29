@@ -27,9 +27,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Famous;
 use Illuminate\Validation\Rule;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Models\UserRecommended;
-use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -546,16 +544,15 @@ class UserController extends Controller
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function updateRegisterSetting(Request $request, Configuration $config)
+    public function updateRegisterSetting(Request $request)
     {
-        $conf = $request->only(['showTerms', 'method', 'content', 'fixed', 'type']);
-
-        $settings = [];
-        foreach ($conf as $key => $value) {
-            $settings['registerSettings.'.$key] = $value;
-        }
-
-        $config->set($settings);
+        setting('user')->set('register-setting', $request->only([
+            'showTerms',
+            'method',
+            'content',
+            'fixed',
+            'type',
+        ]));
 
         return response()->json(['message' => '设置成功'])->setStatusCode(201);
     }
@@ -564,29 +561,16 @@ class UserController extends Controller
      * 获取注册配置.
      * @return [type] [description]
      */
-    public function getRegisterSetting(Repository $con, Configuration $config)
+    public function getRegisterSetting()
     {
-        $conf = $con->get('registerSettings');
-
-        if (is_null($conf)) {
-            $conf = $this->initRegisterConfiguration($config);
-        }
-
-        return response()->json($conf)->setStatusCode(200);
-    }
-
-    public function initRegisterConfiguration(Configuration $config_model)
-    {
-        $config = $config_model->getConfiguration();
-
-        $config->set('registerSettings.showTerms', 'open');
-        $config->set('registerSettings.method', 'all');
-        $config->set('registerSettings.fixed', 'need');
-        $config->set('registerSettings.type', 'all');
-        $config->set('registerSettings.content', '# 服务条款及隐私政策');
-
-        // $configuration->save($config);
-
-        return $config['registerSettings'];
+        return response()
+            ->json(setting('user', 'register-setting', [
+                'showTerms' => true,
+                'method' => 'all',
+                'content' => '# 服务条款及隐私政策',
+                'fixed' => 'need',
+                'type' => 'all',
+            ]))
+            ->setStatusCode(200);
     }
 }
