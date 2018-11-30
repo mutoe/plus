@@ -25,7 +25,7 @@ class NewsController extends BaseController
             $params = [
                 'recommend' => $type == 'recommend' ? 1 : 0,
                 'cate_id' => $type == 'category' ? $request->query('category') : 0,
-                'after' => $request->query('after', 0)
+                'after' => $request->query('after', 0),
             ];
 
             // 获取资讯列表
@@ -33,7 +33,7 @@ class NewsController extends BaseController
             $after = last($news['news'])['id'] ?? 0;
             $news['cate_id'] = $params['cate_id'];
 
-            $news['space'] =  $this->PlusData['config']['ads_space']['pc:news:list'] ?? [];
+            $news['space'] = $this->PlusData['config']['ads_space']['pc:news:list'] ?? [];
             $news['page'] = $request->loadcount;
 
             // 加入置顶资讯
@@ -45,9 +45,9 @@ class NewsController extends BaseController
             $newsData = view('pcview::templates.news', $news, $this->PlusData)->render();
 
             return response()->json([
-                'status'  => true,
+                'status' => true,
                 'data' => $newsData,
-                'after' => $after
+                'after' => $after,
             ]);
         }
 
@@ -92,7 +92,7 @@ class NewsController extends BaseController
      */
     public function release(int $news_id = 0)
     {
-        if ($this->PlusData['config']['bootstrappers']['news:contribute']['verified'] && !$this->PlusData['TS']['verified']) {
+        if ($this->PlusData['config']['bootstrappers']['news']['contribute']['verified'] && !$this->PlusData['TS']['verified']) {
             abort(403, '未认证用户不能投稿');
         }
 
@@ -105,7 +105,7 @@ class NewsController extends BaseController
         $data['tags'] = api('GET', '/api/v2/tags');
 
         if ($news_id > 0) {
-            $data['data'] = api('GET', '/api/v2/news/'.$news_id);
+            $data['data'] = api('GET', '/api/v2/news/' . $news_id);
         }
 
         return view('pcview::news.release', $data, $this->PlusData);
@@ -121,18 +121,18 @@ class NewsController extends BaseController
     public function comments(Request $request, int $news_id)
     {
         $params = [
-            'after' => $request->query('after') ?: 0
+            'after' => $request->query('after') ?: 0,
         ];
 
-        $comments = api('GET', '/api/v2/news/'.$news_id.'/comments', $params);
+        $comments = api('GET', '/api/v2/news/' . $news_id . '/comments', $params);
         $after = last($comments['comments'])['id'] ?? 0;
         $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $commentData,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 }
