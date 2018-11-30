@@ -58,6 +58,19 @@ export function postWalletRecharge (data) {
 }
 
 /**
+ * 查询微信支付订单
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {*} order
+ * @returns
+ */
+export function checkWechatOrders (order) {
+  const url = '/walletRecharge/checkWechatOrders'
+  return api.post(url, { out_trade_no: order }, { validateStatus: s => s === 200 })
+}
+
+/**
  * 发起提现请求
  * @author mutoe <mutoe@foxmail.com>
  * @export

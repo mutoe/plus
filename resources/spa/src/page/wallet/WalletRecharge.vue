@@ -14,9 +14,8 @@
               :class="{ active: ~~amount === ~~item && !customAmount }"
               class="m-pinned-amount-btn"
               @click="chooseDefaultAmount(item)"
-            >
-              {{ item.toFixed(2) }}
-            </button>
+              v-text="item.toFixed(2)"
+            />
           </div>
         </div>
         <div class="m-box m-aln-center m-justify-bet m-pinned-row plr20 m-pinned-amount-customize">
@@ -35,21 +34,15 @@
         </div>
       </div>
 
-      <div
-        class="m-entry"
-        @click="selectRechargeType"
-      >
+      <div class="m-entry" @click="selectRechargeType">
         <span class="m-text-box m-flex-grow1">选择充值方式</span>
         <div class="m-box m-aln-end paid-type">{{ rechargeTypeText }}</div>
         <svg class="m-style-svg m-svg-def m-entry-append">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-right" />
+          <use xlink:href="#icon-arrow-right" />
         </svg>
       </div>
 
-      <div
-        class="plr20 m-lim-width"
-        style="margin-top: 0.6rem"
-      >
+      <div class="plr20 m-lim-width" style="margin-top: 0.6rem">
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
@@ -65,10 +58,12 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import * as api from '@/api/wallet'
+import { wechatPay } from '@/util/wechat'
 
 const supportTypes = [
   { key: 'alipay_wap', title: '支付宝支付', type: 'AlipayWapOrder' },
-  // 尚未实现 { key: "wx_wap", title: "微信支付" }
+  { key: 'wx_wap', title: '微信支付', type: 'WechatWapOrder' },
 ]
 
 export default {
@@ -84,6 +79,9 @@ export default {
   computed: {
     ...mapState({ wallet: state => state.wallet }),
     ...mapGetters({ rechargeItems: 'wallet/rechargeItems' }),
+    isWechat () {
+      return this.$store.state.BROWSER.isWechat
+    },
     rechargeTypeText () {
       const type = supportTypes.filter(t => t.type === this.form.type).pop()
       return type && type.title
@@ -98,10 +96,51 @@ export default {
       return this.form.amount <= 0 || !this.rechargeType
     },
   },
+  watch: {
+    rechargeItems (val) {
+      if (!this.amount && val.length) this.amount = val[0]
+    },
+  },
+  created () {
+    this.whenPayPending()
+  },
   mounted () {
-    if (!this.rechargeItems.length) { this.$store.dispatch('wallet/getWalletInfo') }
+    if (!this.rechargeItems.length) this.$store.dispatch('wallet/getWalletInfo')
+    if (!this.amount && this.rechargeItems.length) this.amount = this.rechargeItems[0]
   },
   methods: {
+    whenPayPending () {
+      // TODO: 可以改为轮询效果更佳
+      const lastPayTime = this.$lstore.getData('H5_WECHAT_PAY_PENDING')
+      if (+new Date() - lastPayTime > 5 * 60 * 1000) return // 5min
+      this.$lstore.removeData('H5_WECHAT_PAY_PENDING')
+      const actions = [
+        {
+          text: '我已完成支付',
+          color: '#28b350',
+          method: () => void this.checkPaid(),
+        },
+        {
+          text: '支付遇到问题',
+          method: () => void this.$Message.error('如遇到问题请联系管理员'),
+        },
+      ]
+      this.$bus.$emit('actionSheet', actions, '返回')
+    },
+    checkPaid () {
+      const order = this.$lstore.getData('H5_WECHAT_PAY_ORDER')
+      if (!order) return this.$Message.error('查询订单失败')
+      api.checkWechatOrders(order)
+        .then(res => {
+          this.$lstore.removeData('H5_WECHAT_PAY_ORDER')
+          if (res.data.message === '充值成功') {
+            this.$Message.success('充值成功')
+            this.$router.replace('/wallet')
+            return
+          }
+          this.$Message.error('支付失败，请重新下单')
+        })
+    },
     chooseDefaultAmount (amount) {
       this.customAmount && (this.customAmount = null)
       this.amount = amount
@@ -112,7 +151,7 @@ export default {
         if (this.wallet.type.includes(item.key)) {
           actions.push({
             text: item.title,
-            method: () => selectType(item.type),
+            method: () => void (this.rechargeType = item.type),
           })
         }
       })
@@ -122,22 +161,49 @@ export default {
         '取消',
         actions.length ? undefined : '当前未支持任何充值方式'
       )
-
-      const selectType = type => {
-        this.rechargeType = type
-      }
     },
     async handleOk () {
       if (this.loading) return
       const { amount, type } = this.form
       this.loading = true
-      // 获取第三方支付地址,跳转过去
-      const url = await this.$store.dispatch('wallet/requestRecharge', {
+      const params = {
         amount,
-        redirect: `${window.location.origin}${process.env.BASE_URL}/wallet`, // 支付成功后回调地址
+        redirect: `${window.location.origin}${process.env.BASE_URL}wallet`, // 支付成功后回调地址
         type,
-      })
-      location.href = url
+      }
+      if (type === 'WechatWapOrder') {
+        if (this.isWechat) {
+          params.type = 'WechatJsOrder'
+          params.openId = this.$lstore.getData('H5_WECHAT_MP_OPENID')
+        } else {
+          params.wechat_type = 'WechatPay_Mweb'
+        }
+      }
+      // 获取第三方支付地址,跳转过去
+      api.postWalletRecharge(params)
+        .then(({ data }) => {
+          if (params.type === 'WechatJsOrder') {
+            // 如果是微信内支付 调用微信内置对象方法
+            wechatPay(data.data)
+              .then(() => {
+                this.$Message.success('支付成功')
+                this.$router.push('/wallet')
+              })
+              .catch(err => {
+                this.$Message.error(err)
+              })
+          } else if (params.type === 'WechatWapOrder') {
+            this.$lstore.setData('H5_WECHAT_PAY_PENDING', +new Date())
+            this.$lstore.setData('H5_WECHAT_PAY_ORDER', data.data.out_trade_no)
+            location.href = data.data.mweb_url
+          } else {
+            // 支付宝返回的data为url, 直接跳转过去
+            location.href = data
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
   },
 }

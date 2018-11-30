@@ -77,10 +77,7 @@
       </p>
     </footer>
 
-    <PopupDialog
-      ref="dialog"
-      title="充值提现规则"
-    >
+    <PopupDialog ref="dialog" title="充值提现规则">
       <p v-html="rule" />
     </PopupDialog>
   </div>
@@ -119,13 +116,11 @@ export default {
   },
   mounted () {
     this.$store.dispatch('wallet/getWalletInfo')
+    this.$store.dispatch('fetchUserInfo')
 
     const amount = this.$route.query.total_amount
     if (amount) {
-      this.$store.dispatch('fetchUserInfo')
-      this.$Message.success(
-        `共消耗${amount}元, 获得 ${amount * 100} ${this.currencyUnit}!`
-      )
+      this.$Message.success(`充值成功${amount}元!`)
     }
   },
   methods: {
