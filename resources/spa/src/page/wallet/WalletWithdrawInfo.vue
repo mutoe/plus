@@ -1,7 +1,6 @@
 <template>
   <div class="p-wallet-info">
-
-    <common-header>账单详情</common-header>
+    <CommonHeader>账单详情</CommonHeader>
 
     <header class="wallet-header">
       <p>{{ statusText }}</p>

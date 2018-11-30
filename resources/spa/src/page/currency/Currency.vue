@@ -59,24 +59,16 @@
         {{ currencyUnit }}规则
       </p>
     </footer>
-
-    <PopupDialog
-      ref="dialog"
-      :title="`${currencyUnit}规则`"
-    >
-      <p v-html="rule" />
-    </PopupDialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import PopupDialog from '@/components/PopupDialog.vue'
 import DetailAd from '@/components/advertisement/DetailAd.vue'
 
 export default {
   name: 'Currency',
-  components: { PopupDialog, DetailAd },
+  components: { DetailAd },
   data () {
     return {
       fromPageTitle: '',
@@ -85,10 +77,11 @@ export default {
   computed: {
     ...mapState({
       user: 'CURRENTUSER',
-      currency: 'currency',
+      currency: state => state.CONFIG.currency,
     }),
     rule () {
-      return this.currency.rule.replace(/\n/g, '<br>')
+      const rule = this.currency.rule || ''
+      return rule.replace(/\n/g, '<br>')
     },
   },
   created () {
@@ -96,8 +89,6 @@ export default {
     document.title = this.currencyUnit
   },
   mounted () {
-    if (!this.currency.recharge.length) { this.$store.dispatch('currency/getCurrencyInfo') }
-
     const amount = this.$route.query.total_amount
     if (amount) {
       this.$store.dispatch('fetchUserInfo')
@@ -111,7 +102,10 @@ export default {
   },
   methods: {
     showRule () {
-      this.$refs.dialog.show()
+      this.$bus.$emit('popupDialog', {
+        title: `${this.currencyUnit}规则`,
+        content: this.rule,
+      })
     },
   },
 }

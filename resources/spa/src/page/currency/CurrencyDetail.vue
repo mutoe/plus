@@ -1,29 +1,30 @@
 <template lang="html">
   <div class="p-currency-detail">
-
-    <common-header class="header">
+    <CommonHeader class="header">
       <nav class="type-switch-bar">
-        <span
-          :class="{active: currAction === 'recharge'}"
-          @click="currAction = 'recharge'">充值记录</span>
-        <span
-          :class="{active: currAction === 'cash'}"
-          @click="currAction = 'cash'">提取纪录</span>
+        <span :class="{active: currAction === 'recharge'}" @click="currAction = 'recharge'">
+          充值记录
+        </span>
+        <span :class="{active: currAction === 'cash'}" @click="currAction = 'cash'">
+          提取纪录
+        </span>
       </nav>
-    </common-header>
+    </CommonHeader>
 
-    <load-more
+    <LoadMore
       ref="loadmore"
       :on-refresh="onRefresh"
       :on-load-more="onLoadMore"
-      class="m-currency-list">
-      <currency-detail-item
+      class="m-currency-list"
+    >
+      <CurrencyDetailItem
         v-for="item in list"
         v-if="item.id"
         :key="item.id"
         :detail="item"
-        type="body"/>
-    </load-more>
+        type="body"
+      />
+    </LoadMore>
   </div>
 </template>
 

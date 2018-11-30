@@ -2,16 +2,6 @@ import api from './api'
 import Message from '@/plugins/message'
 
 /**
- * 获取积分配置信息
- * @author mutoe <mutoe@foxmail.com>
- * @export
- * @returns
- */
-export function getCurrencyInfo () {
-  return api.get('/currency', { validateStatus: s => s === 200 })
-}
-
-/**
  * 获取积分流水
  * @author mutoe <mutoe@foxmail.com>
  * @export

@@ -1,9 +1,7 @@
 <template>
-  <div
-    :class="isIncome"
-    class="c-currency-detail-item">
+  <div :class="isIncome" class="c-currency-detail-item">
     <div class="info">
-      <div class="title" >{{ detail[type] }}</div>
+      <div class="title">{{ detail[type] }}</div>
       <div class="time">{{ detail.updated_at | time2tips }}</div>
     </div>
     <div class="amount">

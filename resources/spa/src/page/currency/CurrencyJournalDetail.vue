@@ -1,21 +1,22 @@
 <template lang="html">
   <div class="p-currency-detail">
+    <CommonHeader class="header">{{ currencyUnit }}明细</CommonHeader>
 
-    <common-header class="header">{{ currencyUnit }}明细</common-header>
-
-    <load-more
+    <LoadMore
       ref="loadmore"
       :on-refresh="onRefresh"
       :on-load-more="onLoadMore"
-      class="m-currency-list">
-      <currency-detail-item
+      class="m-currency-list"
+    >
+      <CurrencyDetailItem
         v-for="item in list"
         v-if="item.id"
-        :nostyle="true"
         :key="item.id"
+        :nostyle="true"
         :detail="item"
-        type="title"/>
-    </load-more>
+        type="title"
+      />
+    </LoadMore>
   </div>
 </template>
 

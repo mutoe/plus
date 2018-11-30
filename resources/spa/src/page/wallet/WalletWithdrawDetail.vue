@@ -1,20 +1,21 @@
 <template lang="html">
   <div class="wallet-detail p-wallet-detail">
+    <CommonHeader class="header"> 提现明细 </CommonHeader>
 
-    <common-header class="header"> 提现明细 </common-header>
-
-    <load-more
+    <LoadMore
       ref="loadmore"
       :on-refresh="onRefresh"
       :on-load-more="onLoadMore"
-      class="m-wallet-list">
-      <wallet-withdraw-detail-item
+      class="m-wallet-list"
+    >
+      <WalletWithdrawDetailItem
         v-for="item in list"
         v-if="item.id"
         :key="item.id"
         :detail="item"
-        @click="showDetail(item.id)" />
-    </load-more>
+        @click="showDetail(item.id)"
+      />
+    </LoadMore>
   </div>
 </template>
 

@@ -14,18 +14,17 @@
 
     <main class="m-box-model m-aln-center m-justify-center">
       <div class="m-box-model m-lim-width m-main">
-        <div v-if="items.length" class="m-pinned-amount-btns m-bb1">
+        <div v-if="rechargeItems.length" class="m-pinned-amount-btns m-bb1">
           <p class="m-pinned-amount-label">选择充值金额</p>
           <div class="buttons">
             <button
-              v-for="item in items"
+              v-for="item in rechargeItems"
               :key="item"
               :class="{ active: ~~amount === ~~item && !customAmount }"
               class="m-pinned-amount-btn"
               @click="chooseDefaultAmount(item)"
-            >
-              {{ Number(item/100).toFixed(2) }}
-            </button>
+              v-text="item.toFixed(2)"
+            />
           </div>
         </div>
         <div class="m-box m-aln-center m-justify-bet m-pinned-row plr20 m-pinned-amount-customize">
@@ -48,7 +47,7 @@
         <span class="m-text-box m-flex-grow1">选择充值方式</span>
         <div class="m-box m-aln-end paid-type">{{ rechargeTypeText }}</div>
         <svg class="m-style-svg m-svg-def m-entry-append">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-right" />
+          <use xlink:href="#icon-arrow-right" />
         </svg>
       </div>
 
@@ -71,17 +70,12 @@
           用户充值协议
         </p>
       </footer>
-
-      <PopupDialog ref="dialog" title="用户充值协议">
-        <p v-html="rule" />
-      </PopupDialog>
     </main>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import PopupDialog from '@/components/PopupDialog.vue'
 
 const supportTypes = [
   { key: 'alipay_wap', title: '支付宝支付', type: 'AlipayWapOrder' },
@@ -91,7 +85,6 @@ const supportTypes = [
 
 export default {
   name: 'CurrencyRecharge',
-  components: { PopupDialog },
   data () {
     return {
       customAmount: null,
@@ -102,16 +95,21 @@ export default {
   },
   computed: {
     ...mapState({
-      currency: 'currency',
+      currency: state => state.CONFIG.currency,
+      wallet: state => state.CONFIG.wallet,
     }),
     recharge () {
       return this.currency.recharge
     },
-    items () {
-      return this.currency.recharge.items
+    rechargeItems () {
+      const labels = this.wallet.labels || []
+      return labels.map(item => item / 100)
+    },
+    allowedTypes () {
+      return this.wallet.recharge.types || []
     },
     rule () {
-      const rule = this.currency.recharge.rule || ''
+      const rule = this.recharge.rule || ''
       return rule.replace(/\n/g, '<br>')
     },
     rechargeTypeText () {
@@ -128,9 +126,6 @@ export default {
       return !this.form.amount || !this.rechargeType
     },
   },
-  mounted () {
-    if (!this.items.length) this.$store.dispatch('currency/getCurrencyInfo')
-  },
   methods: {
     chooseDefaultAmount (amount) {
       this.customAmount && (this.customAmount = null)
@@ -140,13 +135,13 @@ export default {
       const actions = []
       actions.push({
         text: '钱包余额支付',
-        method: () => selectType('balance'),
+        method: () => void (this.rechargeType = 'balance'),
       })
       supportTypes.forEach(item => {
-        if (this.recharge.type.includes(item.key)) {
+        if (this.allowedTypes.includes(item.key)) {
           actions.push({
             text: item.title,
-            method: () => selectType(item.type),
+            method: () => void (this.rechargeType = item.type),
           })
         }
       })
@@ -156,16 +151,11 @@ export default {
         '取消',
         actions.length ? undefined : '当前未支持任何充值方式'
       )
-
-      const selectType = type => {
-        this.rechargeType = type
-      }
     },
     beforeSubmit () {
       if (this.loading) return
       const { amount, type } = this.form
       if (amount < this.recharge.min) { return this.$Message.error(`最低只能充值${this.recharge.min / 100}元`) }
-
       if (amount > this.recharge.max) { return this.$Message.error(`最多只能充值${this.recharge.max / 100}元`) }
 
       if (type === 'balance') {
@@ -176,10 +166,7 @@ export default {
     },
     async rechargeWithBanlance (amount) {
       this.loading = true
-      const result = await this.$store.dispatch(
-        'currency/currency2wallet',
-        amount
-      )
+      const result = await this.$store.dispatch('currency/currency2wallet', amount)
       this.loading = false
       if (!result.errors) {
         this.$Message.success('充值成功！')
@@ -200,7 +187,10 @@ export default {
       location.href = url
     },
     popupRule () {
-      this.$refs.dialog.show()
+      this.$bus.$emit('popupDialog', {
+        title: '用户充值协议',
+        content: this.rule,
+      })
     },
   },
 }

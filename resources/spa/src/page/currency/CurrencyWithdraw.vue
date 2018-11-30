@@ -2,10 +2,7 @@
   <div class="p-currency-withdraw">
     <CommonHeader class="header">
       {{ currencyUnit }}提取
-      <RouterLink
-        slot="right"
-        :to="{path: '/currency/detail', query: { action: 'cash' } }"
-      >
+      <RouterLink slot="right" :to="{path: '/currency/detail', query: { action: 'cash' } }">
         提取记录
       </RouterLink>
     </CommonHeader>
@@ -21,16 +18,13 @@
       <div class="input-wrap">
         <input
           v-model="amount"
-          :placeholder="`请至少提取${cash.min}${currencyUnit}`"
+          :placeholder="`请至少提取${cashMin}${currencyUnit}`"
           type="number"
           oninput="value = value.slice(0,8)"
         >
       </div>
 
-      <div
-        class="m-lim-width"
-        style="margin-top: 0.6rem"
-      >
+      <div class="m-lim-width" style="margin-top: 0.6rem">
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
@@ -50,23 +44,14 @@
         {{ currencyUnit }}提取规则
       </p>
     </footer>
-
-    <PopupDialog
-      ref="dialog"
-      :title="`${currencyUnit}提取规则`"
-    >
-      <p v-html="rule" />
-    </PopupDialog>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import PopupDialog from '@/components/PopupDialog.vue'
 
 export default {
   name: 'CurrencyWithdraw',
-  components: { PopupDialog },
   data () {
     return {
       amount: '',
@@ -75,25 +60,28 @@ export default {
   },
   computed: {
     ...mapState({
-      currency: 'currency',
+      currency: state => state.CONFIG.currency,
       user: 'CURRENTUSER',
     }),
     cash () {
       return this.currency.cash
+    },
+    cashMin () {
+      return this.currency.settings['cash-min'] || 1
+    },
+    cashMax () {
+      return this.currency.settings['cash-max'] || 10
     },
     rule () {
       const rule = this.currency.cash.rule || ''
       return rule.replace(/\n/g, '<br>')
     },
     disabled () {
-      return this.amount < this.cash.min || this.amount > this.cash.max
+      return this.amount < this.cashMin || this.amount > this.cashMax
     },
     currentCurrency () {
       return this.user.currency.sum || 0
     },
-  },
-  mounted () {
-    if (!this.cash.rule) this.$store.dispatch('currency/getCurrencyInfo')
   },
   methods: {
     async handleOk () {
@@ -102,10 +90,7 @@ export default {
         this.$Message.error(`${this.currencyUnit}不足，请充值`)
         return this.$router.push({ name: 'currencyRecharge' })
       }
-      const { message } = await this.$store.dispatch(
-        'currency/requestWithdraw',
-        this.amount
-      )
+      const { message } = await this.$store.dispatch('currency/requestWithdraw', this.amount)
       if (message) {
         this.$Message.success(message)
         this.goBack()
@@ -116,7 +101,10 @@ export default {
       this.$bus.$emit('actionSheet', actions, '取消', '当前未支持任何提现方式')
     },
     popupRule () {
-      this.$refs.dialog.show()
+      this.$bus.$emit('popupDialog', {
+        title: `${this.currencyUnit}提取规则`,
+        content: this.rule,
+      })
     },
   },
 }
