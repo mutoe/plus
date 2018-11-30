@@ -37,7 +37,7 @@
         </svg>
       </RouterLink>
       <RouterLink
-        :to="{path: &quot;withdraw&quot;}"
+        :to="{path: 'withdraw'}"
         append
         tag="li"
         class="m-entry"
@@ -76,23 +76,21 @@
         充值提现规则
       </p>
     </footer>
-
-    <PopupDialog ref="dialog" title="充值提现规则">
-      <p v-html="rule" />
-    </PopupDialog>
   </div>
 </template>
 
 <script>
-import PopupDialog from '@/components/PopupDialog.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Wallet',
-  components: { PopupDialog },
   data () {
     return {}
   },
   computed: {
+    ...mapState({
+      wallet: state => state.CONFIG.wallet,
+    }),
     goldName () {
       const {
         site: { gold_name: { name = '金币' } = {} } = {},
@@ -106,16 +104,15 @@ export default {
       return this.user.new_wallet || { balance: 0 }
     },
     balance () {
-      const raito = this.$store.state.wallet.ratio || 100
+      const raito = this.wallet.ratio || 100
       return (this.new_wallet.balance / raito).toFixed(2)
     },
     rule () {
-      const rule = this.$store.state.wallet.rule || ''
+      const rule = this.wallet.rule || ''
       return rule.replace(/\n/g, '<br>')
     },
   },
   mounted () {
-    this.$store.dispatch('wallet/getWalletInfo')
     this.$store.dispatch('fetchUserInfo')
 
     const amount = this.$route.query.total_amount
@@ -125,7 +122,10 @@ export default {
   },
   methods: {
     popupRule () {
-      this.$refs.dialog.show()
+      this.$bus.$emit('popupDialog', {
+        title: '充值提现规则',
+        content: this.rule,
+      })
     },
   },
 }

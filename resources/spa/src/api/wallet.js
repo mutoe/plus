@@ -1,16 +1,6 @@
 import api from './api'
 
 /**
- * 获取钱包配置信息
- * @author mutoe <mutoe@foxmail.com>
- * @export
- * @returns
- */
-export function getWalletInfo () {
-  return api.get('/wallet', { validateStatus: s => s === 200 })
-}
-
-/**
  * 获取钱包流水
  * @author mutoe <mutoe@foxmail.com>
  * @export

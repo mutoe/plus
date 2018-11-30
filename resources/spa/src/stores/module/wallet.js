@@ -4,10 +4,6 @@ import _ from 'lodash'
 const state = {
   list: [], // 充值纪录
   cashes: [], // 提现记录
-  items: [], // 充值建议金额
-  ratio: 100, // 充值比率
-  type: [], // 充值类型
-  rule: '', // 充值提现规则
 }
 
 const getters = {
@@ -16,10 +12,6 @@ const getters = {
   },
   getCashesById: state => id => {
     return state.cashes.filter(wallet => wallet.id === id).pop() || {}
-  },
-  rechargeItems: state => {
-    const { items = [] } = state
-    return items.map(item => item / 100)
   },
 }
 
@@ -44,16 +36,6 @@ const actions = {
     const unionList = _.unionBy([...state.list, ...data], 'id')
     commit(TYPES.UPDATE_WALLET, { list: unionList })
     return data || []
-  },
-
-  /**
-   * 获取钱包配置信息
-   * @author mutoe <mutoe@foxmail.com>
-   */
-  async getWalletInfo ({ commit }) {
-    let { data } = await api.getWalletInfo()
-    const { labels: items, ratio, rule, recharge_type: type } = data
-    commit(TYPES.UPDATE_WALLET, { items, type, ratio, rule })
   },
 
   /**

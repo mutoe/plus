@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import * as api from '@/api/wallet'
 import { wechatPay } from '@/util/wechat'
 
@@ -77,8 +77,16 @@ export default {
     }
   },
   computed: {
-    ...mapState({ wallet: state => state.wallet }),
-    ...mapGetters({ rechargeItems: 'wallet/rechargeItems' }),
+    ...mapState({
+      wallet: state => state.CONFIG.wallet,
+    }),
+    rechargeItems () {
+      const labels = this.wallet.labels || []
+      return labels.map(item => item / 100)
+    },
+    allowedTypes () {
+      return this.wallet.recharge.types || []
+    },
     isWechat () {
       return this.$store.state.BROWSER.isWechat
     },
@@ -105,7 +113,6 @@ export default {
     this.whenPayPending()
   },
   mounted () {
-    if (!this.rechargeItems.length) this.$store.dispatch('wallet/getWalletInfo')
     if (!this.amount && this.rechargeItems.length) this.amount = this.rechargeItems[0]
   },
   methods: {
@@ -148,7 +155,7 @@ export default {
     selectRechargeType () {
       const actions = []
       supportTypes.forEach(item => {
-        if (this.wallet.type.includes(item.key)) {
+        if (this.allowedTypes.includes(item.key)) {
           actions.push({
             text: item.title,
             method: () => void (this.rechargeType = item.type),

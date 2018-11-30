@@ -69,8 +69,8 @@
 import { mapState } from 'vuex'
 
 const supportType = {
-  alipay_wap: { title: '支付宝提现', type: 'alipay' },
-  // 未实现 wx_wap: { title: "微信提现", type: "wx" }
+  alipay: { title: '支付宝提现', type: 'alipay' },
+  // 未实现 wechat: { title: "微信提现", type: "wechat" }
 }
 
 export default {
@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     ...mapState({
-      wallet: 'wallet',
+      wallet: state => state.CONFIG.wallet,
     }),
     disabled () {
       const { value, account, type } = this.form
@@ -104,11 +104,8 @@ export default {
       return selectedType.title
     },
     walletType () {
-      return this.wallet.type || []
+      return this.wallet.cash.types || []
     },
-  },
-  mounted () {
-    if (!this.walletType.length) this.$store.dispatch('wallet/getWalletInfo')
   },
   methods: {
     async handleOk () {
