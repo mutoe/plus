@@ -81,8 +81,9 @@ $('#J-pay-btn').on('click', function(){
         from: 1,
         url: 1,
         amount: sum ? sum : custom * 100,
-        wechat_type: 'WechatPay_Native'
+        redirect: "{{ route('pc:wallet') }}"
     }
+    if (payway == 'WechatWapOrder') params.wechat_type = 'WechatPay_Native';
 
     axios.post('/api/v2/walletRecharge/orders', params)
     .then(function (response) {
