@@ -33,7 +33,7 @@
                             </ul>
                             <i></i>
                         </span>
-                        @if($config['bootstrappers']['wallet:cash']['open'])
+                        @if($config['bootstrappers']['wallet']['cash']['status'])
                             <span class="switch @if($type == 3) active @endif" type="3">提现记录</span>
                         @endif
                     </div>
@@ -42,10 +42,10 @@
                             <div class="remaining-sum">
                                 {{ ((int) $TS['newWallet']['balance']) / 100 }}</div>
                             <div class="operate">
-                                @if($config['bootstrappers']['wallet:recharge']['open'])
+                                @if($config['bootstrappers']['wallet']['recharge']['status'])
                                     <a href="javascript:;" data-url="{{ route('pc:walletpay') }}" onclick="checkWallet(this)"><button>充值</button></a>
                                 @endif
-                                @if($config['bootstrappers']['wallet:cash']['open'])
+                                @if($config['bootstrappers']['wallet']['cash']['status'])
                                     <a href="{{ route('pc:walletdraw') }}">
                                         <button class="gray">提现</button>
                                     </a>
@@ -119,7 +119,7 @@
 
     // 充值检测
     var checkWallet = function (obj) {
-        if (wallet['recharge_type'] && $.inArray('alipay_pc_direct', wallet['recharge_type']) != -1) {
+        if (wallet.recharge.types && $.inArray('alipay_pc_direct', wallet.recharge.types) != -1) {
             var url = $(obj).data('url');
             window.location.href = url;
         } else {

@@ -94,7 +94,7 @@ class AccountController extends BaseController
         $this->PlusData['account_cur'] = 'wallet';
 
         // $data['order'] = api('GET', '/api/v2/wallet/charges');
-        $data['wallet'] = api('GET', '/api/v2/wallet');
+        $data['wallet'] = $this->PlusData['config']['bootstrappers']['wallet'];
         $data['type'] = $type;
 
         return view('pcview::account.wallet', $data, $this->PlusData);
@@ -147,7 +147,7 @@ class AccountController extends BaseController
     public function pay()
     {
         $this->PlusData['account_cur'] = 'wallet';
-        $data['wallet'] = api('GET', '/api/v2/wallet');
+        $data['wallet'] = $this->PlusData['config']['bootstrappers']['wallet'];
 
         return view('pcview::account.walletpay', $data, $this->PlusData);
     }
