@@ -74,7 +74,11 @@
           </RouterLink>
         </ul>
         <ul class="m-box-model m-entry-group">
-          <li class="m-entry" @click="popupBuyTS">
+          <RouterLink
+            to="/wallet"
+            tag="li"
+            class="m-entry"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
               <use xlink:href="#icon-profile-wallet" />
             </svg>
@@ -83,8 +87,12 @@
             <svg class="m-style-svg m-svg-def m-entry-append">
               <use xlink:href="#icon-arrow-right" />
             </svg>
-          </li>
-          <li class="m-entry" @click="popupBuyTS">
+          </RouterLink>
+          <RouterLink
+            to="/currency"
+            tag="li"
+            class="m-entry"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
               <use xlink:href="#icon-profile-integral" />
             </svg>
@@ -93,7 +101,7 @@
             <svg class="m-style-svg m-svg-def m-entry-append">
               <use xlink:href="#icon-arrow-right" />
             </svg>
-          </li>
+          </RouterLink>
           <RouterLink
             to="/profile/collection/feeds"
             tag="li"

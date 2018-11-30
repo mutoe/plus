@@ -9,6 +9,8 @@ import groupRoutes from './group.js'
 import messageRoutes from './message.js'
 import questionRoutes from './question.js'
 import profileRoutes from './profile.js'
+import walletRoutes from './wallet.js'
+import currencyRoutes from './currency.js'
 
 const router = [
   /* 入口重定向 */
@@ -24,6 +26,8 @@ const router = [
   ...messageRoutes,
   ...questionRoutes,
   ...profileRoutes,
+  ...walletRoutes,
+  ...currencyRoutes,
 
   { path: '*', component: NotFound }, /* 404 页面 */
 ]

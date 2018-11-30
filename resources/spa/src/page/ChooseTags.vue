@@ -86,8 +86,7 @@ function onChooseTags ({ chooseTags = [], nextStep, onSelect, onRemove }) {
     this.$nextTick(() => {
       this.$bus.$emit('popupDialog', {
         title: '温馨提示',
-        content:
-          '标签为全局标签，选择合适的标签，系统可推荐你感兴趣的内容，方便找到相同身份或爱好的人，很重要哦！',
+        content: '标签为全局标签，选择合适的标签，系统可推荐你感兴趣的内容，方便找到相同身份或爱好的人，很重要哦！',
         onClose: () => {
           this.onReadTips()
         },

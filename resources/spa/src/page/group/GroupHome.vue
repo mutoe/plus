@@ -2,7 +2,7 @@
   <div class="p-group-home">
     <CommonHeader>
       圈子
-      <div slot="right" @click.capture.stop.prevent="popupBuyTS">
+      <div slot="right">
         <svg class="m-style-svg m-svg-def" @click="onSearchClick">
           <use xlink:href="#icon-search" />
         </svg>
