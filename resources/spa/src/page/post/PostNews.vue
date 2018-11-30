@@ -192,7 +192,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import chooseCate from '@/page/chooseCate.vue'
+import ChooseCate from '@/page/ChooseCate.vue'
 import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 import sendImage from '@/util/SendImage.js'
@@ -201,7 +201,7 @@ import * as api from '@/api/news.js'
 export default {
   name: 'PostNews',
   components: {
-    chooseCate,
+    ChooseCate,
     PasswordConfirm,
     TextareaInput,
   },
@@ -229,9 +229,9 @@ export default {
   },
   computed: {
     ...mapState({
-      newsPay: state => state.CONFIG['news:contribute'].pay,
-      newCurrency: state => state.CONFIG['news:pay_conyribute'],
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsConfig: state => state.CONFIG.news,
+      newsPay: state => state.CONFIG.news.contribute.pay,
+      newCurrency: state => state.CONFIG.news.pay_conyribute,
       verified: state => state.CURRENTUSER.verified,
     }),
     currentCurrency () {
@@ -239,7 +239,8 @@ export default {
       return user.currency.sum || 0
     },
     canPostNews () {
-      return !this.newsVerified || (this.newsVerified && this.verified)
+      const newsVerified = this.newsConfig.contribute.verified
+      return !newsVerified || (newsVerified && this.verified)
     },
     contentText: {
       get () {
