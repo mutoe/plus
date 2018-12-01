@@ -97,7 +97,7 @@
             @if($answer['invited'] == 0 || $answer['question']['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ($answer['could'] || $answer['question']['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
                 <div class="answer-body markdown-body"> {!! formatMarkdown($answer['body']) !!} </div>
             @else
-                <div class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</div>
+                <div class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['Q&A']['onlookers_amount'] }}' , {{ $answer['question_id'] }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</div>
             @endif
 
         <div class="detail_share">
