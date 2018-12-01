@@ -11,7 +11,7 @@
                 <span class="answer-body">{!! str_limit(formatList($answer['body']), 250, '...') !!}</span>
                 <a class="button button-plain button-more" href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}">查看详情</a>
             @else
-                <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }}, this)">
+                <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['Q&A']['onlookers_amount'] }}' , {{ $answer['question_id'] }}, this)">
                     @php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp
                 </span>
             @endif

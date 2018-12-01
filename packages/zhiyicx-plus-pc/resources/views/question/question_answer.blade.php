@@ -45,7 +45,7 @@
                         <span class="answer-body">{!! str_limit(formatList($answer['body']), 250, '...') !!}</span>
                         <a class="button button-plain button-more" href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}">查看详情</a>
                     @else
-                        <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</span>
+                        <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['Q&A']['onlookers_amount'] }}' , {{ $answer['question_id'] }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</span>
                     @endif
                 </div>
 
@@ -129,7 +129,7 @@
                                     @if(isset($TS) && ($answer['could'] ?? false))
                                         <button class="button look-cloud" type="button">已围观</button>
                                     @else
-                                        <button class="button button-blue button-primary look-cloud" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})" type="button">围观</button>
+                                        <button class="button button-blue button-primary look-cloud" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['Q&A']['onlookers_amount'] }}' , {{ $answer['question_id'] }})" type="button">围观</button>
                                     @endif
                                 @endif
                             </div>

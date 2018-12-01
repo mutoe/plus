@@ -59,7 +59,7 @@
                     {!! str_limit(formatList($post['answer']['body']), 250, '...') !!}
                     <a class="u-more" href="{{ route('pc:answeread', ['question' => $post['id'], 'answer' => $post['answer']['id']]) }}">查看详情</a>
                 @else
-                    <span class="fuzzy" onclick="QA.look({{ $post['answer']['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $post['id'] }}, this)">
+                    <span class="fuzzy" onclick="QA.look({{ $post['answer']['id'] }}, '{{ $config['bootstrappers']['Q&A']['onlookers_amount'] }}' , {{ $post['id'] }}, this)">
                         @php
                             for ($i = 0; $i < 250; $i ++) { echo 'T'; } @endphp
                     </span>

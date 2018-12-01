@@ -80,7 +80,7 @@
             <div class="questionheader-footer-inner">
                 <div class="questionheader-main questionheader-footer-main">
                     @if($question['look'] == 1 && isset($question['invitation_answers']) && !empty($question['invitation_answers']) && $question['invitation_answers'][0]['onlookers_count'] > 0)
-                        <span class="questionheader-onlook">{{ $question['invitation_answers'][0]['onlookers_count']*$config['bootstrappers']['question:onlookers_amount'] }}围观</span>
+                        <span class="questionheader-onlook">{{ $question['invitation_answers'][0]['onlookers_count']*$config['bootstrappers']['Q&A']['onlookers_amount'] }}围观</span>
                     @endif
                     <div class="questionheaderactions">
                         <div class="questionheader-comment">
@@ -138,7 +138,7 @@
                                 @if($question['user_id'] == $TS['id'])
                                     @if($question['excellent'] == 0)
                                         <li>
-                                            <a href="javascript:;" onclick="question.selected({{ $question['id'] }}, {{ $config['bootstrappers']['question:apply_amount'] }})">
+                                            <a href="javascript:;" onclick="question.selected({{ $question['id'] }}, {{ $config['bootstrappers']['Q&A']['apply_amount'] }})">
                                                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg> 申请为精选
                                             </a>
                                         </li>

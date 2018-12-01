@@ -141,14 +141,7 @@
             }
         });
 
-        var reward_rule = '加载中...'
-        axios.get(TS.API + '/question-configs')
-            .then(function(res) {
-                reward_rule = res.data.anonymity_rule
-            })
-            .catch(function() {
-                reward_rule = '悬赏规则加载失败'
-            })
+        var reward_rule = TS.BOOT['Q&A'].reward_rule || '悬赏规则加载失败'
 
         function question_search(event) {
             var val = $.trim(subject.val());
