@@ -31,12 +31,12 @@
                             <div class="currency-info clearfix">
                                 <div class="remaining-sum">{{ $TS['currency']['sum'] ?? 0 }}</div>
                                 <div class="operate">
-                                    @if($config['bootstrappers']['currency:recharge']['open'])
+                                    @if($config['bootstrappers']['currency']['recharge']['status'])
                                         <a href="{{ route('pc:currencypay') }}">
                                             <button>充值</button>
                                         </a>
                                     @endif
-                                    @if($config['bootstrappers']['currency:cash']['open'])
+                                    @if($config['bootstrappers']['currency']['cash']['status'])
                                     <a href="{{ route('pc:currencydraw') }}">
                                         <button class="gray">提取</button>
                                     </a>

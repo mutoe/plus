@@ -18,7 +18,7 @@
     </div>
     <div class="pay-form">
         <p class="tcolor">充值比率</p>
-        <p><font color="#FF9400">1元 = {{$currency['recharge-ratio'] * 100}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}</font></p>
+        <p><font color="#FF9400">1元 = {{$currency['settings']['recharge-ratio'] * 100}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}</font></p>
         <p class="tcolor">设置充值金额</p>
         <div class="pay-curr">
             @if($currency['recharge-options'])
@@ -65,7 +65,7 @@ $('#open').on('click', function () {
     html += '  <h3>用户充值协议</h3>';
     html += '  </div>';
     html += '    <div class="agreement-info">';
-    html += '<p class="info">{{$currency['recharge-rule']}}</p>';
+    html += '<p class="info">{{$currency['recharge']['rule']}}</p>';
     html += '</div>';
     html += ' </div>';
     html += '</div>';

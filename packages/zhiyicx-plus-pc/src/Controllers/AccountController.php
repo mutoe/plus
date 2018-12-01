@@ -2,9 +2,8 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Session;
-use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Illuminate\Http\Request;
 
 class AccountController extends BaseController
 {
@@ -37,7 +36,7 @@ class AccountController extends BaseController
         if (isset($data['info']['status'])) {
             $templet = 'authinfo';
         }
-        return view('pcview::account.'.$templet, $data, $this->PlusData);
+        return view('pcview::account.' . $templet, $data, $this->PlusData);
     }
 
     /**
@@ -111,13 +110,19 @@ class AccountController extends BaseController
         $type = $request->query('type');
 
         $params = [
-            'after' => $request->query('after') ?: 0
+            'after' => $request->query('after') ?: 0,
         ];
         // 交易记录列表
         if ($type == 2) {
             $cate = $request->query('cate');
-            if ($cate == 2) $params['action'] = 'income';
-            if ($cate == 3) $params['action'] = 'expenses';
+            if ($cate == 2) {
+                $params['action'] = 'income';
+            }
+
+            if ($cate == 3) {
+                $params['action'] = 'expenses';
+            }
+
             $records = api('GET', '/api/v2/plus-pay/orders', $params);
         }
 
@@ -133,9 +138,9 @@ class AccountController extends BaseController
         $html = view('pcview::account.walletrecords', $data, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $html,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 
@@ -191,13 +196,13 @@ class AccountController extends BaseController
             'email' => false,
             'qq' => false,
             'wechat' => false,
-            'weibo' => false
+            'weibo' => false,
         ];
         // 手机邮箱绑定状态
         $user = api('GET', '/api/v2/user');
 
-        $data['phone'] = (boolean)$user['phone'];
-        $data['email'] = (boolean)$user['email'];
+        $data['phone'] = (boolean) $user['phone'];
+        $data['email'] = (boolean) $user['email'];
 
         // 三方绑定状态
         $binds = api('GET', '/api/v2/user/socialite');
@@ -217,7 +222,7 @@ class AccountController extends BaseController
     {
         $this->PlusData['account_cur'] = 'currency';
 
-        $data['currency'] = api('GET', '/api/v2/currency');
+        $data['currency'] = $this->PlusData['config']['bootstrappers']['currency'];
         $data['type'] = $type;
 
         return view('pcview::account.currency', $data, $this->PlusData);
@@ -234,12 +239,12 @@ class AccountController extends BaseController
         $type = $request->query('type');
         $params = [
             'after' => $request->query('after') ?: 0,
-            'limit' => 15
+            'limit' => 15,
         ];
-        switch ($type){
+        switch ($type) {
             case 1:
                 // 我的积分
-                $currency = api('GET', '/api/v2/currency');
+                $currency = $this->PlusData['config']['bootstrappers']['currency'];
                 break;
             case 2:
                 // 积分明细
@@ -259,7 +264,7 @@ class AccountController extends BaseController
                 break;
         }
         $after = 0;
-        if ($type != 1){
+        if ($type != 1) {
             $data['loadcount'] = $request->query('loadcount');
             $after = last($currency)['id'] ?? 0;
         }
@@ -268,9 +273,9 @@ class AccountController extends BaseController
         $html = view('pcview::account.currencyrecords', $data, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $html,
-            'after' => $after
+            'after' => $after,
         ]);
     }
     /**
@@ -281,12 +286,11 @@ class AccountController extends BaseController
     public function currencyPay()
     {
         $this->PlusData['account_cur'] = 'currency';
-        $data['currency'] = api('GET', '/api/v2/currency');
-        $data['currency']['recharge-options'] = explode(',', $data['currency']['recharge-options']);
+        $data['currency'] = $this->PlusData['config']['bootstrappers']['currency'];
+        $data['currency']['recharge-options'] = explode(',', $data['currency']['settings']['recharge-options']);
 
-        return view('pcview::account.currencypay',$data, $this->PlusData);
+        return view('pcview::account.currencypay', $data, $this->PlusData);
     }
-
 
     /**
      * 积分提取
@@ -296,8 +300,8 @@ class AccountController extends BaseController
     public function currencyDraw()
     {
         $this->PlusData['account_cur'] = 'currency';
-        $data['currency'] = api('GET', '/api/v2/currency');
+        $data['currency'] = $this->PlusData['config']['bootstrappers']['currency'];
 
-        return view('pcview::account.currencydraw',$data, $this->PlusData);
+        return view('pcview::account.currencydraw', $data, $this->PlusData);
     }
 }
