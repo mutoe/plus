@@ -55,7 +55,7 @@ $('.subject-submit').on('click', function() {
 
     var isVerified = TS.BOOT.news.contribute.verified;
     var isPay = TS.BOOT.news.contribute.pay;
-    var pay_contribute = TS.BOOT.news.pay_conyribute;
+    var pay_contribute = TS.BOOT.news.pay_contribute;
 
     if (isVerified && TS.USER.verified == null) {
         ly.confirm(formatConfirm('投稿提示', '成功通过平台认证的用户才能投稿，是否去认证？'), '去认证' , '', function(){
@@ -64,9 +64,9 @@ $('.subject-submit').on('click', function() {
         return false;
     } else if (isPay && pay_contribute > 0) {
         var html = formatConfirm('投稿提示', '<div class="confirm_money">' + pay_contribute + '</div>本次投稿您需要支付' + pay_contribute + TS.CURRENCY_UNIT + '，是否继续投稿？');
-        ly.confirm(html, '投稿' , '', function(){
+        ly.confirm(html, '投稿' , '', function() {
             news.args = args
-            if (TS.BOOT['pay-validate-user-password']) return showPassword(TS.BOOT.news.pay_conyribute, 'news.create(news.args)')
+            if (TS.BOOT['pay-validate-user-password']) return showPassword(pay_contribute, 'news.create(news.args)')
             else return news.create(args);
         });
 

@@ -60,7 +60,7 @@ var QA = {
     },
     look: function (answer_id, money, question_id, obj) {
         checkLogin();
-        obj = obj ? obj : false;
+        QA.payload.obj = obj ? obj : false;
         ly.confirm(formatConfirm('围观支付', '本次围观您需要支付' + money + TS.CURRENCY_UNIT + '，是否继续围观？'), '' , '', function(){
             var _this = this;
             if (_this.lockStatus == 1) {
@@ -80,6 +80,7 @@ var QA = {
         }
         if (QA.lockStatus) return false
         QA.lockStatus = true;
+        var obj = QA.payload.obj
         axios.post(QA.payload.url, {password: password})
             .then(function (response) {
               QA.lockStatus = false;
