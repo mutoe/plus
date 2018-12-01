@@ -55,6 +55,7 @@ export default [
   },
   {
     path: '/questions/:questionId/answers/:answerId',
+    name: 'answerDetail',
     component: AnswerDetail,
     meta: {
       title: '问题详情',

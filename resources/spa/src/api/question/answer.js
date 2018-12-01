@@ -179,3 +179,17 @@ export function reportAnswer (answerId, reason) {
   const url = `/question-answers/${answerId}/reports`
   return api.post(url, { reason }, { validateStatus: s => s === 201 })
 }
+
+/**
+ * 围观答案
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} answerId
+ * @param {string} [password]
+ * @returns
+ */
+export function onlookersAnswer (answerId, password) {
+  const url = `/question-answers/${answerId}/currency-onlookers`
+  return api.post(url, { password }, { validateStatus: s => s === 201 })
+}

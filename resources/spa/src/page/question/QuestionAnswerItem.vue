@@ -13,7 +13,12 @@
           </span>
           <span class="time">{{ answer.created_at | time2tips }}</span>
         </h3>
-        <div class="main-body">{{ body }}</div>
+        <div
+          v-if="!isInvited || answer.could"
+          class="main-body"
+          v-html="body"
+        />
+        <div v-else class="main-body needPay" />
       </div>
     </div>
     <div class="main-button">
@@ -34,7 +39,7 @@
 </template>
 
 <script>
-import { like, unlike } from '@/api/question/answer'
+import * as api from '@/api/question/answer'
 
 export default {
   name: 'QuestionAnswerItem',
@@ -45,6 +50,12 @@ export default {
     likeTargetHanding: false,
   }),
   computed: {
+    isInvited () {
+      return this.answer.invited
+    },
+    onlookersAmount () {
+      return this.$store.state.CONFIG['Q&A'].onlookers_amount || 100
+    },
     anonymity () {
       const { anonymity } = this.answer
       return !!anonymity
@@ -63,7 +74,7 @@ export default {
   },
   methods: {
     handleLike () {
-      like(this.answer.id)
+      api.like(this.answer.id)
         .then(() => {
           this.likeTargetHanding = false
           this.answer.liked = true
@@ -75,7 +86,7 @@ export default {
         })
     },
     handleUnlike () {
-      unlike(this.answer.id)
+      api.unlike(this.answer.id)
         .then(() => {
           this.likeTargetHanding = false
           this.answer.liked = false
@@ -97,9 +108,30 @@ export default {
       this.handleLike()
     },
     viewDetail () {
-      this.$router.push(
-        `/questions/${this.answer.question_id}/answers/${this.answer.id}`
-      )
+      if (!this.isInvited || this.answer.could) {
+        return this.$router.push({
+          name: 'answerDetail',
+          params: { questionId: this.answer.question_id, answerId: this.answer.id },
+        })
+      }
+      this.$bus.$emit('payfor', {
+        title: '围观支付',
+        content: `你只需支付 ${this.onlookersAmount} 积分即可围观该回答`,
+        confirmText: '支付',
+        amount: this.onlookersAmount,
+        onOk: this.onlookers,
+        checkPassword: true,
+      })
+    },
+    onlookers (password) {
+      api.onlookersAnswer(this.answer.id, password)
+        .then(({ data }) => {
+          const { answer } = data
+          this.$emit('update:answer', answer)
+        })
+        .catch(({ response }) => {
+          this.$Message.error(response.data.message)
+        })
     },
     viewUser () {
       if (!this.user.id) return
@@ -196,6 +228,15 @@ export default {
         color: #666;
         margin-bottom: 28px;
         line-height: 1.4;
+
+        &.needPay::after {
+          content: " 该答案需要付费才能围观 need paid 该答案需要付费才能围观 need paid 该答案需要付费才能围观 need paid";
+          text-shadow: 0 0 10px @text-color2; /* no */
+          color: rgba(255, 255, 255, 0);
+          margin-left: 5px;
+          // filter: DXImageTransform.Microsoft.Blur(pixelradius=2);
+          zoom: 1;
+        }
       }
     }
   }

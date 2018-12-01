@@ -8,10 +8,7 @@
       />
     </Transition>
     <Transition name="popr">
-      <div
-        v-if="show"
-        class="m-box-model m-justify-bet m-payfor-box"
-      >
+      <div v-if="show" class="m-box-model m-justify-bet m-payfor-box">
         <h2 class="m-payfor-head">
           <slot name="title">
             <span>{{ title || "购买支付" }}</span>
@@ -24,16 +21,10 @@
           <p>{{ content || `你只需要支付${amount}${currencyUnit}就可查看此${ nodeType }` }}</p>
         </div>
         <div class="m-payfor-foot">
-          <button
-            class="m-payfor-btn primary"
-            @click="showPasswordConfirm"
-          >
+          <button class="m-payfor-btn primary" @click="showPasswordConfirm">
             {{ confirmText || "购买" }}
           </button>
-          <button
-            class="m-payfor-btn"
-            @click="handelCancel"
-          >
+          <button class="m-payfor-btn" @click="handelCancel">
             {{ cancelText || "返回" }}
           </button>
         </div>

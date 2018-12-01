@@ -117,6 +117,7 @@
           v-for="answer in answers"
           :key="answer.id"
           :answer="answer"
+          @update:answer="val => updateAnswer(val)"
         />
       </JoLoadMore>
     </div>
@@ -124,6 +125,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { render } from '@/util/markdown'
 import * as api from '@/api/question/questions'
 import { listByDefault, listByTime } from '@/api/question/answer'
@@ -305,6 +307,9 @@ export default {
         },
       })
       this.$bus.$emit('actionSheet', actions)
+    },
+    updateAnswer (answer) {
+      this.answers = _.unionBy([answer], this.answers, 'id')
     },
   },
 }

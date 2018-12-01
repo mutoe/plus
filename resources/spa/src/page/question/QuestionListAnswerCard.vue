@@ -11,7 +11,7 @@
       size="nano"
     />
     <!-- Body -->
-    {{ showUsername }} <span v-if="isMine && anonymity" class="gray">(匿名)</span>：{{ body }}
+    {{ showUsername }} <span v-if="isMine && anonymity" class="gray">(匿名)</span>：<span class="body" :class="{needPay}">{{ body }}</span>
   </div>
   <div v-else class="empty" />
 </template>
@@ -23,7 +23,7 @@ export default {
   name: 'QuestionListAnswerCard',
   props: {
     answer: {
-      type: [Object],
+      type: Object,
       default: null,
       validator: function (value) {
         if (!value || typeof value === 'object') return true
@@ -43,6 +43,10 @@ export default {
     anonymity () {
       const { anonymity } = this.answer
       return !!anonymity
+    },
+
+    needPay () {
+      return this.answer.could === false
     },
 
     isMine () {
@@ -97,6 +101,17 @@ export default {
   -webkit-box-orient: vertical;
   margin-bottom: 30px;
   line-height: 1.4;
+
+  .body {
+    &.needPay::after {
+      content: " 该答案需要付费才能围观 need paid 该答案需要付费才能围观 need paid 该答案需要付费才能围观 need paid";
+      text-shadow: 0 0 10px @text-color2; /* no */
+      color: rgba(255, 255, 255, 0);
+      margin-left: 5px;
+      // filter: DXImageTransform.Microsoft.Blur(pixelradius=2);
+      zoom: 1;
+    }
+  }
 }
 
 .empty {
