@@ -72,6 +72,32 @@
               <use xlink:href="#icon-arrow-right" />
             </svg>
           </RouterLink>
+          <!-- <RouterLink
+            to="/upgrade"
+            tag="li"
+            class="m-entry"
+          >
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-question" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">我的问答</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </RouterLink>
+          <RouterLink
+            to="/own/groups"
+            tag="li"
+            class="m-entry"
+          >
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-group" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">我的圈子</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </RouterLink> -->
         </ul>
         <ul class="m-box-model m-entry-group">
           <RouterLink
