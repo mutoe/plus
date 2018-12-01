@@ -69,11 +69,11 @@ var QA = {
             _this.lockStatus = 1;
             QA.payload.url = '/api/v2/question-answers/' + answer_id + '/currency-onlookers';
 
-            if (TS.BOOT['pay-validate-user-password']) showPassword(money, "QA.postLook()");
-            else QA.postLook()
+            if (TS.BOOT['pay-validate-user-password']) showPassword(money, "QA.postLook("+question_id+", "+answer_id+")");
+            else QA.postLook(question_id, answer_id)
         });
     },
-    postLook: function() {
+    postLook: function(question_id, answer_id) {
         var password;
         if (TS.BOOT['pay-validate-user-password']) {
             password = $('#J-password-confirm').val();
