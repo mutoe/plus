@@ -14,7 +14,7 @@
           <span class="time">{{ answer.created_at | time2tips }}</span>
         </h3>
         <div
-          v-if="!isInvited || answer.could"
+          v-if="answer.could !== false"
           class="main-body"
           v-html="body"
         />
@@ -128,6 +128,7 @@ export default {
         .then(({ data }) => {
           const { answer } = data
           this.$emit('update:answer', answer)
+          this.$Message.success('支付成功！')
         })
         .catch(({ response }) => {
           this.$Message.error(response.data.message)
