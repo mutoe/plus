@@ -95,7 +95,7 @@ var QA = {
                     $(obj).text(body);
                     $(obj).after('<a href="/questions/' + question_id + '/answers/' + answer_id + '" class="button button-plain button-more">查看详情</a>');
                     layer.closeAll();
-                    _this.lockStatus = 0;
+                    QA.lockStatus = false;
                 }
             })
             .catch(function (error) {
