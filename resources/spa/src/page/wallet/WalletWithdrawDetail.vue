@@ -21,11 +21,11 @@
 
 <script>
 import _ from 'lodash'
-import walletWithdrawDetailItem from './components/WalletWithdrawDetailItem.vue'
+import WalletWithdrawDetailItem from './components/WalletWithdrawDetailItem.vue'
 
 export default {
   name: 'WalletWithdrawDetail',
-  components: { walletWithdrawDetailItem },
+  components: { WalletWithdrawDetailItem },
   data () {
     return {
       currAction: 'out',

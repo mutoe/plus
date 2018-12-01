@@ -67,10 +67,11 @@
 
 <script>
 import { mapState } from 'vuex'
+import * as api from '@/api/wallet'
 
 const supportType = {
   alipay: { title: '支付宝提现', type: 'alipay' },
-  // 未实现 wechat: { title: "微信提现", type: "wechat" }
+  wechat: { title: '微信提现', type: 'wechat' },
 }
 
 export default {
@@ -85,7 +86,7 @@ export default {
   },
   computed: {
     ...mapState({
-      wallet: state => state.CONFIG.wallet,
+      wallet: state => state.CONFIG.wallet || {},
     }),
     disabled () {
       const { value, account, type } = this.form
@@ -108,16 +109,17 @@ export default {
     },
   },
   methods: {
-    async handleOk () {
+    handleOk () {
       if (this.loading) return
       this.loading = true
-      const { message } = await this.$store
-        .dispatch('wallet/requestWithdraw', this.form)
-        .catch(() => {
+      api.postWalletWithdraw(this.form)
+        .then(({ data }) => {
+          this.$Message.success(data.message)
+          this.$router.replace('/wallet/withdraw/detail')
+        })
+        .finally(() => {
           this.loading = false
         })
-      this.$Message.success(message)
-      this.$router.replace('/wallet/withdraw/detail')
     },
     selectWithdrawType () {
       const actions = []

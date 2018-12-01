@@ -99,7 +99,7 @@ export default {
   }
 
   .amount {
-    width: 6em;
+    width: 8em;
     text-align: right;
 
     > span {
