@@ -39,16 +39,6 @@ const actions = {
   },
 
   /**
-   * 发起充值请求
-   * @author mutoe <mutoe@foxmail.com>
-   * @returns {Promise<string>} url
-   */
-  async requestRecharge (state, payload) {
-    const { data = '' } = await api.postCurrencyRecharge(payload)
-    return data
-  },
-
-  /**
    * 发起提现请求
    * @author mutoe <mutoe@foxmail.com>
    * @param {number} amount

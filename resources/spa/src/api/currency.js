@@ -55,3 +55,16 @@ export function postCurrencyWithdraw (data) {
       Message.error(response.data)
     })
 }
+
+/**
+ * 查询微信支付订单
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {*} order
+ * @returns
+ */
+export function checkWechatOrders (order) {
+  const url = '/currencyRecharge/checkWechatOrders'
+  return api.post(url, { out_trade_no: order }, { validateStatus: s => s === 200 })
+}

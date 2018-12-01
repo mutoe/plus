@@ -89,11 +89,12 @@ export default {
     document.title = this.currencyUnit
   },
   mounted () {
+    this.$store.dispatch('fetchUserInfo')
+
     const amount = this.$route.query.total_amount
     if (amount) {
-      this.$store.dispatch('fetchUserInfo')
       this.$Message.success(
-        `共消耗${amount}元, 获得 ${amount * 100} ${this.currencyUnit}!`
+        `充值成功, 获得 ${amount * 100} ${this.currencyUnit}!`
       )
     }
   },
