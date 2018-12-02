@@ -29,9 +29,9 @@
                 <img src="{{ asset('assets/pc/images/pay_pic_zfb.png') }}"/>
                 <input class="hide" id="alipay" type="radio" name="payway" value="AlipayWapOrder" checked>
             </label>
-            <label for="wallet">
+            <label for="wechat">
                 <img src="{{ asset('assets/pc/images/pay_pic_wechat.png') }}"/>
-                <input class="hide" id="weixing" type="radio" name="payway" value="WechatWapOrder">
+                <input class="hide" id="wechat" type="radio" name="payway" value="WechatWapOrder">
             </label>
         </div>
 
@@ -43,7 +43,6 @@
 
 @section('scripts')
 <script src="{{asset('assets/pc/js/qrcode.min.js')}}"></script>
-<script src="{{asset('assets/pc/js/layer.js')}}"></script>
 <script type="text/javascript">
 var popInterval;
 $('.pay-sum label').on('click', function(){
@@ -81,8 +80,9 @@ $('#J-pay-btn').on('click', function(){
         from: 1,
         url: 1,
         amount: sum ? sum : custom * 100,
-        wechat_type: 'WechatPay_Native'
+        redirect: "{{ route('pc:wallet') }}"
     }
+    if (payway == 'WechatWapOrder') params.wechat_type = 'WechatPay_Native';
 
     axios.post('/api/v2/walletRecharge/orders', params)
     .then(function (response) {

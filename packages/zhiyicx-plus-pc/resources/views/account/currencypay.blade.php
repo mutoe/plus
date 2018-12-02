@@ -32,20 +32,30 @@
 
         <p class="tcolor">选择充值方式</p>
         <div class="pay-way">
-            <label for="alipay" class="active"><img src="{{ asset('assets/pc/images/pay_pic_zfb.png') }}"/></label>
-            <input class="hide" id="alipay" type="radio" name="payway" value="AlipayWapOrder" checked>
+            <label for="alipay" class="active">
+                <img src="{{ asset('assets/pc/images/pay_pic_zfb.png') }}"/>
+                <input class="hide" id="alipay" type="radio" name="payway" value="AlipayWapOrder" checked>
+            </label>
+            <label for="wechat">
+                <img src="{{ asset('assets/pc/images/pay_pic_wechat.png') }}"/>
+                <input class="hide" id="wechat" type="radio" name="payway" value="WechatWapOrder">
+            </label>
             @if($config['bootstrappers']['wallet']['transform-currency'])
-                <label for="wallet"><img src="{{ asset('assets/pc/images/pay_pic_wallet.png') }}"/></label>
+            <label for="wallet">
+                <img src="{{ asset('assets/pc/images/pay_pic_wallet.png') }}"/>
                 <input class="hide" id="wallet" type="radio" name="payway" value="wallet_pc_direct">
+            </label>
             @endif
         </div>
 
         <button type="submit" class="pay-btn" id="J-pay-btn">充值</button>
+        <div style="display: none" id="qrcode"></div>
     </div>
 </div>
 @endsection
 
 @section('scripts')
+<script src="{{asset('assets/pc/js/qrcode.min.js')}}"></script>
 <script type="text/javascript">
 var popInterval;
 $('.pay-curr label').on('click', function(){
@@ -100,7 +110,7 @@ $('#J-pay-btn').on('click', function(){
         };
         axios.post('/api/v2/plus-pay/transform', params)
         .then(function (response) {
-            noticebox('充值成功', 1, "/settings/currency");
+            noticebox('充值成功', 1, "{{ route('pc:currency') }}");
         })
         .catch(function (error) {
             showError(error.response.data);
@@ -111,13 +121,47 @@ $('#J-pay-btn').on('click', function(){
             type: payway,
             from: 1,
             url: 1,
-            redirect: "{{ route('pc:currency') }}",
             amount: sum ? sum : custom * 100,
+            redirect: "{{ route('pc:currency') }}"
         }
+        if (payway == 'WechatWapOrder') params.wechat_type = 'WechatPay_Native';
 
         axios.post('/api/v2/currencyRecharge/orders', params)
         .then(function (response) {
-            window.location.href = response.data;
+            if(payway == 'WechatWapOrder'){ // 微信支付
+                var qrcode = new QRCode(document.getElementById("qrcode"),{
+                    width: 150,
+                    height: 150,
+                });
+                qrcode.makeCode(response.data.data.code_url);
+                setTimeout(function () {
+                    var interval = null;
+                    layer.open({
+                        type: 1,
+                        shade: false,
+                        title: false,
+                        area: ['240px', '240px'],
+                        content: '<div align="center" style="margin-top: 15%"><span style="display: block;text-align: center;margin-bottom: 10px">请用微信扫码支付</span>'+$('#qrcode').html()+'</div>',
+                        cancel: function(){
+                            $("#qrcode").empty();
+                            clearInterval(interval);
+                        }
+                    });
+                    interval = setInterval(function () {
+                        axios.post('/api/v2/walletRecharge/checkWechatOrders', {out_trade_no:response.data.data.out_trade_no})
+                        .then(function (response) {
+                            if(response.data.message == '充值成功') {
+                                window.location.href = "{{ route('pc:currency') }}";
+                            }
+                        })
+                        .catch(function (error) {
+                            showError(error.response.data);
+                        });
+                    }, 3000)
+                }, 1);
+            } else {
+                window.location.href = response.data;
+            }
         })
         .catch(function (error) {
             showError(error.response.data);
@@ -125,44 +169,5 @@ $('#J-pay-btn').on('click', function(){
         });
     }
 });
-
-// function payPop(id){
-//     popInterval = setInterval("checkStatus("+id+")", 3000);
-//     var html = '<div class="tip">'+
-//                     '<p>请您在新打开的支付页面完成付款</p>'+
-//                     '<p>付款前请不要关闭此窗口</p>'+
-//                 '</div><div class="msg">完成付款后请根据您的情况点击下面的按钮。</div>';
-//     layer.confirm(html, {
-//       move: false,
-//       id: 'pay_tip_pop',
-//       title: '充值提示',
-//       btn: ['支付成功','遇到问题'],
-//       cancel: function(){
-//         clearInterval(popInterval);
-//       }
-//     }, function(){
-//         checkStatus(id, 1);
-//     }, function(){
-//         return false;
-//     });
-//     $('#J-pay-btn').attr("disabled", false);
-// }
-
-// function checkStatus(id, type) {
-//     type = type || 0;
-//     if (!id) { return; }
-//     axios.get('/api/v2/currency/orders/'+id)
-//       .then(function (response) {
-//         if (response.data.status == 1) {
-//             window.location.href = TS.SITE_URL + '/success?status=1&url={{route('pc:currencypay')}}&time=3&message=充值成功';
-//         }
-//         if (type == 1) {
-//             window.location.href = TS.SITE_URL + '/success?status=0&url={{route('pc:currencypay')}}&time=3&message=充值失败或正在处理中&content=操作失败';
-//         }
-//       })
-//       .catch(function (error) {
-//         showError(error.response.data);
-//       });
-// }
 </script>
 @endsection

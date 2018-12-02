@@ -37,7 +37,7 @@ class NewsController extends BaseController
             $news['page'] = $request->loadcount;
 
             // 加入置顶资讯
-            if ($params['cate_id']) {
+            if ($params['cate_id'] && $request->query('loadcount') == 1) {
                 $topNews = api('GET', '/api/v2/news/categories/pinneds', $params);
                 $news['news'] = formatPinneds($news['news'], $topNews, 'id');
             }
