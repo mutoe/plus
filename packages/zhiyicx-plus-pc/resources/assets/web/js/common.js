@@ -556,7 +556,7 @@ var noticebox = function(msg, status, tourl) {
 
 // 消息提示回调
 var noticebox_cb = function(tourl) {
-    window.location.href = tourl == 'refresh' ? window.location.href : TS.SITE_URL + tourl;
+    window.location.href = tourl == 'refresh' ? window.location.href : (tourl.indexOf('http') >= 0 ? tourl : TS.SITE_URL + tourl);
 }
 
 // 无数据提示dom

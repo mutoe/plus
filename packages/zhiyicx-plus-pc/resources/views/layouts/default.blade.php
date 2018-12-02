@@ -12,7 +12,7 @@
             USER:{!! json_encode($TS) !!},
             MID: "{{ $TS['id'] ?? 0 }}",
             TOKEN: "{{ $token ?? '' }}",
-            SITE_URL: "{{ getenv('APP_URL') }}",
+            SITE_URL: "{{ config('app.url') }}",
             RESOURCE_URL: '{{ asset('assets/pc/') }}',
             BOOT: {!! json_encode($config['bootstrappers']) !!},
             EASEMOB_KEY: {!! json_encode($config['easemob_key']) !!},

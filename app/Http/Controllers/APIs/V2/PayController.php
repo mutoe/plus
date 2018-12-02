@@ -439,7 +439,6 @@ class PayController extends Controller
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '钱包充值';
         $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
-
         $order->amount = $amount;
         $order->product_code = 'JSAPI';
         $order->user_id = $user->id;
@@ -483,7 +482,6 @@ class PayController extends Controller
         $user = $request->user();
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
-        $wechat_type = $request->input('wechat_type');
         $openId = $request->input('openId', '');
         $config = array_filter(config('newPay.wechatPay'));
 
