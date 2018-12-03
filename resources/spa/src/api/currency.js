@@ -65,6 +65,6 @@ export function postCurrencyWithdraw (data) {
  * @returns
  */
 export function checkWechatOrders (order) {
-  const url = '/currencyRecharge/checkWechatOrders'
+  const url = '/walletRecharge/checkWechatOrders'
   return api.post(url, { out_trade_no: order }, { validateStatus: s => s === 200 })
 }
