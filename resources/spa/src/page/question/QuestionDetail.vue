@@ -301,7 +301,7 @@ export default {
           this.$bus.$emit('report', {
             type: 'question',
             payload: this.question.id,
-            username: this.question.user.name,
+            username: this.question.anonymity ? '匿名用户' : this.question.user.name,
             reference: this.question.subject,
           })
         },
