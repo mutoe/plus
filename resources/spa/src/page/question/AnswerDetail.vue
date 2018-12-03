@@ -332,7 +332,7 @@ export default {
             this.$bus.$emit('report', {
               type: 'answer',
               payload: this.answerId,
-              username: this.answer.user.name,
+              username: this.answer.anonymity ? '匿名用户' : this.answer.user.name,
               reference: this.answer.body,
             })
           },
