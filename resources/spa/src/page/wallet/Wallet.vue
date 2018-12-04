@@ -23,6 +23,7 @@
 
     <ul class="m-box-model m-entry-group padding">
       <RouterLink
+        v-if="wallet.recharge.status"
         :to="{path: 'recharge'}"
         append
         tag="li"
@@ -37,6 +38,7 @@
         </svg>
       </RouterLink>
       <RouterLink
+        v-if="wallet.cash.status"
         :to="{path: 'withdraw'}"
         append
         tag="li"

@@ -140,6 +140,11 @@ export default {
     },
   },
   created () {
+    if (!this.currency.recharge.status) {
+      this.$Message.error('未开启提现功能')
+      this.goBack()
+      return
+    }
     this.whenPayPending()
   },
   methods: {

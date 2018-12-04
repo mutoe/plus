@@ -22,6 +22,7 @@
 
     <ul class="m-box-model m-entry-group padding">
       <RouterLink
+        v-if="currency.recharge.status"
         to="/currency/recharge"
         tag="li"
         class="m-entry"
@@ -35,6 +36,7 @@
         </svg>
       </RouterLink>
       <RouterLink
+        v-if="currency.cash.status"
         to="/currency/withdraw"
         tag="li"
         class="m-entry"
