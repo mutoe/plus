@@ -54,11 +54,13 @@
         </div>
         <div class="reward-row">
             <div class="reward-notice">设置悬赏金额</div>
+            @if($config['bootstrappers']['site']['reward']['amounts'] ?? false)
             <ul class="reward-example">
                 @foreach(explode(',', $config['bootstrappers']['site']['reward']['amounts']) as $amount)
                     <li>{{ $amount }}</li>
                 @endforeach
             </ul>
+            @endif
             <input type="text" min="1" oninput="value=moneyLimit(value)" class="custom-money" id="amount" placeholder="自定义悬赏金额">
             <input type="hidden" id="amount-hide" name="amount">
         </div>
