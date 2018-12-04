@@ -44,7 +44,15 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <span class="fuzzy">@php for ($i = 0; $i < (200 - $len); $i ++) {echo 'T';} @endphp</span>
         </p>
         @else
-        <p class="feed_text">{!! formatContent($post['feed_content']) !!}</p>
+        <a class="feed_text" href="{{ route('pc:feedread', ['feed' => $post['id']]) }}">
+            @php
+                $content = formatContent($post['feed_content']);
+                $has_more = mb_strlen($content, 'utf-8') > 100;
+                $content = mb_substr($content, 0, 100, 'utf-8');
+            @endphp
+            {!! $content !!}
+            <span class="more"> 查看更多</span>
+        </a>
         @endif
 
         @include('pcview::templates.feed_images', ['target_url' => route('pc:feedread', ['feed' => $post['id']])])
