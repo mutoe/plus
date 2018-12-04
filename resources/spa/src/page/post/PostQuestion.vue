@@ -80,7 +80,11 @@
             @input="setContent"
           />
         </div>
-        <VSwitch v-model="question.anonymity" class="anonymity-switch">
+        <VSwitch
+          v-if="allowAnonymious"
+          v-model="question.anonymity"
+          class="anonymity-switch"
+        >
           <slot>匿名提问</slot>
         </VSwitch>
       </div>
@@ -174,6 +178,9 @@ export default {
   },
   computed: {
     ...mapGetters(['compose']),
+    allowAnonymious () {
+      return this.$store.state.CONFIG.site.anonymous.status || false
+    },
     title () {
       switch (this.step) {
         case 1:
