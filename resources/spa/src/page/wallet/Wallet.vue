@@ -52,7 +52,7 @@
       </RouterLink>
     </ul>
 
-    <ul class="m-box-model m-entry-group padding">
+    <ul v-if="allowTransformCurrency" class="m-box-model m-entry-group padding">
       <RouterLink
         :to="{path: '/currency/recharge'}"
         tag="li"
@@ -110,6 +110,9 @@ export default {
     rule () {
       const rule = this.wallet.rule || ''
       return rule.replace(/\n/g, '<br>')
+    },
+    allowTransformCurrency () {
+      return this.wallet['transform-currency']
     },
   },
   mounted () {

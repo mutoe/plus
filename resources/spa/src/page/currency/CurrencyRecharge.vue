@@ -100,6 +100,9 @@ export default {
       currency: state => state.CONFIG.currency,
       wallet: state => state.CONFIG.wallet,
     }),
+    allowTransformCurrency () {
+      return this.wallet['transform-currency']
+    },
     isWechat () {
       return this.$store.state.BROWSER.isWechat
     },
@@ -178,10 +181,12 @@ export default {
     },
     selectRechargeType () {
       const actions = []
-      actions.push({
-        text: '钱包余额支付',
-        method: () => void (this.rechargeType = 'balance'),
-      })
+      if (this.allowTransformCurrency) {
+        actions.push({
+          text: '钱包余额支付',
+          method: () => void (this.rechargeType = 'balance'),
+        })
+      }
       supportTypes.forEach(item => {
         if (this.allowedTypes.includes(item.key)) {
           actions.push({
