@@ -20,7 +20,7 @@
             <button
               v-for="item in rechargeItems"
               :key="item"
-              :class="{ active: ~~amount === ~~item && !customAmount }"
+              :class="{ active: (amount === item) && !customAmount }"
               class="m-pinned-amount-btn"
               @click="chooseDefaultAmount(item)"
               v-text="item.toFixed(2)"
@@ -110,8 +110,8 @@ export default {
       return this.currency.recharge
     },
     rechargeItems () {
-      const labels = this.wallet.labels || []
-      return labels.map(item => item / 100)
+      const items = (this.currency.settings['recharge-options'] || '').split(',')
+      return items.map(item => Number(item) / 100)
     },
     allowedTypes () {
       return this.wallet.recharge.types || []
