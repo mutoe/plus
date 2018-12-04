@@ -2,7 +2,6 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\ViewComposers;
 
 use Illuminate\View\View;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Support\Facades\Cache;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
