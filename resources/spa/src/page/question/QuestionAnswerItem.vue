@@ -54,7 +54,7 @@ export default {
       return this.answer.invited
     },
     onlookersAmount () {
-      return this.$store.state.CONFIG['Q&A'].onlookers_amount || 100
+      return this.$store.state.CONFIG['Q&A'].onlookers_amount || 0
     },
     anonymity () {
       const { anonymity } = this.answer
