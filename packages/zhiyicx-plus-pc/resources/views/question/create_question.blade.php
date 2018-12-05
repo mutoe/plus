@@ -40,11 +40,12 @@
         <div class="question-form-row">
             @include('pcview::widgets.markdown', ['height'=>'400px', 'width' => '100%', 'content' => $question['body'] ?? ''])
         </div>
+        @if ($config['bootstrappers']['site']['anonymous']['status'] ?? false)
         <div class="question-form-row">
-
             <input id="anonymity" name="anonymity" type="checkbox" @if(isset($question) && $question['anonymity'] == 1) checked="checked" @endif class="input-checkbox"/>
             <label for="anonymity">启动匿名</label>
         </div>
+        @endif
         <div class="question-next"><button id="question-next">下一步</button></div>
     </div>
     <div class="step2">
