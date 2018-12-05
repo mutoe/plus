@@ -18,6 +18,7 @@
 
     <footer>
       <VSwitch
+        v-if="allowAnonymious"
         v-model="anonymity"
         type="checkbox"
         class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
@@ -43,6 +44,9 @@ export default {
     },
     disabled () {
       return !this.content
+    },
+    allowAnonymious () {
+      return this.$store.state.CONFIG.site.anonymous.status || false
     },
   },
   methods: {

@@ -20,7 +20,7 @@
           <div v-if="body.length > 0" class="m-card-con">
             <p
               :class="{needPay}"
-              class="m-text-box m-text-cut-3"
+              class="m-text-box m-text-cut-3 feed-body"
               v-html="replaceURI(body)"
             />
           </div>
@@ -486,6 +486,10 @@ export default {
       font-size: 32px;
       font-weight: bold;
       margin-bottom: 20px;
+    }
+
+    .feed-body {
+      width: 100%;
     }
   }
   &-foot {

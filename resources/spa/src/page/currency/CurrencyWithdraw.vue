@@ -83,6 +83,12 @@ export default {
       return this.user.currency.sum || 0
     },
   },
+  created () {
+    if (!this.currency.cash.status) {
+      this.$Message.error('未开启积分提取功能')
+      this.goBack()
+    }
+  },
   methods: {
     async handleOk () {
       // 积分不足时前往充值

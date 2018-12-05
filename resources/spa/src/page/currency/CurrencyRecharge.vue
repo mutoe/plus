@@ -20,7 +20,7 @@
             <button
               v-for="item in rechargeItems"
               :key="item"
-              :class="{ active: ~~amount === ~~item && !customAmount }"
+              :class="{ active: (amount === item) && !customAmount }"
               class="m-pinned-amount-btn"
               @click="chooseDefaultAmount(item)"
               v-text="item.toFixed(2)"
@@ -100,6 +100,9 @@ export default {
       currency: state => state.CONFIG.currency,
       wallet: state => state.CONFIG.wallet,
     }),
+    allowTransformCurrency () {
+      return this.wallet['transform-currency']
+    },
     isWechat () {
       return this.$store.state.BROWSER.isWechat
     },
@@ -107,8 +110,8 @@ export default {
       return this.currency.recharge
     },
     rechargeItems () {
-      const labels = this.wallet.labels || []
-      return labels.map(item => item / 100)
+      const items = (this.currency.settings['recharge-options'] || '').split(',')
+      return items.map(item => Number(item) / 100)
     },
     allowedTypes () {
       return this.wallet.recharge.types || []
@@ -137,6 +140,11 @@ export default {
     },
   },
   created () {
+    if (!this.currency.recharge.status) {
+      this.$Message.error('未开启提现功能')
+      this.goBack()
+      return
+    }
     this.whenPayPending()
   },
   methods: {
@@ -178,10 +186,12 @@ export default {
     },
     selectRechargeType () {
       const actions = []
-      actions.push({
-        text: '钱包余额支付',
-        method: () => void (this.rechargeType = 'balance'),
-      })
+      if (this.allowTransformCurrency) {
+        actions.push({
+          text: '钱包余额支付',
+          method: () => void (this.rechargeType = 'balance'),
+        })
+      }
       supportTypes.forEach(item => {
         if (this.allowedTypes.includes(item.key)) {
           actions.push({

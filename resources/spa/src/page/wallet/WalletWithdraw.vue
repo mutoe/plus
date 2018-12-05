@@ -108,6 +108,12 @@ export default {
       return this.wallet.cash.types || []
     },
   },
+  created () {
+    if (!this.wallet.cash.status) {
+      this.$Message.error('未开启提现功能')
+      this.goBack()
+    }
+  },
   methods: {
     handleOk () {
       if (this.loading) return
