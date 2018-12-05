@@ -77,7 +77,7 @@ export default {
   padding: 30px;
   font-size: 30px;
   line-height: 36px;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   display: flex;
   justify-content: space-between;
   align-items: center;

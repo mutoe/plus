@@ -95,7 +95,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      border-top: 1px solid #ededed;
+      border-top: 1px solid #ededed; /* no */
 
       &:first-child {
         border-top: none;

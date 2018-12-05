@@ -329,7 +329,7 @@ export default {
     width: 100%;
     background-color: #fff;
     bottom: 0;
-    border-top: solid 1px #d7d8d8;
+    border-top: solid 1px #d7d8d8; /* no */
 
     @media screen and (min-width: 769px) {
       width: 768px;
@@ -441,7 +441,7 @@ export default {
           color: @warning;
 
           > span {
-            border: solid 1px currentColor;
+            border: solid 1px currentColor; /* no */
             border-radius: 8px;
             padding: 0 4px;
             font-size: 22px;
@@ -456,7 +456,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    border-top: solid 1px #ededed;
+    border-top: solid 1px #ededed; /* no */
     font-size: 28px;
     background-color: #fff;
     padding: 30px 0;
@@ -468,7 +468,7 @@ export default {
       justify-content: center;
       align-items: center;
       color: #666;
-      border-right: 1px solid #ededed;
+      border-right: 1px solid #ededed; /* no */
 
       &:last-child {
         border-right: none;

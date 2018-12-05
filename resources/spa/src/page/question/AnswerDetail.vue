@@ -457,7 +457,7 @@ export default {
     align-items: center;
     padding: 0 20px;
     height: 120px;
-    border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid #ededed; /* no */
 
     .user-info {
       flex: auto;
@@ -472,7 +472,7 @@ export default {
 
       + span {
         flex: none;
-        border: 1px solid #ccc;
+        border: 1px solid #ccc; /* no */
         color: #ccc;
         border-radius: 10px;
         font-size: 28px;

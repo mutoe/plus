@@ -139,7 +139,7 @@ export default {
     .input-wrap {
       height: 90px;
       background-color: #f4f5f5;
-      border: solid 1px #dedede;
+      border: solid 1px #dedede; /* no */
       margin-top: 30px;
 
       input {

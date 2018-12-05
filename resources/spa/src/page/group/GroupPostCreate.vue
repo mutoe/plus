@@ -142,7 +142,7 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     padding: 30px;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @border-color; /* no */
 
     .input-wrap {
       svg {
@@ -208,7 +208,7 @@ export default {
   .form-switch-item {
     position: fixed;
     bottom: 0;
-    border-top: 1px solid @border-color;
+    border-top: 1px solid @border-color; /* no */
   }
 }
 </style>

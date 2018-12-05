@@ -73,7 +73,7 @@ export default {
       padding: 0 30px;
 
       + li {
-        border-top: 1px solid @border-color;
+        border-top: 1px solid @border-color; /* no */
       }
 
       &.active::after {
