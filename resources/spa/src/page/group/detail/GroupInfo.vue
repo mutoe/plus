@@ -96,7 +96,7 @@ export default {
   }
 
   .c-form-switch-item {
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @border-color; /* no */
   }
 
   .footage {
@@ -130,7 +130,7 @@ export default {
       left: 0;
       height: 30px;
       width: 30px;
-      border: 1px solid @border-color;
+      border: 1px solid @border-color; /* no */
       vertical-align: middle;
 
       &::after {
@@ -171,6 +171,6 @@ export default {
 }
 
 .bb {
-  border-bottom: 1px solid @border-color;
+  border-bottom: 1px solid @border-color; /* no */
 }
 </style>

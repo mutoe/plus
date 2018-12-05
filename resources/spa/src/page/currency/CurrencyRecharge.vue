@@ -9,7 +9,7 @@
 
     <section class="m-currency-panel">
       <h3>充值比率</h3>
-      <p>1.0元=100.0{{ currencyUnit }}</p>
+      <p>1.0元={{ Number(rechargeRatio * 100).toFixed(1) }}{{ currencyUnit }}</p>
     </section>
 
     <main class="m-box-model m-aln-center m-justify-center">
@@ -109,6 +109,9 @@ export default {
     recharge () {
       return this.currency.recharge
     },
+    rechargeRatio () {
+      return this.currency.settings['recharge-ratio'] || 1
+    },
     rechargeItems () {
       const items = (this.currency.settings['recharge-options'] || '').split(',')
       return items.map(item => Number(item) / 100)
@@ -126,7 +129,7 @@ export default {
     },
     form () {
       return {
-        amount: this.customAmount * 100 || this.amount,
+        amount: (this.customAmount || this.amount) * this.rechargeRatio * 100,
         type: this.rechargeType,
       }
     },

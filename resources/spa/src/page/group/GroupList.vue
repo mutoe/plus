@@ -172,7 +172,7 @@ export default {
     font-size: 26px;
     color: @text-color3;
     overflow-y: auto;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @border-color; /* no */
     z-index: 10;
     max-width: 1080px;
     background-color: #fff;
@@ -197,7 +197,7 @@ export default {
 
     .group-item-wrap {
       + .group-item-wrap {
-        border-top: 1px solid @border-color;
+        border-top: 1px solid @border-color; /* no */
       }
     }
   }

@@ -561,14 +561,14 @@ export default {
 
     .list {
       margin-top: 120px;
-      border-top: 1px solid #4a4d5e;
+      border-top: 1px solid #4a4d5e; /* no */
 
       > li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         height: 100px;
-        border-bottom: 1px solid #4a4d5e;
+        border-bottom: 1px solid #4a4d5e; /* no */
         font-size: 30px;
 
         svg {
@@ -584,7 +584,7 @@ export default {
       height: 60px;
       background-color: transparent;
       color: #ccc;
-      border: 1px solid #4a4d5e;
+      border: 1px solid #4a4d5e; /* no */
       font-size: 30px;
     }
   }
@@ -648,7 +648,7 @@ export default {
   background-position: center;
   font-size: 28px;
   color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* no */
 
   h3 {
     font-size: 32px;

@@ -49,7 +49,7 @@ export default {
   justify-content: space-between;
   overflow: hidden;
   background: #fff;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   font-size: 32px;
   color: inherit;
   z-index: 10;

@@ -8,10 +8,10 @@
             @include('pcview::widgets.markdown', ['height'=>'400px', 'width' => '100%', 'content' => $answer['body'] ?? ''])
         </div>
         <div class="question-form-row answer-from-row">
-
+            @if ($config['bootstrappers']['site']['anonymous']['status'] ?? false)
             <input id="anonymity" name="anonymity" type="checkbox" @if($answer['anonymity'] == 1) checked="checked" @endif class="input-checkbox"/>
             <label for="anonymity">启动匿名</label>
-
+            @endif
             <button class="edit-answer-btn" id="answer-submit">提交修改</button>
         </div>
     </div>

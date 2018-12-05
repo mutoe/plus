@@ -33,7 +33,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   color: #b3b3b3;
   padding: 30px;
   font-size: 30px;

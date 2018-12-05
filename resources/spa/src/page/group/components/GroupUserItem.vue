@@ -43,7 +43,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   height: 134px;
-  border-bottom: 1px solid @border-color;
+  border-bottom: 1px solid @border-color; /* no */
   padding: 0 30px;
 
   .avatar {

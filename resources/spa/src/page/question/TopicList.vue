@@ -202,7 +202,7 @@ export default {
     font-stretch: normal;
     line-height: 0;
     letter-spacing: 0;
-    border-bottom: solid 1px #ededed;
+    border-bottom: solid 1px #ededed; /* no */
     z-index: 10;
 
     > a {

@@ -164,6 +164,7 @@ export default {
         .then(({ data }) => {
           this.loading = false
           this.topic = data
+          document.title = this.topic.name
           this.handleRefreshQuestions()
         })
         .catch(({ response: { data } = {} }) => {
@@ -276,7 +277,7 @@ export default {
     height: 175px;
     padding: 28px 43px;
     background-color: #fff;
-    border-bottom: solid 1px #ededed;
+    border-bottom: solid 1px #ededed; /* no */
 
     > .avatar {
       flex: none;
@@ -351,7 +352,7 @@ export default {
     padding: 30px;
     display: flex;
     background-color: #fff;
-    border-top: solid 1px #ededed;
+    border-top: solid 1px #ededed; /* no */
     justify-content: space-between;
     align-items: center;
 
@@ -362,7 +363,7 @@ export default {
 
     .user {
       position: relative;
-      border: solid 1px #fff;
+      border: solid 1px #fff; /* no */
       margin-left: -20px;
 
       &:first-child {

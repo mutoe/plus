@@ -74,7 +74,7 @@ export default {
   height: 175px;
   padding: 28px;
   background-color: #fff;
-  border-bottom: solid 1px #d7d8d8;
+  border-bottom: solid 1px #d7d8d8; /* no */
 
   .topic-image {
     flex: none;

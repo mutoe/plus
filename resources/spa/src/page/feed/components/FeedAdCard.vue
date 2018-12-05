@@ -102,7 +102,7 @@ export default {
     padding: 0 20px 0 120px;
 
     .advertise-badge {
-      border: 1px solid #ededed;
+      border: 1px solid #ededed; /* no */
       padding: 2px 8px;
     }
   }

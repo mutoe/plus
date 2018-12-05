@@ -233,10 +233,12 @@
             <div class="answer-send">
                 @include('pcview::widgets.markdown', ['height'=>'400px', 'width' => '99%', 'content'=>''])
             </div>
+            @if ($config['bootstrappers']['site']['anonymous']['status'] ?? false)
             <div class="answer-anonymity">
                 <input id="anonymity" name="anonymity" type="checkbox" class="input-checkbox"/>
                 <label for="anonymity">启动匿名</label>
             </div>
+            @endif
             <div class="answer-anonymity"><button id="answer-send">提交</button></div>
         </div>
         {{-- 发布回答 end --}}

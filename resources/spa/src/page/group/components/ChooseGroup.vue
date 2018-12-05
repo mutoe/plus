@@ -62,7 +62,7 @@ export default {
 
   .list {
     > li + li {
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @border-color; /* no */
     }
   }
 }

@@ -382,7 +382,7 @@ export default {
   .question-title {
     flex: none;
     padding: 0 40px;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @border-color; /* no */
 
     &.step3 {
       padding: 40px;
@@ -434,7 +434,7 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    border-top: 1px solid @border-color;
+    border-top: 1px solid @border-color; /* no */
   }
 }
 
