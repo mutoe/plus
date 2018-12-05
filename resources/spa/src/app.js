@@ -37,14 +37,6 @@ export default {
     )
   },
   name: 'App',
-  /**
-   * The App data.
-   *
-   * @return {Object}
-   */
-  data: () => ({
-    title: 'Plus (ThinkSNS+)',
-  }),
   computed: {
     keepAlive () {
       return this.$route.meta.keepAlive || false
@@ -68,31 +60,8 @@ export default {
     }),
   },
   watch: {
-    /**
-     * `$route` watcher.
-     *
-     * @param  {Object} newRoute
-     *
-     * @return {void}
-     */
-    $route (newRoute) {
-      let { title } = newRoute.meta || {}
-
-      if (title) {
-        this.title = title
-      }
-    },
-    /**
-     * Set document title.
-     *
-     * @param  {string} newTitle
-     *
-     * @return {void}
-     */
-    title (newTitle) {
-      if (newTitle) {
-        document.title = newTitle
-      }
+    $route (to, from) {
+      if (to.meta.title) document.title = to.meta.title
     },
   },
   methods: mapActions({

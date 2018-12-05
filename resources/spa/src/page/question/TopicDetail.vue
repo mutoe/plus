@@ -164,6 +164,7 @@ export default {
         .then(({ data }) => {
           this.loading = false
           this.topic = data
+          document.title = this.topic.name
           this.handleRefreshQuestions()
         })
         .catch(({ response: { data } = {} }) => {

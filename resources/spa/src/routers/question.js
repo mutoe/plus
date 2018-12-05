@@ -35,31 +35,38 @@ export default [
         name: 'question',
         path: '',
         component: QuestionList,
-        meta: { keepAlive: true },
+        meta: {
+          keepAlive: true,
+          title: '问答',
+        },
       },
       {
         path: 'topics',
         component: TopicList,
+        meta: {
+          title: '专题',
+        },
       },
     ],
   },
   {
     path: '/questions/:id',
     component: QuestionDetail,
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/question-topics/:id',
     component: TopicDetail,
-    meta: { requiresAuth: true },
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/questions/:questionId/answers/:answerId',
     name: 'answerDetail',
     component: AnswerDetail,
-    meta: {
-      title: '问题详情',
-    },
   },
   {
     path: '/question/:questionId/answers/add',

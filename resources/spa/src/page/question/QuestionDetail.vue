@@ -1,7 +1,7 @@
 <template>
   <div class="p-question-detail">
     <CommonHeader>
-      问题详情
+      {{ question.subject || '问题详情' }}
       <span slot="right">
         <svg class="m-style-svg m-svg-def" @click="onMoreClick">
           <use xlink:href="#icon-more" />
@@ -203,6 +203,7 @@ export default {
   mounted () {
     this.$refs.loadmore.beforeRefresh()
   },
+
   methods: {
     refreshAnswer () {
       this.answerRequestMethod(this.$route.params.id)
@@ -224,6 +225,7 @@ export default {
         .show(this.$route.params.id)
         .then(({ data }) => {
           this.question = data
+          document.title = this.question.subject
           this.refreshAnswer()
         })
         .catch(err => {

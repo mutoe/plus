@@ -9,7 +9,7 @@
     @on-more="moreAction"
     @on-comment="commentAnswer"
   >
-    <CommonHeader slot="head">{{ answer.question.subject }}</CommonHeader>
+    <CommonHeader slot="head">{{ answer.question.subject || '回答详情' }}</CommonHeader>
 
     <main class="m-flex-shrink1 m-flex-grow1 m-art m-main">
       <!-- 回答者信息 -->
@@ -354,6 +354,7 @@ export default {
 
       api.getAnswer(this.answerId).then(({ data }) => {
         this.answer = data
+        document.title = this.answer.question.subject
         this.reward.count = data.rewarder_count
         this.reward.amount = data.rewards_amount
         this.rewardList = data.rewarders
