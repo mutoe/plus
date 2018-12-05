@@ -99,7 +99,7 @@ export default {
 
   + .c-form-item {
     .textarea-wrap {
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @border-color; /* no */
     }
   }
 }
