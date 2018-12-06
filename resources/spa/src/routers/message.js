@@ -25,9 +25,9 @@ const groupCommentAudit = () =>
 const groupJoinAudit = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/groupJoinAudit')
 
-const chatList = () =>
+const ChatList = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-list.vue')
-const chatRoom = () =>
+const ChatRoom = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-room.vue')
 
 // 通知
@@ -42,7 +42,6 @@ export default [
     component: MessageIndex,
     redirect: '/message/info',
     meta: {
-      title: '消息',
       requiresAuth: true,
     },
     children: [
@@ -51,22 +50,20 @@ export default [
         component: info,
         meta: {
           title: '消息',
-          requiresAuth: true,
         },
       },
       {
         path: 'chats',
-        component: chatList,
+        component: ChatList,
         meta: {
           title: '聊天',
-          requiresAuth: true,
         },
       },
     ],
   },
   {
     path: '/chats/:chatID(\\d+)',
-    component: chatRoom,
+    component: ChatRoom,
     meta: {
       title: '对话',
       requiresAuth: true,

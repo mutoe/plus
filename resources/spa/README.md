@@ -33,7 +33,7 @@
 
 `.env` 文件配置说明：
 
-```yaml
+``` ini
 BASE_URL=/                                             # 我们假设你部署在一个域名下，所以默认 `/`, 例如你部署在子目录下，请设置子目录，必须以 `/` 结尾！
 GENERATE_CSS_MAP=true                                  # 是否构建的时候生成 source map
 
@@ -49,6 +49,8 @@ VUE_APP_EASEMOB_APP_KEY=#                              # 环信 APP KEY
 VUE_APP_EASEMOB_API_URL=http://a1.easemob.com          # 环信接口地址
 VUE_APP_EASEMOB_ISDEBUG=false                          # 是否开启环信 Debug
 VUE_APP_LBS_GAODE_KEY=                                 # 高德地图 GAODE KEY
+VUE_APP_MOBLINK_ENABLE=false                           # MobLink 引导启动 APP 开关
+VUE_APP_MOBLINK_KEY=                                   # MobLink APP KEY
 ```
 
 ### 路由模式
@@ -75,6 +77,21 @@ VUE_APP_LBS_GAODE_KEY=                                 # 高德地图 GAODE KEY
 - `serve` 用于开发，修改代码后会自动 Hot Reload
 - `build` 用于正式部署的打包，执行完成后会多出一个 `dist/` 目录
 - `lint`  用于代码检查和风格修复
+
+## 第三方可选功能
+
+### 落地页引导启动/下载 APP
+
+应用使用 [MobLink](http://dashboard.mob.com/#!/link/dashboard) 第三方应用引导启动 APP
+
+**注意：创建应用时请选择 MobLink 经典版，请勿升级至专业版，否则会无法正常使用和回退**
+
+使用时请填写 `.env` 文件中的以下两行
+
+``` ini
+VUE_APP_MOBLINK_ENABLE=true                           # MobLink 引导启动 APP 开关
+VUE_APP_MOBLINK_KEY=xxxxxxxxxxxx                      # MobLink APP KEY
+```
 
 ## License
 
