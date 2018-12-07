@@ -35,7 +35,7 @@ class AnswerController extends Controller
     {
         $question = $request->query('question');
         $id = $request->query('id');
-        $user = $request->query('id');
+        $user = $request->query('user');
         $type = $request->query('type', false);
         $reward = $request->query('reward', false);
         $start_date = $request->query('start_date');
@@ -45,7 +45,7 @@ class AnswerController extends Controller
         $offset = (int) $request->query('offset', 0);
 
         if ($id) {
-            return resonse()->json([AnswerModel::find($id)], 200);
+            return response()->json([AnswerModel::find($id)], 200);
         }
 
         $query = AnswerModel::query();
