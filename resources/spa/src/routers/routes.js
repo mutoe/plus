@@ -11,6 +11,7 @@ import questionRoutes from './question.js'
 import profileRoutes from './profile.js'
 import walletRoutes from './wallet.js'
 import currencyRoutes from './currency.js'
+import topicRoutes from './topic.js'
 
 const router = [
   /* 入口重定向 */
@@ -28,6 +29,7 @@ const router = [
   ...profileRoutes,
   ...walletRoutes,
   ...currencyRoutes,
+  ...topicRoutes,
 
   { path: '*', component: NotFound }, /* 404 页面 */
 ]

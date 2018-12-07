@@ -186,7 +186,7 @@ export default {
     newsID () {
       return this.$route.params.newsID
     },
-    userID () {
+    userId () {
       return this.news.user_id || 0
     },
     isMine () {
@@ -459,7 +459,7 @@ export default {
       // 是否是自己的评论
       if (comment.user_id === this.CURRENTUSER.id) {
         // 是否是自己文章的评论
-        const isOwner = comment.user_id === this.userID
+        const isOwner = comment.user_id === this.userId
         actions.push({
           text: isOwner ? '评论置顶' : '申请评论置顶',
           method: () => {
