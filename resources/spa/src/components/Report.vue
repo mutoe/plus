@@ -42,6 +42,7 @@ import { reportFeed } from '@/api/feeds'
 import { reportNews } from '@/api/news'
 import { reportPost, reportPostComment } from '@/api/group'
 import { reportUser } from '@/api/user'
+import { reportTopic } from '@/api/topic'
 import { reportQuestion } from '@/api/question/questions'
 import { reportAnswer } from '@/api/question/answer'
 import { reportComment } from '@/api'
@@ -54,6 +55,7 @@ const apiMap = {
   postComment: reportPostComment,
   comment: reportComment,
   user: reportUser,
+  topic: reportTopic,
   question: reportQuestion,
   answer: reportAnswer,
 }
@@ -91,6 +93,8 @@ export default {
         case 'comment':
         case 'postComment':
           return '评论'
+        case 'topic':
+          return '话题'
         case 'question':
           return '问题'
         case 'answer':

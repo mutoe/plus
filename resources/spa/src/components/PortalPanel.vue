@@ -1,6 +1,7 @@
 <template>
   <div
     class="c-portal-panel"
+    :class="{'no-cover': !cover, loading}"
     @mousedown="startDrag"
     @touchstart="startDrag"
     @mousemove.stop="onDrag"
@@ -9,22 +10,25 @@
     @touchend="stopDrag"
     @mouseleave="stopDrag"
   >
+    <div v-if="loading" class="m-pos-f m-spinner" />
     <header :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }" class="header">
+      <CircleLoading
+        v-show="updating"
+        class="fetching"
+        :color="cover ? 'light': 'dark'"
+      />
       <div class="left">
         <svg class="m-style-svg m-svg-def" @click="onBackClick">
           <use xlink:href="#icon-back" />
         </svg>
-        <CircleLoading v-show="updating" color="light" />
       </div>
       <div class="title m-text-cut">{{ title }}</div>
-      <div class="right">
+      <div :style="{opacity: loading ? 0 : 1}" class="right">
         <svg class="m-style-svg m-svg-def" @click="$emit('more')">
           <use xlink:href="#icon-more" />
         </svg>
       </div>
     </header>
-
-    <div v-if="loading" class="m-pos-f m-spinner" />
 
     <main>
       <div
@@ -45,7 +49,11 @@
 
       <slot name="loadmore">
         <div class="m-box m-aln-center m-justify-center load-more-box">
-          <span v-if="noMore" class="load-more-ph">---没有更多---</span>
+          <template v-if="noMore">
+            <slot name="noMore">
+              <span class="load-more-ph">---没有更多---</span>
+            </slot>
+          </template>
           <span
             v-else
             class="load-more-btn"
@@ -74,11 +82,9 @@ export default {
   name: 'PortalPanel',
   props: {
     title: { type: String, default: '' },
-    cover: { type: String, default: '' },
+    cover: { type: [String, Boolean], default: '' },
     loading: { type: Boolean, default: false },
     showFooter: { type: Boolean, default: false },
-    fetching: { type: Boolean, default: false },
-    noMore: { type: Boolean, default: false },
     back: { type: Function, default: null },
   },
   data () {
@@ -92,26 +98,26 @@ export default {
       updating: false,
       tags: [],
       footroom: null,
-
-      fetchFollow: false,
+      noMore: false,
+      fetching: false,
     }
   },
   computed: {
-    bio () {
-      return this.user.bio || '这家伙很懒,什么也没留下'
-    },
     bannerStyle () {
-      return [
-        { 'background-image': this.cover ? `url("${this.cover}")` : undefined },
+      const style = [
         this.paddingTop,
         { transitionDuration: this.dragging ? '0s' : '300ms' },
       ]
+      if (this.cover) {
+        style.push({ 'background-image': this.cover ? `url("${this.cover}")` : undefined })
+      }
+      return style
     },
 
     // banner 相关
     paddingTop () {
       return {
-        paddingTop: ((this.bannerHeight + 80 * Math.atan(this.dY / 200)) / (this.bannerHeight * 2)) * 100 + '%',
+        paddingTop: ((this.bannerHeight + 80 * Math.atan(this.dY / 200)) / (this.bannerHeight * (this.cover ? 2 : 3))) * 100 + '%',
       }
     },
   },
@@ -130,6 +136,7 @@ export default {
       })
       this.footroom.init()
     }
+    window.addEventListener('scroll', this.onScroll)
   },
   activated () {
     window.addEventListener('scroll', this.onScroll)
@@ -146,19 +153,23 @@ export default {
       if (this.back) this.back()
       else this.goBack()
     },
-    onUpdate () {
+    beforeUpdate () {
       this.updating = true
-      this.dY = 0
+      this.$emit('update')
     },
     afterUpdate () {
       this.updating = false
     },
+    beforeLoadMore () {
+      this.fetching = true
+    },
+    afterLoadMore (noMore = true) {
+      this.noMore = noMore
+      this.fetcing = false
+    },
     onScroll: _.debounce(function () {
-      this.scrollTop = Math.max(
-        0,
-        document.body.scrollTop,
-        document.documentElement.scrollTop
-      )
+      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
+      this.scrollTop = Math.max(0, scrollTop)
     }, 1000 / 60),
     startDrag (e) {
       e = e.changedTouches ? e.changedTouches[0] : e
@@ -177,8 +188,10 @@ export default {
     },
     stopDrag () {
       this.dragging = false
+      if (this.dY > 300 && this.scrollTop <= 0) {
+        this.beforeUpdate()
+      }
       this.dY = 0
-      if (this.dY > 300 && this.scrollTop <= 0) this.$emit('update')
     },
   },
 }
@@ -193,15 +206,24 @@ export default {
     right: 0;
     bottom: initial;
     display: flex;
+    justify-content: space-between;
     height: 90px;
     max-width: 768px;
     border-bottom: 0;
+    margin: -1px auto 0;/*no*/
     background-color: transparent;
     color: #fff;
     font-size: 32px;
     transition: background 0.3s ease;
     overflow: hidden;
-    z-index: 10;
+    z-index: 30;
+
+    .c-loading {
+      position: absolute;
+      left: 90px;
+      width: 60px;
+      height: 90px;
+    }
 
     .title {
       display: flex;
@@ -218,18 +240,8 @@ export default {
       flex: none;
       width: 90px;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
-    }
-
-    .left {
-      width: 90*2px;
-      padding-left: 30px;
-      justify-content: flex-start;
-    }
-    .right {
-      padding-right: 30px;
-      justify-content: flex-end;
     }
 
     &.show-title {
@@ -245,28 +257,14 @@ export default {
   }
 
   .banner {
-    padding-top: 320/640 * 100%;
+    position: relative;
     width: 100%;
-    transform: translate3d(0, 0, 0);
-    background-size: cover;
-    background-position: center;
-    background-image: url("../images/user_home_default_cover.png");
+    padding-top: (320/640 * 100%);
+    background: #fff center/cover no-repeat;
     font-size: 28px;
     color: #fff;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* no */
-    h3 {
-      margin: 20px 0;
-      font-size: 32px;
-    }
-    p {
-      margin: 0 0 30px 0;
-      span + span {
-        margin-left: 40px;
-      }
-      i {
-        margin: 0 5px;
-      }
-    }
+    transform: translate3d(0, 0, 0);
   }
 
   .sticky-bar {
@@ -290,6 +288,31 @@ export default {
     font-size: 30px;
     border-top: 1px solid @border-color;
     background-color: #fff;
+  }
+
+  &.loading {
+    .header {
+      color: #333;
+    }
+    > main {
+      filter: blur(30px);
+    }
+  }
+
+  &.no-cover {
+    .header {
+      color: #333;
+    }
+    .banner {
+      color: #333;
+      text-shadow: none;
+      h1 {
+        font-weight: bold;
+      }
+      p {
+        color: @text-color3;
+      }
+    }
   }
 }
 
