@@ -45,7 +45,7 @@ class AnswerController extends Controller
         $offset = (int) $request->query('offset', 0);
 
         if ($id) {
-            return resonse()->json([AnswerModel::find($id)], 200);
+            return response()->json([AnswerModel::find($id)], 200);
         }
 
         $query = AnswerModel::query();
