@@ -179,7 +179,7 @@ export default {
   computed: {
     ...mapState(['CURRENTUSER']),
     allowReward () {
-      return this.$store.state.CONFIG.site.reward.status
+      return this.$store.state.CONFIG.feed.reward
     },
     feedID () {
       return this.$route.params.feedID
