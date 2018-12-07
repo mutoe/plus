@@ -357,7 +357,7 @@ export default {
     rewardUser () {
       this.$bus.$emit('reward', {
         type: 'user',
-        api: api.rewardUser,
+        api: userApi.rewardUser,
         payload: this.user.id,
         callback: () => {},
       })
