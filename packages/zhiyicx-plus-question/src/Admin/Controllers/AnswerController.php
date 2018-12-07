@@ -35,7 +35,7 @@ class AnswerController extends Controller
     {
         $question = $request->query('question');
         $id = $request->query('id');
-        $user = $request->query('id');
+        $user = $request->query('user');
         $type = $request->query('type', false);
         $reward = $request->query('reward', false);
         $start_date = $request->query('start_date');
