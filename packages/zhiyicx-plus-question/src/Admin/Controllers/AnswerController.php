@@ -44,10 +44,6 @@ class AnswerController extends Controller
         $limit = (int) $request->query('limit', 15);
         $offset = (int) $request->query('offset', 0);
 
-        if ($id) {
-            return response()->json([AnswerModel::find($id)], 200);
-        }
-
         $query = AnswerModel::query();
         if ($question) {
             if (! ($question = QuestionModel::find($question))) {
@@ -59,6 +55,9 @@ class AnswerController extends Controller
 
         $query = $query->when($trash, function ($query) {
             return $query->onlyTrashed();
+        })
+        ->when($id, function($query) use ($id) {
+            return $query->where('id', $id);
         })
         ->when($user, function ($query) use ($user) {
             return $query->where('user_id', $user);
